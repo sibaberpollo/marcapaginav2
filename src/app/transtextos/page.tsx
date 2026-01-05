@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { fetchSanity } from '@/lib/sanity';
+import RelatoHeader from '@/components/layout/RelatoHeader';
 
 const PAGE_SIZE = 10;
 
@@ -9,6 +10,7 @@ type Transtexto = {
   title?: string;
   summary?: string;
   publishedAt?: string;
+  author?: string;
 };
 
 async function getTranstextos(page: number) {
@@ -16,14 +18,15 @@ async function getTranstextos(page: number) {
   const end = start + PAGE_SIZE;
 
   const query = `{
-    "items": *[_type != "sanity.imageAsset" && defined(slug.current) && defined(title)] | order(coalesce(publishedAt, _createdAt) desc)[${start}...${end}]{
+    "items": *[_type == "relato" && status == "published" && site->slug.current == "transtextos"] | order(coalesce(date + "T00:00:00Z", publishedAt) desc)[${start}...${end}]{
       "id": _id,
       "slug": slug.current,
       title,
-      "summary": coalesce(summary, excerpt, description, seoDescription, lead, pt::text(body), pt::text(contenido), pt::text(content)),
-      "publishedAt": coalesce(publishedAt, _createdAt)
+      "summary": summary,
+      "publishedAt": coalesce(date, publishedAt),
+      "author": author->name
     },
-    "total": count(*[_type != "sanity.imageAsset" && defined(slug.current) && defined(title)])
+    "total": count(*[_type == "relato" && status == "published" && site->slug.current == "transtextos"])
   }`;
 
   return fetchSanity<{ items: Transtexto[]; total: number }>(query);
@@ -41,9 +44,10 @@ function formatDateParts(isoDate?: string) {
 export default async function TranstextosPage({
   searchParams,
 }: {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const currentPage = Math.max(1, Number(Array.isArray(searchParams?.page) ? searchParams?.page[0] : searchParams?.page || '1'));
+  const params = await searchParams;
+  const currentPage = Math.max(1, Number(Array.isArray(params?.page) ? params?.page[0] : params?.page || '1'));
 
   const { items, total } = await getTranstextos(currentPage);
   const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
@@ -51,11 +55,13 @@ export default async function TranstextosPage({
   const hasNext = currentPage < pageCount;
 
   return (
-    <main className="pt-14 min-h-screen pb-20">
+    <>
+      <RelatoHeader />
+      <main className="pt-20 min-h-screen pb-20">
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
         <header className="bg-bg-primary border border-surface-2 rounded-lg p-6 shadow-sm">
           <span className="badge bg-brand-yellow text-brand-black-static border-none text-xs font-bold mb-3">
-            TRANSTEXTOS
+            Feed de narrativa
           </span>
           <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-3">Transtextos</h1>
           <p className="text-text-secondary leading-relaxed">
@@ -98,6 +104,11 @@ export default async function TranstextosPage({
                           item.title
                         )}
                       </h2>
+                      {item.author && (
+                        <p className="text-sm text-text-secondary mt-1">
+                          Por: <span className="font-medium">{item.author}</span>
+                        </p>
+                      )}
                       {item.summary && (
                         <p className="text-sm text-text-secondary mt-2 line-clamp-2 md:line-clamp-3">
                           {item.summary}
@@ -134,5 +145,6 @@ export default async function TranstextosPage({
         </div>
       </div>
     </main>
+    </>
   );
 }
