@@ -25,7 +25,7 @@ export default function FeaturedPost({
 
   return (
     <article className="bg-bg-primary rounded-lg overflow-hidden border border-surface-2 hover:border-brand-gray/30 transition-colors">
-      <div className="bg-brand-black text-brand-white px-5 py-4">
+      <div className="bg-brand-black-static text-brand-white-static px-5 py-4">
         <span className="badge bg-brand-yellow text-black border-none text-xs font-semibold mb-3">
           DESTACADO
         </span>
@@ -34,7 +34,7 @@ export default function FeaturedPost({
             {title}
           </Link>
         </h2>
-        <p className="text-text-secondary text-sm line-clamp-2">{excerpt}</p>
+        <p className="text-brand-white-static text-sm line-clamp-2">{excerpt}</p>
       </div>
       <div className="px-5 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">

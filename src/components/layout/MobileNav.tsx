@@ -2,9 +2,9 @@ import Link from 'next/link';
 
 export default function MobileNav() {
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-surface-2 z-50">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-bg-primary border-t border-surface-2 z-50">
       <div className="flex justify-around py-2">
-        <Link href="/" className="flex flex-col items-center gap-1 p-2 text-black">
+        <Link href="/" className="flex flex-col items-center gap-1 p-2 text-text-primary">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"

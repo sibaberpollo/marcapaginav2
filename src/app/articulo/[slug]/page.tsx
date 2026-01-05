@@ -22,7 +22,7 @@ export default function ArticlePage() {
         {/* Header del artículo */}
         <header className="mb-8">
           {article.featured && (
-            <span className="inline-block px-3 py-1 bg-brand-yellow text-brand-black text-xs font-bold uppercase tracking-wider rounded mb-4">
+            <span className="inline-block px-3 py-1 bg-brand-yellow text-brand-black-static text-xs font-bold uppercase tracking-wider rounded mb-4">
               Destacado
             </span>
           )}

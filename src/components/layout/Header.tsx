@@ -26,9 +26,8 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 bg-brand-yellow text-brand-black z-50 transition-transform duration-300 ${
-        hidden ? '-translate-y-full' : 'translate-y-0'
-      }`}
+      className={`fixed top-0 left-0 right-0 bg-brand-yellow text-brand-black-static z-50 transition-transform duration-300 ${hidden ? '-translate-y-full' : 'translate-y-0'
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
@@ -50,9 +49,9 @@ export default function Header() {
               <input
                 type="text"
                 placeholder="Buscar relatos, autores, noticias..."
-                className="w-full bg-brand-black/10 border border-brand-black/20 rounded-lg px-4 py-2 text-sm placeholder-brand-gray focus:outline-none focus:border-brand-black focus:bg-brand-black/20 transition-all"
+                className="w-full bg-brand-black-static/10 border border-brand-black-static/20 rounded-lg px-4 py-2 text-sm placeholder-brand-gray focus:outline-none focus:border-brand-black-static focus:bg-brand-black-static/20 transition-all"
               />
-              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-brand-gray font-mono bg-brand-black/10 px-1.5 py-0.5 rounded">
+              <kbd className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-brand-gray font-mono bg-brand-black-static/10 px-1.5 py-0.5 rounded">
                 ⌘K
               </kbd>
             </div>
@@ -60,7 +59,7 @@ export default function Header() {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <button className="md:hidden p-2 hover:bg-brand-black/10 rounded-lg transition-colors">
+            <button className="md:hidden p-2 hover:bg-brand-black-static/10 rounded-lg transition-colors">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -72,7 +71,7 @@ export default function Header() {
             </button>
             <Link
               href="#"
-              className="hidden sm:flex items-center gap-1 px-3 py-1.5 text-sm font-medium hover:bg-brand-black/10 rounded-lg transition-colors"
+              className="hidden sm:flex items-center gap-1 px-3 py-1.5 text-sm font-medium hover:bg-brand-black-static/10 rounded-lg transition-colors"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -86,11 +85,11 @@ export default function Header() {
             <ThemeToggle />
             <Link
               href="#"
-              className="btn btn-sm bg-brand-black text-brand-yellow border-none hover:bg-brand-gray"
+              className="btn btn-sm bg-brand-black-static text-brand-yellow border-none hover:bg-brand-gray"
             >
               Escribir
             </Link>
-            <div className="w-8 h-8 bg-brand-black rounded-full cursor-pointer hover:ring-2 hover:ring-brand-black/50 transition-all"></div>
+            <div className="w-8 h-8 bg-brand-black-static rounded-full cursor-pointer hover:ring-2 hover:ring-brand-black-static/50 transition-all"></div>
           </div>
         </div>
       </div>
