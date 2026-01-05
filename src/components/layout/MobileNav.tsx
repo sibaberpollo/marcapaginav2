@@ -44,16 +44,16 @@ export default function MobileNav() {
           </svg>
           <span className="text-xs">Guardados</span>
         </Link>
-        <Link href="/perfil" className="flex flex-col items-center gap-1 p-2 text-brand-gray">
+        <Link href="/transtextos" className="flex flex-col items-center gap-1 p-2 text-brand-gray">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth="2"
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+              d="M12 6v12m-7-9h7M5 6h7a4 4 0 014 4v8a1 1 0 01-1 1H9a4 4 0 01-4-4V6z"
             />
           </svg>
-          <span className="text-xs">Perfil</span>
+          <span className="text-xs">Transtextos</span>
         </Link>
       </div>
     </nav>

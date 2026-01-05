@@ -62,6 +62,18 @@ const navItems = [
     ),
   },
   {
+    href: '/transtextos',
+    label: 'Transtextos',
+    icon: (
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
+        d="M12 6v12m-7-9h7M5 6h7a4 4 0 014 4v8a1 1 0 01-1 1H9a4 4 0 01-4-4V6z"
+      />
+    ),
+  },
+  {
     href: '/tags',
     label: 'Tags',
     icon: (

@@ -1,10 +1,11 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { Article, ArticleSummary, CATEGORIES, Category } from './types/article';
+import { Article, ArticleSummary, CATEGORIES, Category, TravelGuide, Location } from './types/article';
+import { fetchSanity } from './sanity';
 
 // Re-export types and constants for convenience
-export { CATEGORIES } from './types/article';
-export type { Article, ArticleSummary, Category } from './types/article';
+export { CATEGORIES, isTravelGuide } from './types/article';
+export type { Article, ArticleSummary, Category, TravelGuide, Location } from './types/article';
 
 // Base path for content
 const CONTENT_DIR = path.join(process.cwd(), 'content', 'articles');
@@ -123,6 +124,13 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
             }
         }
 
+        // Fallback: buscar en Sanity (Transtextos)
+        // Fallback: buscar en Sanity (Transtextos)
+        const sanityArticle = await getSanityArticleBySlug(slug);
+        if (sanityArticle) {
+            return sanityArticle;
+        }
+
         return null;
     } catch (error) {
         console.error(`Error getting article ${slug}:`, error);
@@ -226,4 +234,105 @@ export async function getCategoriesWithCounts(): Promise<(Category & { count: nu
     );
 
     return categoriesWithCounts;
+}
+
+/**
+ * Get a Transtextos/Sanity article by slug
+ */
+async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
+    try {
+        const query = `*[_type != "sanity.imageAsset" && slug.current == $slug][0]{
+            "slug": slug.current,
+            title,
+            "excerpt": coalesce(summary, excerpt, description, seoDescription, lead, ""),
+            "content": coalesce(
+                pt::text(body),
+                pt::text(contenido),
+                content,
+                description,
+                summary,
+                excerpt,
+                lead,
+                ""
+            ),
+            "publishedAt": coalesce(publishedAt, _createdAt),
+            "readTime": readTime,
+            featured,
+            likes,
+            comments,
+            "tags": coalesce(tags[]->title, tags),
+            "category": coalesce(category->title, "Transtextos"),
+            "categorySlug": coalesce(category->slug.current, "transtextos"),
+            "author": coalesce(
+                author->{name, handle},
+                {"name": authorName, "handle": authorHandle},
+                {"name": "Transtextos", "handle": "@transtextos"}
+            )
+        }`;
+
+        const result = await fetchSanity<{
+            slug?: string;
+            title?: string;
+            excerpt?: string;
+            content?: string;
+            publishedAt?: string;
+            readTime?: string;
+            featured?: boolean;
+            likes?: number;
+            comments?: number;
+            tags?: (string | null)[];
+            category?: string;
+            categorySlug?: string;
+            author?: { name?: string; handle?: string };
+        }>(query, { slug });
+
+        if (!result || !result.title) return null;
+
+        const rawContent =
+            typeof result.content === 'string' && result.content.trim().length > 0
+                ? result.content.trim()
+                : '';
+
+        const safeContent =
+            rawContent.length > 0
+                ? rawContent.includes('<')
+                    ? rawContent
+                    : formatPlainTextToHtml(rawContent)
+                : `<p>${result.excerpt || ''}</p>`;
+
+        return {
+            slug: result.slug || slug,
+            title: result.title,
+            excerpt: result.excerpt || '',
+            content: safeContent,
+            author: {
+                name: result.author?.name || 'Transtextos',
+                handle: result.author?.handle || '@transtextos',
+                avatar: 'bg-brand-gray',
+            },
+            category: result.category || 'Transtextos',
+            categorySlug: result.categorySlug || 'transtextos',
+            tags: (result.tags || []).filter((t): t is string => Boolean(t && t.length > 0)),
+            featured: Boolean(result.featured),
+            publishedAt: result.publishedAt || new Date().toISOString(),
+            readTime: result.readTime || '5 min',
+            likes: result.likes,
+            comments: result.comments,
+            type: 'standard',
+        };
+    } catch (error) {
+        console.error(`Error getting Sanity article ${slug}:`, error);
+        return null;
+    }
+}
+
+function formatPlainTextToHtml(text: string): string {
+    const normalized = text.replace(/\r\n/g, '\n').trim();
+    if (normalized.length === 0) return '';
+
+    const paragraphs = normalized.split(/\n{2,}/).map((p) => p.trim());
+
+    return paragraphs
+        .map((p) => `<p>${p.replace(/\n/g, '<br />')}</p>`)
+        .join('\n\n'); // separa más los párrafos en el HTML
 }

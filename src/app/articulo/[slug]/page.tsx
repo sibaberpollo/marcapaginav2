@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import AdBanner from '@/components/ads/AdBanner';
+import TravelGuideLayout from '@/components/travel/TravelGuideLayout';
 import { getArticleBySlug, getRelatedArticles } from '@/lib/articles';
-import { Article } from '@/lib/types/article';
+import { Article, isTravelGuide, TravelGuide } from '@/lib/types/article';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -33,30 +34,6 @@ export async function generateMetadata({ params }: PageProps) {
   };
 }
 
-// Notes data (could be extracted to a separate system later)
-const notes = [
-  {
-    id: 'nota-1',
-    refId: 'ref-1',
-    text: 'Dícese de la figura geométrica tridimensional que corresponde al libro, aunque en ocasiones también se puede acercar al cubo, pero jamás a la pirámide. En adelante estos paralelepípedos se identificarán como libros.',
-  },
-  {
-    id: 'nota-2',
-    refId: 'ref-2',
-    text: 'Ver paso tres para la adecuada comprensión de este término.',
-  },
-  {
-    id: 'nota-3',
-    refId: 'ref-3',
-    text: 'Se debe hacer una clara diferenciación entre el baño -a secas- y el baño de oficina, pues se trata de dos experiencias completamente distintas.',
-  },
-  {
-    id: 'nota-4',
-    refId: 'ref-4',
-    text: 'En un próximo número abordaremos la terminología básica del lector, y exploraremos términos como bibliómano, bibliofilia, entre otros.',
-  },
-];
-
 function formatDate(isoDate: string): string {
   const date = new Date(isoDate);
   return date.toLocaleDateString('es-ES', {
@@ -72,6 +49,11 @@ export default async function ArticlePage({ params }: PageProps) {
 
   if (!article) {
     notFound();
+  }
+
+  // Check if this is a travel guide and render special layout
+  if (isTravelGuide(article)) {
+    return <TravelGuideLayout article={article as TravelGuide} />;
   }
 
   const relatedArticles = await getRelatedArticles(article, 4);
@@ -112,7 +94,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
         {/* Contenido del artículo */}
         <div
-          className="prose prose-lg max-w-none"
+          className="article-content prose prose-lg max-w-none"
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
 
@@ -121,23 +103,46 @@ export default async function ArticlePage({ params }: PageProps) {
           <AdBanner size="leaderboard" />
         </div>
 
-        {/* Notas al pie */}
-        <footer className="mt-12 pt-8 border-t border-surface-2">
-          <h3 className="text-lg font-bold mb-4">Notas</h3>
-          <div className="space-y-4 text-sm text-brand-gray">
-            {notes.map((note) => (
-              <p key={note.id} id={note.id}>
-                <strong>[{note.id.replace('nota-', '')}]</strong> {note.text}{' '}
-                <a
-                  href={`#${note.refId}`}
-                  className="badge bg-brand-black-static text-brand-yellow border-none text-xs hover:bg-brand-gray"
-                >
-                  Volver
-                </a>
-              </p>
-            ))}
-          </div>
-        </footer>
+        {/* Notas al pie (solo para el artículo original con notas) */}
+        {article.slug === 'manual-de-usuario-para-comenzar-a-leer' && (
+          <footer className="mt-12 pt-8 border-t border-surface-2">
+            <h3 className="text-lg font-bold mb-4">Notas</h3>
+            <div className="space-y-4 text-sm text-brand-gray">
+              {[
+                {
+                  id: 'nota-1',
+                  refId: 'ref-1',
+                  text: 'Dícese de la figura geométrica tridimensional que corresponde al libro, aunque en ocasiones también se puede acercar al cubo, pero jamás a la pirámide. En adelante estos paralelepípedos se identificarán como libros.',
+                },
+                {
+                  id: 'nota-2',
+                  refId: 'ref-2',
+                  text: 'Ver paso tres para la adecuada comprensión de este término.',
+                },
+                {
+                  id: 'nota-3',
+                  refId: 'ref-3',
+                  text: 'Se debe hacer una clara diferenciación entre el baño -a secas- y el baño de oficina, pues se trata de dos experiencias completamente distintas.',
+                },
+                {
+                  id: 'nota-4',
+                  refId: 'ref-4',
+                  text: 'En un próximo número abordaremos la terminología básica del lector, y exploraremos términos como bibliómano, bibliofilia, entre otros.',
+                },
+              ].map((note) => (
+                <p key={note.id} id={note.id}>
+                  <strong>[{note.id.replace('nota-', '')}]</strong> {note.text}{' '}
+                  <a
+                    href={`#${note.refId}`}
+                    className="badge bg-brand-black-static text-brand-yellow border-none text-xs hover:bg-brand-gray"
+                  >
+                    Volver
+                  </a>
+                </p>
+              ))}
+            </div>
+          </footer>
+        )}
 
         {/* Tags */}
         <div className="mt-8 pt-6 border-t border-surface-2">
