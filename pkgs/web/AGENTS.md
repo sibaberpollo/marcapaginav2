@@ -1,0 +1,124 @@
+# MP — NEXT.JS APP
+
+## OVERVIEW
+
+Main application. Next.js 16.1.1 App Router, React 19, Tailwind 4, DaisyUI 5. Spanish UI.
+
+## STRUCTURE
+
+```
+src/
+├── app/
+│   ├── layout.tsx           # Root layout (Inter + JetBrains Mono fonts)
+│   ├── page.tsx             # Homepage — 3-column grid
+│   ├── globals.css          # Theme variables + Tailwind
+│   └── articulo/[slug]/     # Dynamic article route
+└── components/
+    ├── index.ts             # Barrel export — import from here
+    ├── layout/              # Header, MobileNav
+    ├── sidebar/             # LeftSidebar, RightSidebar
+    ├── feed/                # Feed, FeedTabs, PostCard, NewsCard, FeaturedPost
+    ├── ads/                 # AdBanner, InFeedAd, MobileAnchorAd
+    └── ui/                  # ThemeToggle
+```
+
+## WHERE TO LOOK
+
+| Task | Location |
+|------|----------|
+| Add route | `src/app/{route}/page.tsx` |
+| Add component | `src/components/{domain}/` then export in `index.ts` |
+| Modify colors | `src/app/globals.css` — CSS variables |
+| Add client interactivity | Add `'use client'` directive at top |
+
+## IMPORT PATTERN
+
+```tsx
+// CORRECT — use barrel export
+import { Header, Feed, PostCard } from '@/components';
+
+// AVOID — relative imports
+import Header from '../components/layout/Header';
+```
+
+## COMPONENT CONVENTIONS
+
+```tsx
+// 1. Props interface (PascalCase + Props suffix)
+interface PostCardProps {
+  title: string;
+  excerpt: string;
+}
+
+// 2. Default export, function declaration
+export default function PostCard({ title, excerpt }: PostCardProps) {
+  return <article className="bg-bg-primary">...</article>;
+}
+
+// 3. 'use client' only when needed (hooks, browser APIs)
+'use client';
+import { useState } from 'react';
+```
+
+## THEME SYSTEM
+
+**CSS Variables** (defined in globals.css):
+```
+brand-yellow: #faff00    — Primary accent
+brand-gray: #4b4b4b      — Secondary text
+brand-black: #000000     — Primary text (inverts in dark)
+surface: #f5f5f5         — Card backgrounds
+surface-2: #e8e8e8       — Borders, dividers
+bg-page: #f5f5f5         — Page background
+```
+
+**Usage in Tailwind**:
+```tsx
+<div className="bg-bg-primary text-text-primary border-surface-2">
+<span className="text-brand-yellow hover:text-brand-gray">
+```
+
+**Theme toggle**: `data-theme` attribute on `<html>`. Values: `light` | `dark`.
+
+## STYLING
+
+- **Tailwind 4** with `@import "tailwindcss"` syntax
+- **DaisyUI** components: `btn`, `badge`, `swap`, `prose`
+- **NO tailwind.config** — v4 uses CSS-first configuration
+- **Custom classes**: `.line-clamp-2`, `.line-clamp-3` defined in globals.css
+
+## AD SLOTS
+
+```tsx
+<AdBanner size="leaderboard" />           // 728x90
+<AdBanner size="medium-rectangle" />      // 300x250
+<AdBanner size="skyscraper" />            // 160x600
+<InFeedAd />                              // Native in-feed
+<MobileAnchorAd />                        // Sticky bottom (mobile)
+```
+
+AdSense integration commented out — replace `ca-pub-XXXXXXX` when ready.
+
+## CLIENT VS SERVER
+
+| Component | Type | Why |
+|-----------|------|-----|
+| Header | client | Scroll detection |
+| ThemeToggle | client | localStorage + state |
+| FeedTabs | client | Tab selection state |
+| MobileAnchorAd | client | Visibility toggle |
+| Feed, PostCard, etc. | server | No interactivity |
+
+## ANTI-PATTERNS
+
+- Do NOT use relative imports for components — use `@/components`
+- Do NOT add `'use client'` unless using hooks or browser APIs
+- Do NOT modify theme colors without updating both light AND dark variants
+- Do NOT add custom CSS when Tailwind utilities exist
+
+## GOTCHAS
+
+1. **Fonts**: Inter (body) + JetBrains Mono (code) loaded via `next/font/google`
+2. **Language**: `<html lang="es">` — Spanish content
+3. **Data**: All mock data hardcoded in components — no API layer
+4. **Path alias**: `@/*` resolves to `./src/*`
