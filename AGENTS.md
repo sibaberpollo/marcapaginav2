@@ -28,6 +28,15 @@ marcapagina/
 | Build config | `apps/web/next.config.ts` | Currently minimal |
 | Monorepo tasks | `turbo.json` | build, dev, lint, test |
 
+## CRITICAL RULES
+
+These rules must ALWAYS be followed:
+
+- **Type Safety**: NEVER use `any` type - use `unknown` and type guards
+- **Type Assertions**: NEVER use `as` without runtime type guards
+- **Pre-commit**: Always run `pnpm check-types && pnpm lint` before committing
+- **Design System**: Never create new design system components unless explicitly requested
+
 ## COMMANDS
 
 ```bash
