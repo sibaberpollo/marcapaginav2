@@ -53,3 +53,8 @@ next-env.d.ts
 # Coverage
 **/coverage/
 coverage/
+
+# Playwright
+**/test-results/
+**/.playwright/
+**/playwright-report/
