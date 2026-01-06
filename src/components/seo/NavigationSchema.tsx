@@ -2,8 +2,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.net';
 
 const navigationItems = [
   { name: 'Inicio', url: `${siteUrl}/` },
-  { name: 'Transtextos', url: `${siteUrl}/transtextos` },
-  { name: 'Autores', url: `${siteUrl}/transtextos/autores` },
+  { name: 'Artículos', url: `${siteUrl}/articulos` },
+  { name: 'Narrativa', url: `${siteUrl}/transtextos` },
   { name: 'Horóscopo', url: `${siteUrl}/horoscopo` },
 ];
 

@@ -1,6 +1,7 @@
 import FeedTabs from './FeedTabs';
 import FeaturedPost from './FeaturedPost';
 import FeaturedMapPost from './FeaturedMapPost';
+import LatestNarrativaPost from './LatestNarrativaPost';
 import PostCard from './PostCard';
 import NewsCard from './NewsCard';
 import AdBanner from '../ads/AdBanner';
@@ -99,7 +100,10 @@ export default function Feed() {
       {/* In-Feed Ad */}
       <InFeedAd />
 
-      {/* News Card 
+      {/* Latest Narrativa/Transtextos Post */}
+      <LatestNarrativaPost />
+
+      {/* News Card
       <NewsCard
         category="Premios"
         title='El Premio Nacional de Narrativa 2026 recae en María Fernández por "Cielos de Ceniza"'

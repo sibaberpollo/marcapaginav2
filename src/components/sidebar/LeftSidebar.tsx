@@ -29,15 +29,8 @@ const navItems = [
   },
   {
     href: '/transtextos',
-    label: 'Transtextos',
-    icon: (
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth="2"
-        d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z"
-      />
-    ),
+    label: 'Narrativa',
+    customIcon: true,
   },
   {
     href: '/horoscopo',
@@ -72,14 +65,20 @@ export default function LeftSidebar() {
                 : 'text-text-secondary hover:text-text-primary hover:bg-bg-primary'
             }`}
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {item.icon}
-            </svg>
+            {item.customIcon ? (
+              <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-[10px]">T</span>
+              </div>
+            ) : (
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {item.icon}
+              </svg>
+            )}
             {item.label}
           </Link>
         ))}
