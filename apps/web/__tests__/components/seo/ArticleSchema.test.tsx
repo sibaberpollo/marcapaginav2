@@ -65,7 +65,7 @@ describe("ArticleSchema", () => {
   it("URL constructed correctly (articulo/{slug})", () => {
     const { container } = render(<ArticleSchema article={mockArticle} />);
     const jsonLd = getJsonLd(container);
-    expect(jsonLd.url).toBe("https://marcapagina.net/articulo/test-article");
+    expect(jsonLd.url).toBe("https://marcapagina.page/articulo/test-article");
   });
 
   it("DatePublished uses article.publishedAt", () => {
@@ -86,7 +86,7 @@ describe("ArticleSchema", () => {
     const jsonLd = getJsonLd(container);
     expect(jsonLd.publisher["@type"]).toBe("Organization");
     expect(jsonLd.publisher.logo.url).toBe(
-      "https://marcapagina.net/og-image.png",
+      "https://marcapagina.page/og-image.png",
     );
   });
 
@@ -113,7 +113,7 @@ describe("ArticleSchema", () => {
       <ArticleSchema article={mockArticle} type="relato" />,
     );
     const jsonLd = getJsonLd(container);
-    expect(jsonLd.url).toBe("https://marcapagina.net/relato/test-article");
+    expect(jsonLd.url).toBe("https://marcapagina.page/relato/test-article");
   });
 
   it("Falls back to publishedAt when updatedAt is undefined", () => {

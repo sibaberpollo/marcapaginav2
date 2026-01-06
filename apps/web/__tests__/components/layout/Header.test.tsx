@@ -54,15 +54,6 @@ describe("Header", () => {
     expect(screen.getByRole("checkbox", { hidden: true })).toBeInTheDocument();
   });
 
-  test("Renders ad banner placeholder (INS element)", () => {
-    (usePathname as ReturnType<typeof vi.fn>).mockReturnValue("/");
-    const { container } = render(<Header />, {
-      container: document.body.appendChild(document.createElement("div")),
-    });
-    const insElement = container.querySelector("ins");
-    expect(insElement).toBeInTheDocument();
-  });
-
   test("Header is hidden when usePathname returns /relato", () => {
     (usePathname as ReturnType<typeof vi.fn>).mockReturnValue(
       "/relato/test-story",
@@ -111,7 +102,7 @@ describe("Header", () => {
     );
   });
 
-  test("window.scrollY > 100 triggers hidden state (adds -translate-y-full class)", () => {
+  test("window.scrollY > 100 triggers hidden state (adds -translate-y-[56px] class)", () => {
     (usePathname as ReturnType<typeof vi.fn>).mockReturnValue("/");
     const { container } = render(<Header />, {
       container: document.body.appendChild(document.createElement("div")),
@@ -124,11 +115,11 @@ describe("Header", () => {
       scrollXValue = 0;
       window.dispatchEvent(new Event("scroll"));
     });
-    const adBanner = container.querySelector(".fixed");
-    expect(adBanner?.classList.contains("-translate-y-full")).toBe(true);
+    const header = container.querySelector("header");
+    expect(header?.classList.contains("-translate-y-[56px]")).toBe(true);
   });
 
-  test("Scrolling up reveals header (removes -translate-y-full class)", () => {
+  test("Scrolling up reveals header (removes -translate-y-[56px] class)", () => {
     (usePathname as ReturnType<typeof vi.fn>).mockReturnValue("/");
     const { container } = render(<Header />, {
       container: document.body.appendChild(document.createElement("div")),
@@ -140,31 +131,7 @@ describe("Header", () => {
       scrollYValue = 50;
       window.dispatchEvent(new Event("scroll"));
     });
-    const adBanner = container.querySelector(".fixed");
-    expect(adBanner?.classList.contains("-translate-y-full")).toBe(false);
-  });
-
-  test("adRef.current triggers adsbygoogle.push when not null", () => {
-    (usePathname as ReturnType<typeof vi.fn>).mockReturnValue("/");
-    (window as any).adsbygoogle = undefined;
-    const { container } = render(<Header />, {
-      container: document.body.appendChild(document.createElement("div")),
-    });
-    const insElement = container.querySelector("ins");
-    expect(insElement).toBeInTheDocument();
-  });
-
-  test("adRef.current does not throw when adRef is null", () => {
-    (usePathname as ReturnType<typeof vi.fn>).mockReturnValue("/");
-    const consoleErrorSpy = vi
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    const renderFn = () => {
-      render(<Header />, {
-        container: document.body.appendChild(document.createElement("div")),
-      });
-    };
-    expect(renderFn).not.toThrow();
-    consoleErrorSpy.mockRestore();
+    const header = container.querySelector("header");
+    expect(header?.classList.contains("-translate-y-[56px]")).toBe(false);
   });
 });
