@@ -92,6 +92,7 @@ export default function RootLayout({
   return (
     <html lang="es" data-theme="light">
       <head>
+        <meta name="google-adsense-account" content="ca-pub-1422077668654301" />
         <OrganizationSchema />
         <NavigationSchema />
       </head>
