@@ -32,7 +32,7 @@ import {
 import { Article, ArticleSummary, CATEGORIES } from "@/lib/types/article";
 
 describe("articles.ts", () => {
-  const testContentDir = path.join(process.cwd(), "content", "articles");
+  const testContentDir = path.join(process.cwd(), "content");
   const testCategorySlug = "el-placer-de-leer";
   const testSlug = "test-article";
   const testFilePath = path.join(
