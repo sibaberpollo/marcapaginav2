@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import RelatoHeader from '@/components/layout/RelatoHeader';
-import { fetchSanity } from '@/lib/sanity';
+import Link from "next/link";
+import RelatoHeader from "@/components/layout/RelatoHeader";
+import { fetchSanity } from "@/lib/sanity";
 
 type Autor = {
   id: string;
@@ -17,7 +17,7 @@ type Autor = {
   relatoCount: number;
 };
 
-async function getAutores() {
+async function getAutores(): Promise<{ authors: Autor[] }> {
   const query = `{
     "authors": *[_type == "autor" && count(*[_type == "relato" && references(^._id)]) > 0]{
       "id": _id,
@@ -35,12 +35,12 @@ async function getAutores() {
     } | order(relatoCount desc, name asc)
   }`;
 
-  const { authors } = await fetchSanity<{ authors: Autor[] }>(query);
-  return authors;
+  const result = await fetchSanity<{ authors: Autor[] }>(query);
+  return result || { authors: [] };
 }
 
 function Avatar({ name, avatar }: { name: string; avatar?: string }) {
-  const initial = name?.[0]?.toUpperCase() || 'A';
+  const initial = name?.[0]?.toUpperCase() || "A";
 
   return (
     <div className="w-12 h-12 rounded-full bg-brand-yellow text-brand-black-static font-bold flex items-center justify-center overflow-hidden ring-2 ring-surface-2">
@@ -59,7 +59,8 @@ function Avatar({ name, avatar }: { name: string; avatar?: string }) {
 }
 
 export default async function AutoresPage() {
-  const autores = await getAutores();
+  const data = await getAutores();
+  const autores = data?.authors || [];
 
   return (
     <>
@@ -70,7 +71,9 @@ export default async function AutoresPage() {
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-text-secondary">
               Transtextos
             </p>
-            <h1 className="text-3xl md:text-4xl font-bold leading-tight">Autores</h1>
+            <h1 className="text-3xl md:text-4xl font-bold leading-tight">
+              Autores
+            </h1>
             <p className="text-text-secondary">
               Todos los autores con relatos publicados en Transtextos.
             </p>
@@ -104,7 +107,8 @@ export default async function AutoresPage() {
                           )}
                         </h2>
                         <p className="text-xs text-text-secondary uppercase tracking-wide">
-                          {autor.relatoCount} {autor.relatoCount === 1 ? 'relato' : 'relatos'}
+                          {autor.relatoCount}{" "}
+                          {autor.relatoCount === 1 ? "relato" : "relatos"}
                         </p>
                       </div>
                       {autor.pais && (
@@ -114,31 +118,53 @@ export default async function AutoresPage() {
                       )}
                     </div>
                     {autor.bio && (
-                      <p className="text-sm text-text-secondary line-clamp-3">{autor.bio}</p>
+                      <p className="text-sm text-text-secondary line-clamp-3">
+                        {autor.bio}
+                      </p>
                     )}
                     <div className="flex items-center gap-2 text-sm text-text-secondary flex-wrap">
                       {autor.website && (
-                        <Link href={autor.website} className="hover:text-text-primary" target="_blank">
+                        <Link
+                          href={autor.website}
+                          className="hover:text-text-primary"
+                          target="_blank"
+                        >
                           Sitio
                         </Link>
                       )}
                       {autor.instagram && (
-                        <Link href={autor.instagram} className="hover:text-text-primary" target="_blank">
+                        <Link
+                          href={autor.instagram}
+                          className="hover:text-text-primary"
+                          target="_blank"
+                        >
                           Instagram
                         </Link>
                       )}
                       {autor.twitter && (
-                        <Link href={autor.twitter} className="hover:text-text-primary" target="_blank">
+                        <Link
+                          href={autor.twitter}
+                          className="hover:text-text-primary"
+                          target="_blank"
+                        >
                           X
                         </Link>
                       )}
                       {autor.linkedin && (
-                        <Link href={autor.linkedin} className="hover:text-text-primary" target="_blank">
+                        <Link
+                          href={autor.linkedin}
+                          className="hover:text-text-primary"
+                          target="_blank"
+                        >
                           LinkedIn
                         </Link>
                       )}
                       {autor.github && (
-                        <Link href={autor.github} className="hover:text-text-primary" target="_blank">
+                        <Link
+                          href={autor.github}
+                          className="hover:text-text-primary"
+                          target="_blank"
+                        >
                           GitHub
                         </Link>
                       )}
