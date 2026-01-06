@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import TravelGuideLayout from '@/components/travel/TravelGuideLayout';
 import ArticleSchema from '@/components/seo/ArticleSchema';
-import { getArticleBySlug, getAllArticles } from '@/lib/articles';
+import { getArticleBySlug, getAllArticles, getAllTranstextosSlugs } from '@/lib/articles';
 import { isTravelGuide, TravelGuide } from '@/lib/types/article';
 import RelatoHeader from '@/components/layout/RelatoHeader';
 
@@ -12,12 +12,23 @@ interface PageProps {
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.net';
 
-// Generate static paths at build time
+// Generate static paths at build time (local articles + Sanity transtextos)
 export async function generateStaticParams() {
-  const articles = await getAllArticles();
-  return articles.map((article) => ({
-    slug: article.slug,
-  }));
+  const [articles, transtextosSlugs] = await Promise.all([
+    getAllArticles(),
+    getAllTranstextosSlugs(),
+  ]);
+
+  const localSlugs = articles.map((article) => ({ slug: article.slug }));
+  const sanitySlugs = transtextosSlugs.map((slug) => ({ slug }));
+
+  // Combine both, removing duplicates
+  const allSlugs = new Map<string, { slug: string }>();
+  [...localSlugs, ...sanitySlugs].forEach((item) => {
+    allSlugs.set(item.slug, item);
+  });
+
+  return Array.from(allSlugs.values());
 }
 
 // Allow dynamic params for Sanity articles not in local files

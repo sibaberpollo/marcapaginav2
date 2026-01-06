@@ -336,3 +336,20 @@ function formatPlainTextToHtml(text: string): string {
         .map((p) => `<p>${p.replace(/\n/g, '<br />')}</p>`)
         .join('\n\n'); // separa más los párrafos en el HTML
 }
+
+/**
+ * Get all transtextos slugs from Sanity (for static generation)
+ */
+export async function getAllTranstextosSlugs(): Promise<string[]> {
+    try {
+        const query = `*[_type == "relato" && status == "published" && site->slug.current == "transtextos"]{
+            "slug": slug.current
+        }`;
+
+        const result = await fetchSanity<{ slug: string }[]>(query);
+        return (result || []).map((r) => r.slug).filter(Boolean);
+    } catch (error) {
+        console.error('Error fetching transtextos slugs:', error);
+        return [];
+    }
+}
