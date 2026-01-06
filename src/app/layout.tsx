@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import Script from 'next/script';
 import { Header, MobileNav, MobileAnchorAd } from '@/components';
 import OrganizationSchema from '@/components/seo/OrganizationSchema';
 import NavigationSchema from '@/components/seo/NavigationSchema';
@@ -84,6 +85,12 @@ export default function RootLayout({
         <meta name="google-adsense-account" content="ca-pub-1422077668654301" />
         <OrganizationSchema />
         <NavigationSchema />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1422077668654301"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </head>
       <body className="antialiased bg-bg-page text-text-primary">
         <GoogleAnalytics />
