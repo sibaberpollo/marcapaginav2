@@ -5,8 +5,6 @@ import {
   ArticleSummary,
   CATEGORIES,
   Category,
-  TravelGuide,
-  Location,
 } from "./types/article";
 import { fetchSanity } from "./sanity";
 

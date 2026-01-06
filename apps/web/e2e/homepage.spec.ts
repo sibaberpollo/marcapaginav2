@@ -55,7 +55,6 @@ test.describe("Homepage", () => {
   });
 
   test("Feed section renders with posts", async ({ page }) => {
-    const feed = page.locator("text=Artículos").locator("..");
     await expect(page.locator("main")).toBeVisible();
 
     await expect(

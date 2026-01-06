@@ -26,7 +26,6 @@ describe("FeedTabs", () => {
 
   it('Newly clicked tab gets aria-checked="true"', () => {
     render(<FeedTabs />);
-    const criticaTab = screen.getByRole("button", { name: "CRÍTICA" });
     const agendaTab = screen.getByRole("button", { name: "AGENDA" });
     fireEvent.click(agendaTab);
     expect(agendaTab).toHaveAttribute("aria-checked", "true");

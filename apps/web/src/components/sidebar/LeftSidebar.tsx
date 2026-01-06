@@ -48,8 +48,6 @@ const navItems = [
   },
 ];
 
-const popularTags = ['cuento', 'poesía', 'microrrelato', 'ensayo', 'novela'];
-
 export default function LeftSidebar() {
   return (
     <aside className="hidden lg:block">

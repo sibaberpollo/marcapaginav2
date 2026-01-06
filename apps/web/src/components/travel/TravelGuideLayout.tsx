@@ -137,13 +137,13 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
 
                         {/* Location Cards */}
                         <div className="space-y-8">
-                            {sortedLocations.map((location, index) => (
+                            {sortedLocations.map((location) => (
                                 <div key={location.id}>
                                     <article
                                         id={`location-${location.id}`}
                                         onClick={() => handleCardClick(location.id)}
                                         className={`group cursor-pointer rounded-xl overflow-hidden border transition-all duration-300
-                    ${activeLocationId === location.id
+                                        ${activeLocationId === location.id
                                                 ? 'border-brand-yellow shadow-lg shadow-brand-yellow/20 ring-2 ring-brand-yellow/30'
                                                 : 'border-surface-2 hover:border-brand-gray/30'
                                             }`}

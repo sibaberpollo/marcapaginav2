@@ -1,9 +1,7 @@
 import FeedTabs from './FeedTabs';
-import FeaturedPost from './FeaturedPost';
 import FeaturedMapPost from './FeaturedMapPost';
 import LatestNarrativaPost from './LatestNarrativaPost';
 import PostCard from './PostCard';
-import NewsCard from './NewsCard';
 
 /*
 const posts = [

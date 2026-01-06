@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import TravelGuideLayout from '@/components/travel/TravelGuideLayout';
 import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug, getRelatedArticles, getAllArticles } from '@/lib/articles';
-import { Article, isTravelGuide, TravelGuide } from '@/lib/types/article';
+import { isTravelGuide, TravelGuide } from '@/lib/types/article';
 
 interface PageProps {
   params: Promise<{ slug: string }>;

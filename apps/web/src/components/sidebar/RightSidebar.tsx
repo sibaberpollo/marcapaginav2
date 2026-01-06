@@ -1,18 +1,5 @@
 import Link from 'next/link';
 
-const apps = [
-  { name: 'Literal', description: 'Red social sin algoritmos' },
-  { name: 'Oku', description: 'Biblioteca minimalista' },
-  { name: 'StoryGraph', description: 'Recomendaciones por mood' },
-  { name: 'Hardcover', description: 'Tracking con estadísticas' },
-];
-
-const news = [
-  { category: 'Editoriales', title: 'Anagrama lanza colección para menores de 30' },
-  { category: 'Tecnología', title: 'El audiolibro supera al ebook en España' },
-  { category: 'Obituario', title: 'Fallece Antonio Gamoneda a los 92 años' },
-];
-
 export default function RightSidebar() {
   return (
     <aside className="hidden lg:block space-y-4">

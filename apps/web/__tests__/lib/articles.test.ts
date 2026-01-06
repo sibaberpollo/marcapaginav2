@@ -88,14 +88,6 @@ describe("articles.ts", () => {
     featured: false,
   };
 
-  const mockArticleSummaryOld: ArticleSummary = {
-    ...mockArticleSummary,
-    slug: "old-article",
-    title: "Old Article",
-    publishedAt: "2023-01-15T10:00:00Z",
-    featured: false,
-  };
-
   beforeEach(() => {
     vi.clearAllMocks();
     vi.spyOn(console, "error").mockImplementation(() => {});
