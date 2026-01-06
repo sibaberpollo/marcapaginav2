@@ -22,6 +22,11 @@ jobs:
           node-version: "24"
           cache: "pnpm"
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Install dependencies
         run: pnpm install
 
@@ -39,6 +44,11 @@ jobs:
           node-version: "24"
           cache: "pnpm"
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Install dependencies
         run: pnpm install
 
@@ -55,6 +65,11 @@ jobs:
         with:
           node-version: "24"
           cache: "pnpm"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
       - name: Install dependencies
         run: pnpm install
