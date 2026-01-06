@@ -9,6 +9,7 @@ interface FeaturedPostProps {
   comments: number;
   readTime: string;
   slug?: string;
+  badge?: string;
 }
 
 export default function FeaturedPost({
@@ -20,6 +21,7 @@ export default function FeaturedPost({
   comments,
   readTime,
   slug = '#',
+  badge = 'DESTACADO',
 }: FeaturedPostProps) {
   const href = slug === '#' ? '#' : `/articulo/${slug}`;
 
@@ -27,7 +29,7 @@ export default function FeaturedPost({
     <article className="bg-bg-primary rounded-lg overflow-hidden border border-surface-2 hover:border-brand-gray/30 transition-colors">
       <div className="bg-brand-black-static text-brand-white-static px-5 py-4">
         <span className="badge bg-brand-yellow text-black border-none text-xs font-semibold mb-3">
-          DESTACADO
+          {badge}
         </span>
         <h2 className="text-xl sm:text-2xl font-bold leading-tight mb-2">
           <Link href={href} className="hover:text-brand-yellow transition-colors">

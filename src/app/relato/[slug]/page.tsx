@@ -79,7 +79,7 @@ export default async function RelatoPage({ params }: PageProps) {
     <>
       <ArticleSchema article={article} type="relato" />
       <RelatoHeader />
-      <main className="pt-20 pb-24">
+      <main className="pb-24">
       <article className="max-w-3xl mx-auto px-4 space-y-10">
         {/* Encabezado compacto para lectura */}
         <header className="space-y-3">

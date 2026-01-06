@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 
 export default function HoroscopoEscorpioPage() {
   return (
-    <main className="min-h-screen pt-14">
+    <main className="min-h-screen">
       <HoroscopoClient signo="escorpio" />
     </main>
   );

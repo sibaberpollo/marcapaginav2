@@ -22,6 +22,38 @@ export interface Article {
     readTime: string;
     likes?: number;
     comments?: number;
+    // Optional: article type for special layouts
+    type?: 'standard' | 'travel-guide';
+}
+
+// Location for travel guides
+export interface Location {
+    id: string;
+    name: string;
+    subtitle?: string;
+    description: string; // HTML content
+    coordinates: [number, number]; // [latitude, longitude]
+    address?: string;
+    icon?: string; // emoji or icon name
+    order: number;
+}
+
+// Travel guide extends Article with locations
+export interface TravelGuide extends Article {
+    type: 'travel-guide';
+    locations: Location[];
+    suggestedRoute?: string[]; // Array of location IDs in order
+    recommendedReadings?: {
+        title: string;
+        author: string;
+    }[];
+    mapCenter?: [number, number];
+    mapZoom?: number;
+}
+
+// Type guard to check if an article is a travel guide
+export function isTravelGuide(article: Article): article is TravelGuide {
+    return article.type === 'travel-guide';
 }
 
 export interface ArticleSummary {

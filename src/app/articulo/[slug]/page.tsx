@@ -80,7 +80,7 @@ export default async function ArticlePage({ params }: PageProps) {
   return (
     <>
       <ArticleSchema article={article} type="article" />
-      <main className="pt-14 min-h-screen pb-20 lg:pb-0">
+      <main className="min-h-screen pb-20 lg:pb-0">
       <article className="max-w-4xl mx-auto px-4 py-8">
         {/* Header del artículo */}
         <header className="mb-8">

@@ -57,7 +57,7 @@ export default async function TranstextosPage({
   return (
     <>
       <RelatoHeader />
-      <main className="pt-20 min-h-screen pb-20">
+      <main className="min-h-screen pb-20">
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
         <header className="bg-bg-primary border border-surface-2 rounded-lg p-6 shadow-sm">
           <span className="badge bg-brand-yellow text-brand-black-static border-none text-xs font-bold mb-3">

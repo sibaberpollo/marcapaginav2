@@ -31,22 +31,31 @@ export default function Header() {
     return null;
   }
 
+  // Banner height (90px) + header height (56px) = 146px total
+  const bannerHeight = 90;
+  const headerHeight = 56;
+
   return (
-    <div
-      className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${hidden ? '-translate-y-full' : 'translate-y-0'
-        }`}
-    >
-      {/* Top Ad Banner */}
-      <div className="bg-surface-2 border-b border-brand-gray/20">
-        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-center">
-          <div className="bg-surface rounded px-4 py-1 text-xs text-brand-gray uppercase tracking-wider">
-            Publicidad
+    <>
+      {/* Top Ad Banner - above header, scrolls away with header */}
+      <div
+        className={`fixed top-0 left-0 right-0 z-50 bg-surface-2 transition-transform duration-300 ${hidden ? '-translate-y-full' : 'translate-y-0'
+          }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-center h-[90px]">
+          <div className="bg-surface border border-dashed border-brand-gray/30 rounded-lg w-full max-w-[728px] h-[90px] flex items-center justify-center">
+            <span className="text-xs text-brand-gray uppercase tracking-wider">
+              Publicidad · 728x90
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Header */}
-      <header className="bg-brand-yellow text-brand-black-static">
+      {/* Header - positioned below the banner */}
+      <header
+        className={`fixed top-[90px] left-0 right-0 bg-brand-yellow text-brand-black-static z-50 transition-transform duration-300 ${hidden ? '-translate-y-[146px]' : 'translate-y-0'
+          }`}
+      >
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
@@ -121,6 +130,9 @@ export default function Header() {
         </div>
       </div>
       </header>
-    </div>
+
+      {/* Spacer to push content down - banner (90px) + header (56px) = 146px */}
+      <div className="h-[146px]" />
+    </>
   );
 }
