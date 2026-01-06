@@ -81,6 +81,18 @@ jobs:
       - name: Build app
         run: pnpm run build
 
+      - name: Start production server
+        run: |
+          cd apps/web && pnpm run start &
+          for i in {1..30}; do
+            if curl -s http://localhost:3000 > /dev/null 2>&1; then
+              echo "Server is ready"
+              break
+            fi
+            echo "Waiting for server... ($i/30)"
+            sleep 2
+          done
+
       - name: E2E Tests
         run: cd apps/web && pnpm run test:e2e
 
