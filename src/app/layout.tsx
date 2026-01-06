@@ -4,6 +4,7 @@ import './globals.css';
 import { Header, MobileNav, MobileAnchorAd } from '@/components';
 import OrganizationSchema from '@/components/seo/OrganizationSchema';
 import NavigationSchema from '@/components/seo/NavigationSchema';
+import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -95,6 +96,7 @@ export default function RootLayout({
         <NavigationSchema />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-bg-page text-text-primary`}>
+        <GoogleAnalytics />
         <Header />
         {children}
         <MobileAnchorAd />
