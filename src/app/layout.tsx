@@ -1,20 +1,9 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { Header, MobileNav, MobileAnchorAd } from '@/components';
 import OrganizationSchema from '@/components/seo/OrganizationSchema';
 import NavigationSchema from '@/components/seo/NavigationSchema';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
-
-const inter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: '--font-jetbrains-mono',
-  subsets: ['latin'],
-});
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.net';
 
@@ -96,7 +85,7 @@ export default function RootLayout({
         <OrganizationSchema />
         <NavigationSchema />
       </head>
-      <body className={`${inter.variable} ${jetbrainsMono.variable} antialiased bg-bg-page text-text-primary`}>
+      <body className="antialiased bg-bg-page text-text-primary">
         <GoogleAnalytics />
         <Header />
         {children}
