@@ -1,4 +1,4 @@
-# MP — NEXT.JS APP
+# WEB — NEXT.JS APP
 
 ## OVERVIEW
 

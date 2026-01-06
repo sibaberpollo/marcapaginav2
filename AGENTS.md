@@ -1,6 +1,6 @@
 # MARCAPAGINA — MONOREPO
 
-**Generated:** 2026-01-06 | **Commit:** 7696ade | **Branch:** add/monorepo
+**Generated:** 2026-01-06 | **Commit:** f93915c | **Branch:** add/monorepo
 
 ## OVERVIEW
 
@@ -10,9 +10,10 @@ Spanish literature magazine. Turborepo monorepo with Next.js 16 + React 19 + Tai
 
 ```
 marcapagina/
-├── pkgs/
-│   ├── web/              # Next.js app (the actual product)
-│   └── shared/          # Empty placeholder — no code yet
+├── apps/
+│   └── web/             # Next.js app (the actual product)
+├── packages/
+│   └── shared/          # Shared utilities — empty placeholder
 ├── turbo.json           # Build orchestration
 └── package.json         # Workspace root
 ```
@@ -21,21 +22,23 @@ marcapagina/
 
 | Task | Location | Notes |
 |------|----------|-------|
-| Add pages | `pkgs/web/src/app/` | App Router |
-| Add components | `pkgs/web/src/components/` | Barrel export via index.ts |
-| Modify theme | `pkgs/web/src/app/globals.css` | CSS variables for light/dark |
-| Build config | `pkgs/web/next.config.ts` | Currently minimal |
+| Add pages | `apps/web/src/app/` | App Router |
+| Add components | `apps/web/src/components/` | Barrel export via index.ts |
+| Modify theme | `apps/web/src/app/globals.css` | CSS variables for light/dark |
+| Build config | `apps/web/next.config.ts` | Currently minimal |
 | Monorepo tasks | `turbo.json` | build, dev, lint, test |
 
 ## COMMANDS
 
 ```bash
 # From root (recommended)
-npm run dev      # Start all packages
-npm run build    # Build all packages
-npm run lint     # Lint all packages
+npm run dev         # Start all packages
+npm run build       # Build all packages
+npm run lint        # Lint all packages
+npm run format      # Prettier format
+npm run check-types # TypeScript check
 
-# From pkgs/web/
+# From apps/web/
 npm run dev      # next dev
 npm run build    # next build
 npm run lint     # eslint
@@ -49,7 +52,7 @@ npm run lint     # eslint
 
 ## ANTI-PATTERNS
 
-- Do NOT add code to `pkgs/shared/` without defining exports first
+- Do NOT add code to `packages/shared/` without defining exports first
 - Do NOT run commands from subdirectories when Turbo orchestration needed
 - Package `web` is named `"app"` in package.json — don't assume name matches directory
 
@@ -62,6 +65,6 @@ npm run lint     # eslint
 ## PACKAGE DEPENDENCY
 
 ```
-app (pkgs/web)
- └── shared (pkgs/shared) — currently unused
+app (apps/web)
+ └── shared (packages/shared) — currently unused
 ```

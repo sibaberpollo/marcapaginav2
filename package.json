@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "workspaces": [
-    "pkgs/*"
+    "apps/*",
+    "packages/*"
   ],
   "scripts": {
     "build": "turbo run build",
