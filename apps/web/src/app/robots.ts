@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.net';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.page';
 
 export default function robots(): MetadataRoute.Robots {
   return {

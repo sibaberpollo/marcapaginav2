@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Script from 'next/script';
-import { Header, MobileNav, MobileAnchorAd } from '@/components';
+import { Header, MobileNav } from '@/components';
 import OrganizationSchema from '@/components/seo/OrganizationSchema';
 import NavigationSchema from '@/components/seo/NavigationSchema';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.net';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.page';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -96,7 +96,6 @@ export default function RootLayout({
         <GoogleAnalytics />
         <Header />
         {children}
-        <MobileAnchorAd />
         <MobileNav />
       </body>
     </html>

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { TravelGuide, Location } from '@/lib/types/article';
-import AdBanner from '@/components/ads/AdBanner';
 
 // Dynamic import for the map to avoid SSR issues with Leaflet
 const TravelMap = dynamic(() => import('./TravelMap'), {
@@ -48,7 +47,7 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
     const sortedLocations = [...article.locations].sort((a, b) => a.order - b.order);
 
     return (
-        <main className="pt-14 min-h-screen pb-20 lg:pb-0">
+        <main className="min-h-screen pb-20 lg:pb-0">
             {/* Hero Header */}
             <header className="bg-brand-black-static text-brand-white-static">
                 <div className="max-w-7xl mx-auto px-4 py-12">
@@ -136,7 +135,7 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
                             />
                         )}
 
-                        {/* Location Cards with ads */}
+                        {/* Location Cards */}
                         <div className="space-y-8">
                             {sortedLocations.map((location, index) => (
                                 <div key={location.id}>
@@ -204,12 +203,6 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
                                         </div>
                                     </article>
 
-                                    {/* Ad after 2nd and 4th location */}
-                                    {(index === 1 || index === 3) && (
-                                        <div className="mt-8">
-                                            <AdBanner size="leaderboard" />
-                                        </div>
-                                    )}
                                 </div>
                             ))}
                         </div>
@@ -303,10 +296,6 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
                             </div>
                         </div>
 
-                        {/* Final Ad */}
-                        <div className="mt-8">
-                            <AdBanner size="leaderboard" className="md:min-h-[250px]" />
-                        </div>
                     </div>
                 </div>
             </div>

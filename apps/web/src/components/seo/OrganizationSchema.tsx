@@ -1,4 +1,4 @@
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.net';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.page';
 
 const siteMetadata = {
   title: 'Marcapágina — Revista de Literatura',
