@@ -81,11 +81,6 @@ jobs:
       - name: Build app
         run: pnpm run build
 
-      - name: Start server
-        run: |
-          cd apps/web && pnpm run start &
-          sleep 10
-
       - name: E2E Tests
         run: cd apps/web && pnpm run test:e2e
 
