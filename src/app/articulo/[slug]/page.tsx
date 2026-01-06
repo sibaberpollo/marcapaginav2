@@ -2,12 +2,15 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import AdBanner from '@/components/ads/AdBanner';
 import TravelGuideLayout from '@/components/travel/TravelGuideLayout';
+import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug, getRelatedArticles } from '@/lib/articles';
 import { Article, isTravelGuide, TravelGuide } from '@/lib/types/article';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.net';
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps) {
@@ -16,20 +19,36 @@ export async function generateMetadata({ params }: PageProps) {
 
   if (!article) {
     return {
-      title: 'Artículo no encontrado - Marcapágina',
+      title: 'Artículo no encontrado',
     };
   }
 
+  const articleUrl = `${siteUrl}/articulo/${slug}`;
+
   return {
-    title: `${article.title} - Marcapágina`,
+    title: article.title,
     description: article.excerpt,
+    keywords: article.tags,
+    authors: [{ name: article.author.name }],
     openGraph: {
       title: article.title,
       description: article.excerpt,
       type: 'article',
+      url: articleUrl,
       publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt || article.publishedAt,
       authors: [article.author.name],
       tags: article.tags,
+      section: article.category,
+      locale: 'es_ES',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.excerpt,
+    },
+    alternates: {
+      canonical: articleUrl,
     },
   };
 }
@@ -59,7 +78,9 @@ export default async function ArticlePage({ params }: PageProps) {
   const relatedArticles = await getRelatedArticles(article, 4);
 
   return (
-    <main className="pt-14 min-h-screen pb-20 lg:pb-0">
+    <>
+      <ArticleSchema article={article} type="article" />
+      <main className="pt-14 min-h-screen pb-20 lg:pb-0">
       <article className="max-w-4xl mx-auto px-4 py-8">
         {/* Header del artículo */}
         <header className="mb-8">
@@ -296,5 +317,6 @@ export default async function ArticlePage({ params }: PageProps) {
         </section>
       </article>
     </main>
+    </>
   );
 }

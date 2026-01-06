@@ -1,13 +1,56 @@
-export { generateMetadata } from '@/app/articulo/[slug]/page';
-
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import TravelGuideLayout from '@/components/travel/TravelGuideLayout';
+import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug } from '@/lib/articles';
 import { isTravelGuide, TravelGuide } from '@/lib/types/article';
+import RelatoHeader from '@/components/layout/RelatoHeader';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.net';
+
+// Generate metadata for SEO - specific to /relato/ URL
+export async function generateMetadata({ params }: PageProps) {
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
+
+  if (!article) {
+    return {
+      title: 'Relato no encontrado',
+    };
+  }
+
+  const relatoUrl = `${siteUrl}/relato/${slug}`;
+
+  return {
+    title: article.title,
+    description: article.excerpt,
+    keywords: article.tags,
+    authors: [{ name: article.author.name }],
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      type: 'article',
+      url: relatoUrl,
+      publishedTime: article.publishedAt,
+      modifiedTime: article.updatedAt || article.publishedAt,
+      authors: [article.author.name],
+      tags: article.tags,
+      section: article.category,
+      locale: 'es_ES',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.excerpt,
+    },
+    alternates: {
+      canonical: relatoUrl,
+    },
+  };
 }
 
 function formatDate(isoDate: string): string {
@@ -33,7 +76,10 @@ export default async function RelatoPage({ params }: PageProps) {
   }
 
   return (
-    <main className="pt-16 pb-24">
+    <>
+      <ArticleSchema article={article} type="relato" />
+      <RelatoHeader />
+      <main className="pt-20 pb-24">
       <article className="max-w-3xl mx-auto px-4 space-y-10">
         {/* Encabezado compacto para lectura */}
         <header className="space-y-3">
@@ -100,5 +146,6 @@ export default async function RelatoPage({ params }: PageProps) {
         </div>
       </article>
     </main>
+    </>
   );
 }

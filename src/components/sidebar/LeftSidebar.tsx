@@ -35,7 +35,7 @@ const navItems = [
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        d="M12 6v12m-7-9h7M5 6h7a4 4 0 014 4v8a1 1 0 01-1 1H9a4 4 0 01-4-4V6z"
+        d="M6 5c7.18 0 13 5.82 13 13M6 11a7 7 0 017 7m-6 0a1 1 0 11-2 0 1 1 0 012 0z"
       />
     ),
   },
@@ -74,8 +74,8 @@ export default function LeftSidebar() {
           >
             <svg
               className="w-5 h-5"
-              fill={item.fill ? 'currentColor' : 'none'}
-              stroke={item.fill ? 'none' : 'currentColor'}
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
               {item.icon}
@@ -89,7 +89,7 @@ export default function LeftSidebar() {
           <AdBanner size="medium-rectangle" />
         </div>
 
-        {/* Popular Tags */}
+        {/* Popular Tags 
         <div className="pt-4 border-t border-surface-2 mt-4">
           <h3 className="px-3 text-xs font-semibold text-brand-gray uppercase tracking-wider mb-2">
             Tags populares
@@ -105,6 +105,7 @@ export default function LeftSidebar() {
             </Link>
           ))}
         </div>
+        */}
       </nav>
     </aside>
   );
