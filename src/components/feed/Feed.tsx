@@ -86,6 +86,7 @@ export default function Feed() {
         likes={124}
         comments={18}
         readTime="6 min"
+        slug="manual-de-usuario-para-comenzar-a-leer"
       />
 
       {/* Posts 

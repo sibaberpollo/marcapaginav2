@@ -10,6 +10,7 @@ interface PostCardProps {
   likes: number;
   comments: number;
   readTime: string;
+  slug?: string;
 }
 
 export default function PostCard({
@@ -22,6 +23,7 @@ export default function PostCard({
   likes,
   comments,
   readTime,
+  slug,
 }: PostCardProps) {
   return (
     <article className="bg-bg-primary rounded-lg p-5 border border-surface-2 hover:border-brand-gray/30 transition-colors">
@@ -33,7 +35,7 @@ export default function PostCard({
             <span className="text-xs text-text-secondary">{timeAgo}</span>
           </div>
           <h3 className="text-lg font-bold leading-snug mb-2">
-            <Link href="#" className="hover:text-brand-yellow transition-colors">
+            <Link href={slug ? `/articulo/${slug}` : '#'} className="hover:text-brand-yellow transition-colors">
               {title}
             </Link>
           </h3>
