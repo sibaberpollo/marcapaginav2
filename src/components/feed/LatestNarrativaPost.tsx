@@ -48,9 +48,9 @@ export default async function LatestNarrativaPost() {
       {/* Header with orange accent */}
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 px-5 py-4">
         <div className="flex items-center gap-3 mb-3">
-          {/* T icon in black circle */}
+          {/* T. icon in black circle */}
           <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-sm">T</span>
+            <span className="text-white font-bold text-sm" style={{ fontFamily: '"Times New Roman", Times, serif' }}>T.</span>
           </div>
           <span className="text-white/90 text-xs font-semibold uppercase tracking-wider">
             Narrativa

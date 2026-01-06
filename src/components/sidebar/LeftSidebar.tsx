@@ -67,7 +67,7 @@ export default function LeftSidebar() {
           >
             {item.customIcon ? (
               <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-[10px]">T</span>
+                <span className="text-white font-bold text-[10px]" style={{ fontFamily: '"Times New Roman", Times, serif' }}>T.</span>
               </div>
             ) : (
               <svg

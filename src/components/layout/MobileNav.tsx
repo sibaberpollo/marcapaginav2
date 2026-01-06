@@ -33,7 +33,7 @@ export default function MobileNav() {
         {/* Narrativa */}
         <Link href="/transtextos" className="flex flex-col items-center gap-1 p-2 text-brand-gray">
           <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-xs">T</span>
+            <span className="text-white font-bold text-xs" style={{ fontFamily: '"Times New Roman", Times, serif' }}>T.</span>
           </div>
           <span className="text-xs">Narrativa</span>
         </Link>
