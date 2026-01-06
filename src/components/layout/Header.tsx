@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import ThemeToggle from '../ui/ThemeToggle';
 
 export default function Header() {
+  const pathname = usePathname();
   const [hidden, setHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -23,6 +25,11 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
+
+  // Ocultar el header global en los relatos o páginas de Transtextos
+  if (pathname.startsWith('/relato') || pathname.startsWith('/transtextos')) {
+    return null;
+  }
 
   return (
     <header
@@ -43,7 +50,7 @@ export default function Header() {
             />
           </Link>
 
-          {/* Search */}
+          {/* Search
           <div className="flex-1 max-w-xl mx-4 hidden md:block">
             <div className="relative">
               <input
@@ -56,9 +63,11 @@ export default function Header() {
               </kbd>
             </div>
           </div>
+          */}
 
           {/* Actions */}
           <div className="flex items-center gap-2">
+            {/* Search button mobile
             <button className="md:hidden p-2 hover:bg-brand-black-static/10 rounded-lg transition-colors">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
@@ -69,6 +78,8 @@ export default function Header() {
                 />
               </svg>
             </button>
+            */}
+            {/* Notifications
             <Link
               href="#"
               className="hidden sm:flex items-center gap-1 px-3 py-1.5 text-sm font-medium hover:bg-brand-black-static/10 rounded-lg transition-colors"
@@ -82,14 +93,19 @@ export default function Header() {
                 />
               </svg>
             </Link>
+            */}
             <ThemeToggle />
+            {/* Write button
             <Link
               href="#"
               className="btn btn-sm bg-brand-black-static text-brand-yellow border-none hover:bg-brand-gray"
             >
               Escribir
             </Link>
+            */}
+            {/* User avatar
             <div className="w-8 h-8 bg-brand-black-static rounded-full cursor-pointer hover:ring-2 hover:ring-brand-black-static/50 transition-all"></div>
+            */}
           </div>
         </div>
       </div>
