@@ -83,7 +83,7 @@ jobs:
 
       - name: Start server
         run: |
-          pnpm run start &
+          cd apps/web && pnpm run start &
           sleep 10
 
       - name: E2E Tests

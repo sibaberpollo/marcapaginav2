@@ -13,14 +13,14 @@ describe("fetchSanity module structure", () => {
   });
 
   it("fetchSanity module can be imported", async () => {
-    const module = await import("../../src/lib/sanity");
-    expect(module.fetchSanity).toBeDefined();
-    expect(typeof module.fetchSanity).toBe("function");
+    const sanityModule = await import("../../src/lib/sanity");
+    expect(sanityModule.fetchSanity).toBeDefined();
+    expect(typeof sanityModule.fetchSanity).toBe("function");
   });
 
   it("module exports are correct", async () => {
-    const module = await import("../../src/lib/sanity");
-    expect(module.fetchSanity).toBeDefined();
+    const sanityModule = await import("../../src/lib/sanity");
+    expect(sanityModule.fetchSanity).toBeDefined();
   });
 });
 

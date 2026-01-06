@@ -359,6 +359,23 @@ async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
   }
 }
 
+/**
+ * Get all Transtextos article slugs from Sanity
+ */
+export async function getAllTranstextosSlugs(): Promise<string[]> {
+  try {
+    const query =
+      "*[_type != 'sanity.imageAsset' && defined(slug.current) && (categorySlug == 'transtextos' || _type == 'relato')]{ 'slug': slug.current }";
+    const result = await fetchSanity<Array<{ slug?: string }>>(query);
+    return result
+      .map((item) => item.slug)
+      .filter((slug): slug is string => typeof slug === "string");
+  } catch (error) {
+    console.error("Error getting Transtextos slugs:", error);
+    return [];
+  }
+}
+
 export function formatPlainTextToHtml(text: string): string {
   const normalized = text.replace(/\r\n/g, "\n").trim();
   if (normalized.length === 0) return "";
