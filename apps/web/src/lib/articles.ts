@@ -1,11 +1,6 @@
 import fs from "fs/promises";
 import path from "path";
-import {
-  Article,
-  ArticleSummary,
-  CATEGORIES,
-  Category,
-} from "./types/article";
+import { Article, ArticleSummary, CATEGORIES, Category } from "./types/article";
 import { fetchSanity } from "./sanity";
 
 // Re-export types and constants for convenience
@@ -19,7 +14,7 @@ export type {
 } from "./types/article";
 
 // Base path for content
-const CONTENT_DIR = path.join(process.cwd(), "content", "articles");
+const CONTENT_DIR = path.join(process.cwd(), "content");
 
 /**
  * Ensures the content directory structure exists

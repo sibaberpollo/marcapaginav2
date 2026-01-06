@@ -8,7 +8,7 @@ test.describe("Homepage", () => {
   test("Homepage loads with header, logo, and navigation", async ({ page }) => {
     await expect(page.locator("header")).toBeVisible();
     await expect(page.locator('img[alt="Marcapágina"]').first()).toBeVisible();
-    await expect(page.locator("nav")).toBeVisible();
+    await expect(page.locator("nav").first()).toBeVisible();
   });
 
   test("Theme toggle works - clicking switches to dark mode", async ({
@@ -17,7 +17,7 @@ test.describe("Homepage", () => {
     const themeToggle = page.locator(".theme-controller");
     await expect(themeToggle).toBeVisible();
 
-    await themeToggle.click();
+    await page.locator(".swap").click();
 
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   });
@@ -25,7 +25,7 @@ test.describe("Homepage", () => {
   test("Theme preference persists after page refresh", async ({ page }) => {
     const themeToggle = page.locator(".theme-controller");
 
-    await themeToggle.click();
+    await page.locator(".swap").click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 
     await page.reload();
@@ -83,7 +83,7 @@ test.describe("Homepage", () => {
     );
 
     await page.setViewportSize({ width: 375, height: 667 });
-    const mobileMain = page.locator("main").first();
-    await expect(mobileMain.locator(".grid")).not.toHaveClass(/lg:grid-cols-/);
+    await expect(page.locator("aside").first()).not.toBeVisible();
+    await expect(page.locator("aside").last()).not.toBeVisible();
   });
 });

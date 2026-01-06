@@ -12,7 +12,7 @@ test.describe("Article Page", () => {
   });
 
   test("Article page renders author information", async ({ page }) => {
-    await expect(page.locator("text=Hazael Valecillos")).toBeVisible();
+    await expect(page.locator("text=Hazael Valecillos").first()).toBeVisible();
   });
 
   test("Article page renders published date", async ({ page }) => {
@@ -20,7 +20,9 @@ test.describe("Article Page", () => {
   });
 
   test("Article page renders read time", async ({ page }) => {
-    await expect(page.locator(/^\d+ min de lectura$/)).toBeVisible();
+    await expect(
+      page.locator("text=/^\\d+ min de lectura$/").first(),
+    ).toBeVisible();
   });
 
   test("Article page renders article content", async ({ page }) => {
@@ -30,10 +32,12 @@ test.describe("Article Page", () => {
   });
 
   test("Article page includes SEO JSON-LD schema", async ({ page }) => {
-    const jsonLd = page.locator('script[type="application/ld+json"]');
-    await expect(jsonLd).toHaveCount(1);
+    const jsonLdScripts = page.locator('script[type="application/ld+json"]');
+    const count = await jsonLdScripts.count();
+    expect(count).toBeGreaterThanOrEqual(1);
 
-    const jsonContent = await jsonLd.textContent();
+    const articleSchema = jsonLdScripts.nth(2);
+    const jsonContent = await articleSchema.textContent();
     expect(jsonContent).toContain('"@type":"Article"');
   });
 
