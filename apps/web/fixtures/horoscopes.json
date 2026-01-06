@@ -1,0 +1,216 @@
+{
+  "zodiacSigns": [
+    {
+      "name": "Aries",
+      "date": "21 mar - 19 abr",
+      "slug": "aries",
+      "symbol": "♈",
+      "image": "/static/images/horoscope/aries.png"
+    },
+    {
+      "name": "Tauro",
+      "date": "20 abr - 20 may",
+      "slug": "tauro",
+      "symbol": "♉",
+      "image": "/static/images/horoscope/tauro.png"
+    },
+    {
+      "name": "Géminis",
+      "date": "21 may - 20 jun",
+      "slug": "geminis",
+      "symbol": "♊",
+      "image": "/static/images/horoscope/geminis.png"
+    },
+    {
+      "name": "Cáncer",
+      "date": "21 jun - 22 jul",
+      "slug": "cancer",
+      "symbol": "♋",
+      "image": "/static/images/horoscope/cancer.png"
+    },
+    {
+      "name": "Leo",
+      "date": "23 jul - 22 ago",
+      "slug": "leo",
+      "symbol": "♌",
+      "image": "/static/images/horoscope/leo.png"
+    },
+    {
+      "name": "Virgo",
+      "date": "23 ago - 22 sep",
+      "slug": "virgo",
+      "symbol": "♍",
+      "image": "/static/images/horoscope/virgo.png"
+    },
+    {
+      "name": "Libra",
+      "date": "23 sep - 22 oct",
+      "slug": "libra",
+      "symbol": "♎",
+      "image": "/static/images/horoscope/libra.png"
+    },
+    {
+      "name": "Escorpio",
+      "date": "23 oct - 21 nov",
+      "slug": "escorpio",
+      "symbol": "♏",
+      "image": "/static/images/horoscope/escorpio.png"
+    },
+    {
+      "name": "Sagitario",
+      "date": "22 nov - 21 dic",
+      "slug": "sagitario",
+      "symbol": "♐",
+      "image": "/static/images/horoscope/sagitario.png"
+    },
+    {
+      "name": "Capricornio",
+      "date": "22 dic - 19 ene",
+      "slug": "capricornio",
+      "symbol": "♑",
+      "image": "/static/images/horoscope/capricornio.png"
+    },
+    {
+      "name": "Acuario",
+      "date": "20 ene - 18 feb",
+      "slug": "acuario",
+      "symbol": "♒",
+      "image": "/static/images/horoscope/acuario.png"
+    },
+    {
+      "name": "Piscis",
+      "date": "19 feb - 20 mar",
+      "slug": "piscis",
+      "symbol": "♓",
+      "image": "/static/images/horoscope/piscis.png"
+    }
+  ],
+  "horoscopoData": {
+    "cancer": {
+      "author": "Horóscopo Marcapagina",
+      "authorImage": "/static/images/horoscope/logo.png",
+      "authorCredit": "Por el equipo de Marcapagina",
+      "authorSlug": "marcapagina",
+      "description": "Las efemérides literarias del signo de Cáncer.",
+      "efemerides": [
+        {
+          "date": "22 jun",
+          "title": "Solsticio de Verano",
+          "description": "El sol entra en Cancer, marcando el inicio del verano en el hemisferio norte. Día propicio para la introspección y los logros literarios.",
+          "color": "#f5f5f5",
+          "borderColor": "#4b4b4b",
+          "textColor": "#1a1a1a"
+        },
+        {
+          "date": "04 jul",
+          "title": "择日",
+          "description": "C: día perfecto para comenzar proyectos literarios de largo aliento. La Luna está en tu signo, favoreciendo la creatividad.",
+          "color": "#faff00",
+          "borderColor": "#000000",
+          "textColor": "#000000"
+        }
+      ]
+    },
+    "leo": {
+      "author": "Horóscopo Marcapagina",
+      "authorImage": "/static/images/horoscope/logo.png",
+      "authorCredit": "Por el equipo de Marcapagina",
+      "authorSlug": "marcapagina",
+      "description": "Las efemérides literarias del signo de Leo.",
+      "efemerides": [
+        {
+          "date": "23 jul",
+          "title": "Día de la Luna del Cazador",
+          "description": "El sol entra en Leo. La creatividad alcanza su punto máximo. Excelente día para presentaciones públicas de tu obra.",
+          "color": "#f5f5f5",
+          "borderColor": "#4b4b4b",
+          "textColor": "#1a1a1a"
+        },
+        {
+          "date": "30 jul",
+          "title": "Luna Azul",
+          "description": "Este fenómeno astral amplifica la inspiración. Lee a los clásicos del Romanticismo para aprovechar esta energía.",
+          "color": "#faff00",
+          "borderColor": "#000000",
+          "textColor": "#000000"
+        }
+      ]
+    },
+    "virgo": {
+      "author": "Horóscopo Marcapagina",
+      "authorImage": "/static/images/horoscope/logo.png",
+      "authorCredit": "Por el equipo de Marcapagina",
+      "authorSlug": "marcapagina",
+      "description": "Las efemérides literarias del signo de Virgo.",
+      "efemerides": [
+        {
+          "date": "23 ago",
+          "title": "Día de la Gran Concentración",
+          "description": "Mercurio rige tu signo. El momento ideal para terminar ese manuscrito que tienes abandonado.",
+          "color": "#f5f5f5",
+          "borderColor": "#4b4b4b",
+          "textColor": "#1a1a1a"
+        }
+      ]
+    },
+    "libra": {
+      "author": "Horóscopo Marcapagina",
+      "authorImage": "/static/images/horoscope/logo.png",
+      "authorCredit": "Por el equipo de Marcapagina",
+      "authorSlug": "marcapagina",
+      "description": "Las efemérides literarias del signo de Libra.",
+      "efemerides": [
+        {
+          "date": "23 sep",
+          "title": "Equinoccio de Otoño",
+          "description": "El sol entra en Libra. Equilibrio entre trabajo y descanso. Ideal para organizar tu biblioteca personal.",
+          "color": "#f5f5f5",
+          "borderColor": "#4b4b4b",
+          "textColor": "#1a1a1a"
+        }
+      ]
+    },
+    "escorpio": {
+      "author": "Horóscopo Marcapagina",
+      "authorImage": "/static/images/horoscope/logo.png",
+      "authorCredit": "Por el equipo de Marcapagina",
+      "authorSlug": "marcapagina",
+      "description": "Las efemérides literarias del signo de Escorpio.",
+      "efemerides": [
+        {
+          "date": "23 oct",
+          "title": "Día de Misterios",
+          "description": "Plutón potencia tu intuición. La literatura de misterio te vendrá como anillo al dedo.",
+          "color": "#f5f5f5",
+          "borderColor": "#4b4b4b",
+          "textColor": "#1a1a1a"
+        }
+      ]
+    },
+    "sagitario": {
+      "author": "Horóscopo Marcapagina",
+      "authorImage": "/static/images/horoscope/logo.png",
+      "authorCredit": "Por el equipo de Marcapagina",
+      "authorSlug": "marcapagina",
+      "description": "Las efemérides literarias del signo de Sagitario.",
+      "efemerides": [
+        {
+          "date": "22 nov",
+          "title": "Día de Aventuras Literarias",
+          "description": "Júpiter te impulsa hacia nuevas fronteras. La literatura de viajes te espera.",
+          "color": "#f5f5f5",
+          "borderColor": "#4b4b4b",
+          "textColor": "#1a1a1a"
+        }
+      ]
+    }
+  },
+  "literaryHoroscopes": {
+    "cancer": {
+      "text": "Como el cangrejo que camina de lado, tu sensibilidad te lleva a explorar los matices más sutiles de la experiencia humana. La literatura de memorias y autoficción será tu refugio esta semana. Considera releer 'El cuarto propio' de Virginia Woolf para reconectar con tu voz creativa interior. Tu gesto es de nostalgia, pero tu destino es la innovación."
+    },
+    "leo": {
+      "text": "Tu naturaleza dramática encuentra eco en las tragedias clásicas. Esta semana, Shakespeare te chiamará con 'Rey Lear'. No temas explorar los límites de tu ego, pues de esa exploración nacen las mayores obras. El sol que te gobierna favorece la escritura de prefacios y dedicatorias. Tu destino: brillar no solo como lector, sino como creador."
+    }
+  }
+}

@@ -51,6 +51,44 @@ jobs:
       - name: Test
         run: pnpm run test
 
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./apps/web/coverage.json
+          flags: unittests
+          fail_ci_if_error: false
+
+  test-e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Install Playwright browsers
+        run: cd apps/web && npx playwright install chromium
+
+      - name: Build app
+        run: pnpm run build
+
+      - name: Start server
+        run: |
+          pnpm run start &
+          sleep 10
+
+      - name: E2E Tests
+        run: cd apps/web && pnpm run test:e2e
+
   build:
     name: Build
     runs-on: ubuntu-latest

@@ -1,0 +1,141 @@
+{
+  "articles": [
+    {
+      "slug": "manual-de-usuario-para-comenzar-a-leer",
+      "title": "Manual de usuario para comenzar a leer",
+      "excerpt": "Una guía imprescindible para aquellos que desean sumergirse en el mundo de la literatura pero no saben por dónde empezar.",
+      "content": "<p>Una guía imprescindible para aquellos que desean sumergirse en el mundo de la literatura pero no saben por dónde empezar. La lectura es un viaje que comienza con un solo paso, y este artículo te ayudará a darlo.</p><h2>Por dónde empezar</h2><p>El primer consejo es simple: lee lo que te interesa. No existe una lista obligatoria de clásicos que debas leer antes de poder disfrutar de la literatura contemporánea.</p><h2>Establece una rutina</h2><p>Dedica al menos quince minutos diarios a la lectura. Con el tiempo, este hábito se convertirá en una parte natural de tu día.</p>",
+      "author": {
+        "name": "María García",
+        "handle": "maria-garcia",
+        "avatar": "/static/images/authors/maria-garcia.jpg",
+        "bio": "Crítica literaria y docente de literatura comparada."
+      },
+      "category": "El placer de leer",
+      "categorySlug": "el-placer-de-leer",
+      "tags": ["literatura", "lectura", "guía", "principiantes"],
+      "featured": true,
+      "publishedAt": "2025-01-15T10:00:00Z",
+      "updatedAt": "2025-01-16T09:00:00Z",
+      "readTime": "8 min",
+      "likes": 156,
+      "comments": 23
+    },
+    {
+      "slug": "la-paris-de-hemingway",
+      "title": "La París de Hemingway",
+      "excerpt": "Un recorrido literario por los lugares que inspiraron las obras maestras del escritor estadounidense en la Ciudad Luz.",
+      "content": "<p>Ernest Hemingway llegó a París en 1921, joven y con la ambición de convertirse en escritor. La Ciudad Luz le ofrecería no solo inspiración, sino también el escenario de algunas de las obras más importantes de la literatura del siglo XX.</p><h2>La Librería Shakespeare and Company</h2><p>Este icónico establecimiento, ubicado en el Quai de l'Horloge, fue el punto de encuentro de la generación perdida. Aquí Hemingway conoció a figuras como Ezra Pound y F. Scott Fitzgerald.</p><h2>El Café de la Rotonde</h2><p>En Montparnasse, Hemingway pasaba horas escribiendo mientras observaba la vida parisina. La Rotonde sigue siendo hoy un lugar de peregrinación para los amantes de la literatura.</p>",
+      "author": {
+        "name": "Carlos Ruiz",
+        "handle": "carlos-ruiz",
+        "avatar": "/static/images/authors/carlos-ruiz.jpg",
+        "bio": "Escritor y cronista cultural especializado en literatura del siglo XX."
+      },
+      "category": "A pie de página",
+      "categorySlug": "a-pie-de-pagina",
+      "tags": [
+        "viajes",
+        "literatura",
+        "parís",
+        "hemingway",
+        "generación perdida"
+      ],
+      "featured": true,
+      "publishedAt": "2025-01-10T14:30:00Z",
+      "readTime": "12 min",
+      "likes": 234,
+      "comments": 45
+    },
+    {
+      "slug": "ensayo-sobre-la-soledad",
+      "title": "Ensayo sobre la soledad en la literatura contemporánea",
+      "excerpt": "Análisis de cómo los autores contemporáneos abordan el tema de la soledad en sus obras.",
+      "content": "<p>La soledad es un tema recurrente en la literatura de todos los tiempos, pero adquiere matices particulares en la literatura contemporánea.</p><h2>La soledad urbana</h2><p>Los autores contemporáneos retratan la soledad como consecuencia de la vida moderna, de las grandes ciudades donde millones de personas conviven en aislamiento.</p><h2>Soledad y tecnología</h2><p>Las nuevas obras exploran cómo la tecnología, lejos de acercarnos, puede profundizar nuestra sensación de soledad.</p>",
+      "author": {
+        "name": "Ana Martínez",
+        "handle": "ana-martinez",
+        "avatar": "/static/images/authors/ana-martinez.jpg",
+        "bio": "Profesora de literatura y ensayista especializada en narrativa contemporánea."
+      },
+      "category": "Crítica",
+      "categorySlug": "critica",
+      "tags": ["ensayo", "literatura contemporánea", "soledad", "análisis"],
+      "featured": false,
+      "publishedAt": "2025-01-08T09:15:00Z",
+      "readTime": "15 min",
+      "likes": 89,
+      "comments": 12
+    },
+    {
+      "slug": "reseña-novela-invierno",
+      "title": "Reseña: 'El invierno del mundo'",
+      "excerpt": "Una mirada crítica a la última novela del autor español que ha conquistado a críticos y lectores.",
+      "content": "<p>'El invierno del mundo' es una novela que exige paciencia pero recompensa generosamente al lector que se sumerge en sus páginas.</p><h2>Narrativa profunda</h2><p>El autor construye personajes complejos cuyas vidas se entrelazan de maneras inesperadas, creando un mosaico de la sociedad contemporánea.</p><h2>Conclusión</h2><p>Una obra necesaria para entender nuestro tiempo, contada con la maestría de quien domina el oficio.</p>",
+      "author": {
+        "name": "Pedro Sánchez",
+        "handle": "pedro-sanchez",
+        "avatar": "/static/images/authors/pedro-sanchez.jpg",
+        "bio": "Crítico literario especializado en narrativa española contemporánea."
+      },
+      "category": "Reseñas",
+      "categorySlug": "resenas",
+      "tags": ["reseña", "novela", "literatura española", "crítica"],
+      "featured": false,
+      "publishedAt": "2025-01-05T16:45:00Z",
+      "readTime": "6 min",
+      "likes": 67,
+      "comments": 8
+    }
+  ],
+  "featuredArticle": {
+    "slug": "manual-de-usuario-para-comenzar-a-leer",
+    "title": "Manual de usuario para comenzar a leer",
+    "excerpt": "Una guía imprescindible para aquellos que desean sumergirse en el mundo de la literatura pero no saben por dónde empezar.",
+    "content": "<p>Una guía imprescindible para aquellos que desean sumergirse en el mundo de la literatura...</p>",
+    "author": {
+      "name": "María García",
+      "handle": "maria-garcia",
+      "avatar": "/static/images/authors/maria-garcia.jpg"
+    },
+    "category": "El placer de leer",
+    "categorySlug": "el-placer-de-leer",
+    "tags": ["literatura", "lectura", "guía"],
+    "featured": true,
+    "publishedAt": "2025-01-15T10:00:00Z",
+    "readTime": "8 min",
+    "likes": 156
+  },
+  "categories": [
+    {
+      "name": "El placer de leer",
+      "slug": "el-placer-de-leer",
+      "description": "Reflexiones y ensayos sobre la experiencia de la lectura"
+    },
+    {
+      "name": "A pie de página",
+      "slug": "a-pie-de-pagina",
+      "description": "Viajes, literatura y cultura"
+    },
+    {
+      "name": "Crítica",
+      "slug": "critica",
+      "description": "Análisis crítico de obras literarias"
+    },
+    {
+      "name": "Reseñas",
+      "slug": "resenas",
+      "description": "Reseñas de libros y publicaciones"
+    },
+    {
+      "name": "Entrevistas",
+      "slug": "entrevistas",
+      "description": "Conversaciones con autores y figuras del mundo literario"
+    },
+    {
+      "name": "Columnas",
+      "slug": "columnas",
+      "description": "Opinión y columnas de nuestros colaboradores"
+    }
+  ]
+}

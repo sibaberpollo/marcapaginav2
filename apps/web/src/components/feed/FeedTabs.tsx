@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
-const tabs = ['Para ti'];
+const tabs = ["NARRATIVA", "CRÍTICA", "AGENDA"];
 
 export default function FeedTabs() {
   const [activeTab, setActiveTab] = useState(0);
@@ -13,10 +13,11 @@ export default function FeedTabs() {
         <button
           key={tab}
           onClick={() => setActiveTab(index)}
+          aria-checked={activeTab === index}
           className={`flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-md transition-colors ${
             activeTab === index
-              ? 'bg-black text-white font-semibold'
-              : 'text-brand-gray hover:text-black hover:bg-surface'
+              ? "bg-black text-white font-semibold"
+              : "text-brand-gray hover:text-black hover:bg-surface"
           }`}
         >
           {tab}

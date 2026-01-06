@@ -46,3 +46,10 @@ next-env.d.ts
 
 # Turbo
 .turbo
+
+# Opencode
+.opencode
+
+# Coverage
+**/coverage/
+coverage/
