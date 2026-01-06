@@ -9,6 +9,7 @@ export default function RelatoHeader() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [showSearch, setShowSearch] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const adRef = useRef<HTMLModElement | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +32,18 @@ export default function RelatoHeader() {
     }
   }, [showSearch]);
 
+  useEffect(() => {
+    if (!adRef.current) return;
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).adsbygoogle.push({});
+    } catch (err) {
+      console.error('Adsense relato header ad error', err);
+    }
+  }, []);
+
   return (
     <>
       {/* Top Ad Banner - above header, scrolls away with header */}
@@ -39,19 +52,23 @@ export default function RelatoHeader() {
           hidden ? '-translate-y-full' : 'translate-y-0'
         }`}
       >
-        <div className="max-w-5xl mx-auto px-4 py-2 flex items-center justify-center h-[90px]">
-          <div className="bg-surface border border-dashed border-brand-gray/30 rounded-lg w-full max-w-[728px] h-[90px] flex items-center justify-center">
-            <span className="text-xs text-brand-gray uppercase tracking-wider">
-              Publicidad · 728x90
-            </span>
-          </div>
+        <div className="max-w-5xl mx-auto px-4 py-1 flex items-center justify-center h-[40px] md:h-[70px]">
+          <ins
+            ref={adRef}
+            className="adsbygoogle block w-full max-w-[728px] bg-surface rounded-lg border border-surface-2"
+            style={{ display: 'block' }}
+            data-ad-client="ca-pub-1422077668654301"
+            data-ad-slot="2557954886"
+            data-ad-format="horizontal"
+            data-full-width-responsive="true"
+          />
         </div>
       </div>
 
       {/* Header - positioned below the banner */}
       <header
-        className={`fixed top-[90px] left-0 right-0 z-50 bg-bg-primary border-b border-surface-2 transition-transform duration-300 ${
-          hidden ? '-translate-y-[146px]' : 'translate-y-0'
+        className={`fixed top-[40px] md:top-[70px] left-0 right-0 z-50 bg-bg-primary border-b border-surface-2 transition-transform duration-300 ${
+          hidden ? '-translate-y-[96px] md:-translate-y-[126px]' : 'translate-y-0'
         }`}
       >
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between gap-3">
@@ -127,8 +144,8 @@ export default function RelatoHeader() {
         </div>
       </header>
 
-      {/* Spacer to push content down - banner (90px) + header (56px) = 146px */}
-      <div className="h-[146px]" />
+      {/* Spacer to push content down - banner (40/70px) + header (56px) */}
+      <div className="h-[96px] md:h-[126px]" />
     </>
   );
 }
