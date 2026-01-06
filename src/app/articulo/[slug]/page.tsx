@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import TravelGuideLayout from '@/components/travel/TravelGuideLayout';
 import ArticleSchema from '@/components/seo/ArticleSchema';
-import { getArticleBySlug, getRelatedArticles } from '@/lib/articles';
+import { getArticleBySlug, getRelatedArticles, getAllArticles } from '@/lib/articles';
 import { Article, isTravelGuide, TravelGuide } from '@/lib/types/article';
 
 interface PageProps {
@@ -10,6 +10,17 @@ interface PageProps {
 }
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.net';
+
+// Generate static paths at build time
+export async function generateStaticParams() {
+  const articles = await getAllArticles();
+  return articles.map((article) => ({
+    slug: article.slug,
+  }));
+}
+
+// Allow dynamic params for Sanity articles not in local files
+export const dynamicParams = true;
 
 // Generate metadata for SEO
 export async function generateMetadata({ params }: PageProps) {

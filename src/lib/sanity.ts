@@ -30,8 +30,7 @@ export async function fetchSanity<T>(query: string, params: Record<string, unkno
   });
 
   const res = await fetch(url.toString(), {
-    cache: 'no-store',
-    next: { revalidate: 0 },
+    next: { revalidate: 60 }, // Revalidate every 60 seconds
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       Accept: 'application/json',
