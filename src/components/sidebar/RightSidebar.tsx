@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import AdBanner from '../ads/AdBanner';
 
 const apps = [
   { name: 'Literal', description: 'Red social sin algoritmos' },
@@ -44,10 +43,6 @@ export default function RightSidebar() {
           </Link>
         </div>
         */}
-
-        {/* Ad Skyscraper */}
-        <AdBanner size="skyscraper" />
-
         {/* Latest News 
         <div className="bg-bg-primary rounded-lg p-4 border border-surface-2">
           <h3 className="font-bold text-sm mb-3 flex items-center gap-2">

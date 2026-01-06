@@ -10,7 +10,6 @@ export default function Header() {
   const pathname = usePathname();
   const [hidden, setHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const adRef = useRef<HTMLModElement | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,19 +26,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  useEffect(() => {
-    if (!adRef.current) return;
-    try {
-      // Trigger AdSense fill for the header slot
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).adsbygoogle = (window as any).adsbygoogle || [];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).adsbygoogle.push({});
-    } catch (err) {
-      console.error('Adsense header ad error', err);
-    }
-  }, []);
-
   // Ocultar el header global en los relatos o páginas de Transtextos
   if (pathname.startsWith('/relato') || pathname.startsWith('/transtextos')) {
     return null;
@@ -47,27 +33,9 @@ export default function Header() {
 
   return (
     <>
-      {/* Top Ad Banner - above header, scrolls away with header */}
-      <div
-        className={`fixed top-0 left-0 right-0 z-50 bg-surface-2 transition-transform duration-300 ${hidden ? '-translate-y-full' : 'translate-y-0'
-          }`}
-      >
-        <div className="max-w-7xl mx-auto px-4 py-1 flex items-center justify-center h-[40px] md:h-[70px]">
-          <ins
-            ref={adRef}
-            className="adsbygoogle block w-full max-w-[728px] bg-surface rounded-lg border border-surface-2"
-            style={{ display: 'block' }}
-            data-ad-client="ca-pub-1422077668654301"
-            data-ad-slot="2557954886"
-            data-ad-format="horizontal"
-            data-full-width-responsive="true"
-          />
-        </div>
-      </div>
-
       {/* Header - positioned below the banner */}
       <header
-        className={`fixed top-[40px] md:top-[70px] left-0 right-0 bg-brand-yellow text-brand-black-static z-50 transition-transform duration-300 ${hidden ? '-translate-y-[96px] md:-translate-y-[126px]' : 'translate-y-0'
+        className={`fixed top-0 left-0 right-0 bg-brand-yellow text-brand-black-static z-50 transition-transform duration-300 ${hidden ? '-translate-y-[56px]' : 'translate-y-0'
           }`}
       >
       <div className="max-w-7xl mx-auto px-4">
@@ -145,8 +113,8 @@ export default function Header() {
       </div>
       </header>
 
-      {/* Spacer to push content down - banner (40/70px) + header (56px) */}
-      <div className="h-[96px] md:h-[126px]" />
+      {/* Spacer to push content down - header height (56px) */}
+      <div className="h-14" />
     </>
   );
 }

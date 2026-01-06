@@ -4,8 +4,6 @@ import FeaturedMapPost from './FeaturedMapPost';
 import LatestNarrativaPost from './LatestNarrativaPost';
 import PostCard from './PostCard';
 import NewsCard from './NewsCard';
-import AdBanner from '../ads/AdBanner';
-import InFeedAd from '../ads/InFeedAd';
 
 /*
 const posts = [
@@ -64,9 +62,6 @@ export default function Feed() {
     <div className="space-y-4">
       <FeedTabs />
 
-      {/* Ad: Top Leaderboard */}
-      <AdBanner size="leaderboard" />
-
       {/* Featured Travel Guide */}
       <FeaturedMapPost
         title="La París de Hemingway"
@@ -97,8 +92,6 @@ export default function Feed() {
       <PostCard {...posts[0]} />
       <PostCard {...posts[1]} />
     */}
-      {/* In-Feed Ad */}
-      <InFeedAd />
 
       {/* Latest Narrativa/Transtextos Post */}
       <LatestNarrativaPost />
@@ -114,14 +107,6 @@ export default function Feed() {
       <PostCard {...posts[2]} />
       <PostCard {...posts[3]} />
       */}
-      {/* Load More Button 
-      <button className="btn btn-ghost w-full bg-white border border-surface-2 hover:border-brand-gray/30 text-brand-gray hover:text-black">
-        Cargar más publicaciones
-      </button>
-      */}
-
-      {/* Ad: Bottom Leaderboard */}
-      <AdBanner size="leaderboard" className="md:min-h-[250px]" />
     </div>
   );
 }

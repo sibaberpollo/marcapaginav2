@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import AdBanner from '../ads/AdBanner';
 
 const navItems = [
   {
@@ -82,11 +81,6 @@ export default function LeftSidebar() {
             {item.label}
           </Link>
         ))}
-
-        {/* Ad Banner */}
-        <div className="mt-4 pt-4 border-t border-surface-2">
-          <AdBanner size="medium-rectangle" />
-        </div>
 
         {/* Popular Tags 
         <div className="pt-4 border-t border-surface-2 mt-4">

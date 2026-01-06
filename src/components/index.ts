@@ -14,9 +14,6 @@ export { default as PostCard } from './feed/PostCard';
 export { default as NewsCard } from './feed/NewsCard';
 
 // Ads
-export { default as AdBanner } from './ads/AdBanner';
-export { default as InFeedAd } from './ads/InFeedAd';
-export { default as MobileAnchorAd } from './ads/MobileAnchorAd';
 
 // UI
 export { default as ThemeToggle } from './ui/ThemeToggle';

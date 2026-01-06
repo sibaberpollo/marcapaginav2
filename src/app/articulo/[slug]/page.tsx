@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import AdBanner from '@/components/ads/AdBanner';
 import TravelGuideLayout from '@/components/travel/TravelGuideLayout';
 import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug, getRelatedArticles } from '@/lib/articles';
@@ -118,11 +117,6 @@ export default async function ArticlePage({ params }: PageProps) {
           className="article-content prose prose-lg max-w-none"
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
-
-        {/* Ad en medio del artículo */}
-        <div className="my-10">
-          <AdBanner size="leaderboard" />
-        </div>
 
         {/* Notas al pie (solo para el artículo original con notas) */}
         {article.slug === 'manual-de-usuario-para-comenzar-a-leer' && (
@@ -249,11 +243,6 @@ export default async function ArticlePage({ params }: PageProps) {
               </button>
             </div>
           </div>
-        </div>
-
-        {/* Ad final */}
-        <div className="mt-8">
-          <AdBanner size="leaderboard" className="md:min-h-[250px]" />
         </div>
 
         {/* Artículos relacionados */}

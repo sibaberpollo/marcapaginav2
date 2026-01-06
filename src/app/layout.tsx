@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Script from 'next/script';
-import { Header, MobileNav, MobileAnchorAd } from '@/components';
+import { Header, MobileNav } from '@/components';
 import OrganizationSchema from '@/components/seo/OrganizationSchema';
 import NavigationSchema from '@/components/seo/NavigationSchema';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
@@ -96,7 +96,6 @@ export default function RootLayout({
         <GoogleAnalytics />
         <Header />
         {children}
-        <MobileAnchorAd />
         <MobileNav />
       </body>
     </html>
