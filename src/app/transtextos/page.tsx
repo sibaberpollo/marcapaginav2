@@ -79,44 +79,57 @@ export default async function TranstextosPage({
               Aún no hay relatos publicados.
             </div>
           ) : (
-            items.map((item) => {
+            items.map((item, index) => {
               const { day, month } = formatDateParts(item.publishedAt);
+              const showAd = index === 4; // Show ad after 5th item (index 4)
               return (
-                <article
-                  key={item.id}
-                  className="bg-bg-primary rounded-lg border border-surface-2 hover:border-brand-gray/30 transition-colors p-4"
-                >
-                  <div className="grid grid-cols-[80px_1fr] gap-4 items-center">
-                    <div className="text-center">
-                      <div className="text-3xl font-extrabold text-brand-black-static leading-none">{day}</div>
-                      <div className="uppercase tracking-[0.2em] text-xs text-brand-gray">{month}</div>
-                    </div>
-                    <div>
-                      <h2 className="text-xl font-bold leading-snug">
-                        {item.slug ? (
-                          <Link
-                            href={`/relato/${item.slug}`}
-                            className="hover:text-brand-yellow transition-colors"
-                          >
-                            {item.title}
-                          </Link>
-                        ) : (
-                          item.title
+                <div key={item.id}>
+                  <article
+                    className="bg-bg-primary rounded-lg border border-surface-2 hover:border-brand-gray/30 transition-colors p-4"
+                  >
+                    <div className="grid grid-cols-[80px_1fr] gap-4 items-center">
+                      <div className="text-center">
+                        <div className="text-3xl font-extrabold text-brand-black-static leading-none">{day}</div>
+                        <div className="uppercase tracking-[0.2em] text-xs text-brand-gray">{month}</div>
+                      </div>
+                      <div>
+                        <h2 className="text-xl font-bold leading-snug">
+                          {item.slug ? (
+                            <Link
+                              href={`/relato/${item.slug}`}
+                              className="hover:text-brand-yellow transition-colors"
+                            >
+                              {item.title}
+                            </Link>
+                          ) : (
+                            item.title
+                          )}
+                        </h2>
+                        {item.author && (
+                          <p className="text-sm text-text-secondary mt-1">
+                            Por: <span className="font-medium">{item.author}</span>
+                          </p>
                         )}
-                      </h2>
-                      {item.author && (
-                        <p className="text-sm text-text-secondary mt-1">
-                          Por: <span className="font-medium">{item.author}</span>
-                        </p>
-                      )}
-                      {item.summary && (
-                        <p className="text-sm text-text-secondary mt-2 line-clamp-2 md:line-clamp-3">
-                          {item.summary}
-                        </p>
-                      )}
+                        {item.summary && (
+                          <p className="text-sm text-text-secondary mt-2 line-clamp-2 md:line-clamp-3">
+                            {item.summary}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </article>
+                  </article>
+
+                  {/* In-feed Ad - appears after 5th item */}
+                  {showAd && (
+                    <div className="bg-surface-2 rounded-lg p-4 flex items-center justify-center border border-dashed border-brand-gray/30 mt-4">
+                      <div className="bg-surface rounded-lg w-full max-w-[336px] h-[280px] flex items-center justify-center">
+                        <span className="text-xs text-brand-gray uppercase tracking-wider">
+                          Publicidad · 336x280
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
               );
             })
           )}

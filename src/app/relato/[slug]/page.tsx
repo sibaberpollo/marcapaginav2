@@ -108,6 +108,15 @@ export default async function RelatoPage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
 
+        {/* In-content Ad */}
+        <div className="my-8 py-6 border-y border-surface-2">
+          <div className="bg-surface border border-dashed border-brand-gray/30 rounded-lg w-full max-w-[336px] mx-auto h-[280px] flex items-center justify-center">
+            <span className="text-xs text-brand-gray uppercase tracking-wider">
+              Publicidad · 336x280
+            </span>
+          </div>
+        </div>
+
         {/* Tags y navegación mínima */}
         {(article.tags.length > 0 || article.category) && (
           <div className="flex items-center flex-wrap gap-2 pt-6 border-t border-surface-2">
