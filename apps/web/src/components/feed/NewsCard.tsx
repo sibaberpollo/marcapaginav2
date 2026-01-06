@@ -8,7 +8,7 @@ interface NewsCardProps {
 
 export default function NewsCard({ category, title, date }: NewsCardProps) {
   return (
-    <article className="bg-white rounded-lg p-5 border-l-4 border-l-brand-yellow border border-surface-2">
+    <article className="bg-bg-primary rounded-lg p-5 border-l-4 border-l-brand-yellow border border-surface-2">
       <div className="flex items-start gap-3">
         <div className="p-2 bg-brand-yellow/20 rounded-lg">
           <svg className="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">

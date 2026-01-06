@@ -18,7 +18,7 @@ export default function RightSidebar() {
   return (
     <aside className="hidden lg:block space-y-4">
       <div className="sticky top-20 space-y-4">
-        {/* Apps Directory */}
+        {/* Apps Directory 
         <div className="bg-bg-primary rounded-lg p-4 border border-surface-2">
           <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
             <svg className="w-4 h-4 text-text-primary" fill="currentColor" viewBox="0 0 24 24">
@@ -43,11 +43,12 @@ export default function RightSidebar() {
             Ver directorio completo →
           </Link>
         </div>
+        */}
 
         {/* Ad Skyscraper */}
         <AdBanner size="skyscraper" />
 
-        {/* Latest News */}
+        {/* Latest News 
         <div className="bg-bg-primary rounded-lg p-4 border border-surface-2">
           <h3 className="font-bold text-sm mb-3 flex items-center gap-2">
             <svg className="w-4 h-4 text-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -77,6 +78,7 @@ export default function RightSidebar() {
             Ver todas las noticias →
           </Link>
         </div>
+        */}
 
         {/* Footer links */}
         <div className="text-xs text-text-secondary space-y-2 px-2">
