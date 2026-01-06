@@ -13,14 +13,6 @@ const sizeClasses: Record<AdSize, string> = {
   'mobile-anchor': 'min-h-[50px]',
 };
 
-const adComments: Record<AdSize, string> = {
-  leaderboard: 'Responsive Leaderboard',
-  'medium-rectangle': '300x250 Medium Rectangle',
-  skyscraper: '160x600 Wide Skyscraper',
-  'in-feed': 'In-Feed Native',
-  'mobile-anchor': 'Mobile Anchor',
-};
-
 export default function AdBanner({ size, className = '' }: AdBannerProps) {
   return (
     <div
@@ -30,7 +22,6 @@ export default function AdBanner({ size, className = '' }: AdBannerProps) {
         <span className="text-xs text-brand-gray uppercase tracking-wider font-medium">
           Publicidad
         </span>
-        {/* AdSense: {adComments[size]} */}
         {/*
           <ins
             className="adsbygoogle"
