@@ -32,10 +32,21 @@ export default function Header() {
   }
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 bg-brand-yellow text-brand-black-static z-50 transition-transform duration-300 ${hidden ? '-translate-y-full' : 'translate-y-0'
+    <div
+      className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${hidden ? '-translate-y-full' : 'translate-y-0'
         }`}
     >
+      {/* Top Ad Banner */}
+      <div className="bg-surface-2 border-b border-brand-gray/20">
+        <div className="max-w-7xl mx-auto px-4 py-2 flex items-center justify-center">
+          <div className="bg-surface rounded px-4 py-1 text-xs text-brand-gray uppercase tracking-wider">
+            Publicidad
+          </div>
+        </div>
+      </div>
+
+      {/* Header */}
+      <header className="bg-brand-yellow text-brand-black-static">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-14">
           {/* Logo */}
@@ -109,6 +120,7 @@ export default function Header() {
           </div>
         </div>
       </div>
-    </header>
+      </header>
+    </div>
   );
 }

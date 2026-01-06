@@ -56,7 +56,7 @@ export default async function LatestNarrativaPost() {
             Narrativa
           </span>
         </div>
-        <h2 className="text-xl sm:text-2xl font-bold leading-tight text-white mb-2">
+        <h2 className="text-xl sm:text-2xl font-bold leading-tight text-white mb-3">
           <Link
             href={`/relato/${post.slug}`}
             className="hover:text-orange-100 transition-colors"
@@ -64,6 +64,12 @@ export default async function LatestNarrativaPost() {
             {post.title}
           </Link>
         </h2>
+
+        {/* Square Ad */}
+        <div className="bg-black/20 rounded-lg p-3 mb-3 flex items-center justify-center min-h-[120px]">
+          <span className="text-white/60 text-xs uppercase tracking-wider">Publicidad</span>
+        </div>
+
         {post.summary && (
           <p className="text-white/80 text-sm line-clamp-2">{post.summary}</p>
         )}
