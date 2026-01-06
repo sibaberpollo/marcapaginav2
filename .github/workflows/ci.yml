@@ -109,7 +109,7 @@ jobs:
 
           # Run E2E tests against the running server
           echo "Running E2E tests..."
-          pnpm run test:e2e
+          cd apps/web && pnpm run test:e2e
           TEST_EXIT=$?
 
           # Cleanup: kill the server
