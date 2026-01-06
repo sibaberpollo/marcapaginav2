@@ -124,6 +124,8 @@ describe("GET /api/articles", () => {
   });
 
   it("returns 500 and error on exception", async () => {
+    // Suppress expected console.error output
+    const consoleErrorSpy = vi.spyOn(console, "error").mockReturnValue();
     mockedGetAllArticles.mockRejectedValue(new Error("Test error"));
 
     const request = createMockRequest("/api/articles");
@@ -133,6 +135,8 @@ describe("GET /api/articles", () => {
     expect(response.status).toBe(500);
     expect(body.success).toBe(false);
     expect(body.error).toBe("Failed to fetch articles");
+
+    consoleErrorSpy.mockRestore();
   });
 
   it("combines category filter with limit parameter", async () => {
