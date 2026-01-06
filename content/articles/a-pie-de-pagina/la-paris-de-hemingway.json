@@ -1,0 +1,119 @@
+{
+    "slug": "la-paris-de-hemingway",
+    "title": "La París de Hemingway",
+    "excerpt": "Una guía literaria para caminar, beber y leer. París fue para Ernest Hemingway algo más que una ciudad: fue su escuela, su refugio y su escenario.",
+    "type": "travel-guide",
+    "content": "<p class=\"text-lg leading-relaxed mb-6\">París fue para Ernest Hemingway algo más que una ciudad: fue su escuela, su refugio y su escenario. Caminar hoy su París es recorrer una serie de puntos muy concretos, casi todos a distancia humana, donde la literatura se escribía entre cafés, hoteles y librerías.</p>",
+    "author": {
+        "name": "Redacción Marcapágina",
+        "handle": "@marcapagina",
+        "avatar": "bg-blue-200",
+        "bio": "El equipo editorial de Marcapágina, dedicado a explorar los rincones literarios del mundo."
+    },
+    "category": "A pie de página",
+    "categorySlug": "a-pie-de-pagina",
+    "tags": [
+        "viajes",
+        "hemingway",
+        "parís",
+        "literatura",
+        "guía"
+    ],
+    "featured": true,
+    "publishedAt": "2026-01-05T12:00:00.000Z",
+    "readTime": "8 min",
+    "likes": 0,
+    "comments": 0,
+    "mapCenter": [
+        48.8500,
+        2.3400
+    ],
+    "mapZoom": 13,
+    "locations": [
+        {
+            "id": "ritz",
+            "name": "Hôtel Ritz Paris",
+            "subtitle": "El lujo, la guerra y el mito",
+            "description": "<p>Aquí Hemingway celebró —con o sin exageraciones— la liberación de París en agosto de 1944. El hotel había sido ocupado por oficiales alemanes y abandonado días antes. El escritor llegó armado, pero la batalla ya había terminado; la fiesta, no.</p><p class=\"mt-4\">Hoy, el <strong>Bar Hemingway</strong> sigue siendo una parada obligatoria. No hace falta alojarse: basta con entrar, pedir un cóctel y observar cómo el mito sigue funcionando en tiempo presente.</p>",
+            "coordinates": [
+                48.8686,
+                2.3285
+            ],
+            "address": "Place Vendôme",
+            "icon": "🏨",
+            "order": 1
+        },
+        {
+            "id": "dome",
+            "name": "Le Dôme Café",
+            "subtitle": "El cuartel general de Montparnasse",
+            "description": "<p>En los años veinte, Montparnasse reemplazó a Montmartre como epicentro bohemio. Le Dôme fue uno de sus centros neurálgicos: mesas llenas de escritores expatriados, discusiones eternas y libretas abiertas.</p><p class=\"mt-4\">Hemingway venía aquí a mirar y escuchar. Mucho antes de escribir bien, aprendió a observar.</p>",
+            "coordinates": [
+                48.8419,
+                2.3307
+            ],
+            "address": "Boulevard du Montparnasse",
+            "icon": "☕",
+            "order": 2
+        },
+        {
+            "id": "closerie",
+            "name": "La Closerie des Lilas",
+            "subtitle": "Donde se escribía de verdad",
+            "description": "<p>Si Le Dôme era conversación, La Closerie des Lilas era trabajo. Hemingway escribía aquí por las mañanas, con café, disciplina y una rutina casi monástica.</p><p class=\"mt-4\">El lugar conserva placas y referencias al escritor, pero sigue siendo un restaurante funcional, no un decorado. Eso lo vuelve aún más fiel al espíritu original.</p>",
+            "coordinates": [
+                48.8413,
+                2.3360
+            ],
+            "address": "Avenue de l'Observatoire",
+            "icon": "✍️",
+            "order": 3
+        },
+        {
+            "id": "shakespeare",
+            "name": "Shakespeare and Company",
+            "subtitle": "Leer para sobrevivir",
+            "description": "<p>No es un café ni un hotel, pero sin esta librería la París de Hemingway estaría incompleta. Aquí consiguió libros, conversaciones decisivas y una red de apoyo intelectual cuando el dinero escaseaba.</p><p class=\"mt-4\">La librería funcionó como refugio cultural para escritores pobres pero obstinados. Leer también era una forma de resistir.</p>",
+            "coordinates": [
+                48.8527,
+                2.3470
+            ],
+            "address": "Rue de la Bûcherie",
+            "icon": "📚",
+            "order": 4
+        },
+        {
+            "id": "montparnasse",
+            "name": "Montparnasse",
+            "subtitle": "El ecosistema Hemingway",
+            "description": "<p>Más que un punto exacto, Montparnasse fue un sistema vivo: cafés enfrentados, hoteles baratos, estudios improvisados y noches largas. Aquí se cruzaban escritores, pintores, modelos y boxeadores del lenguaje.</p><p class=\"mt-4\">Caminar el barrio hoy sigue siendo parte de la experiencia: no todo está señalizado, pero casi todo sigue ahí.</p>",
+            "coordinates": [
+                48.8415,
+                2.3308
+            ],
+            "address": "Área general de Montparnasse",
+            "icon": "🚶",
+            "order": 5
+        }
+    ],
+    "suggestedRoute": [
+        "shakespeare",
+        "dome",
+        "closerie",
+        "ritz"
+    ],
+    "recommendedReadings": [
+        {
+            "title": "París era una fiesta",
+            "author": "Ernest Hemingway"
+        },
+        {
+            "title": "Fiesta",
+            "author": "Ernest Hemingway"
+        },
+        {
+            "title": "Suave es la noche",
+            "author": "F. Scott Fitzgerald"
+        }
+    ]
+}
