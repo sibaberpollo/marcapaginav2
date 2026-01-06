@@ -81,43 +81,42 @@ jobs:
       - name: Build app
         run: pnpm run build
 
-      - name: Start production server
+      - name: Start production server and run E2E tests
         run: |
           # Kill any existing process on port 3000
           lsof -ti:3000 | xargs kill -9 2>/dev/null || true
           sleep 2
 
-          # Start server in background
-          cd apps/web && pnpm run start &
+          # Start server in background with nohup and redirect output
+          cd apps/web && nohup pnpm run start > /tmp/next-start.log 2>&1 &
           SERVER_PID=$!
-
-          # Cleanup function
-          cleanup() {
-            echo "Cleaning up server..."
-            kill $SERVER_PID 2>/dev/null || true
-            wait $SERVER_PID 2>/dev/null || true
-          }
-          trap cleanup EXIT
+          echo "Server started with PID: $SERVER_PID"
 
           # Wait for server with timeout
           for i in {1..30}; do
             if curl -s http://localhost:3000 > /dev/null 2>&1; then
-              echo "Server is ready"
+              echo "Server is ready on port 3000"
               break
             fi
             if [ $i -eq 30 ]; then
               echo "ERROR: Server failed to start within 60 seconds"
+              cat /tmp/next-start.log
               exit 1
             fi
             echo "Waiting for server... ($i/30)"
             sleep 2
           done
 
-          # Keep the script running (cleanup happens on EXIT)
-          wait
+          # Run E2E tests against the running server
+          echo "Running E2E tests..."
+          pnpm run test:e2e
+          TEST_EXIT=$?
 
-      - name: E2E Tests
-        run: cd apps/web && pnpm run test:e2e
+          # Cleanup: kill the server
+          kill $SERVER_PID 2>/dev/null || true
+
+          # Exit with test result
+          exit $TEST_EXIT
 
   build:
     name: Build
