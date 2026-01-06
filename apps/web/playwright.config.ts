@@ -33,13 +33,4 @@ export default defineConfig({
       use: { ...devices["iPhone 12"] },
     },
   ],
-  // In CI, we use the pre-built server; locally, we start dev server
-  webServer: process.env.CI
-    ? undefined
-    : {
-        command: "pnpm run dev",
-        url: "http://localhost:3000",
-        reuseExistingServer: !process.env.CI,
-        timeout: 120000,
-      },
 });

@@ -83,15 +83,38 @@ jobs:
 
       - name: Start production server
         run: |
+          # Kill any existing process on port 3000
+          lsof -ti:3000 | xargs kill -9 2>/dev/null || true
+          sleep 2
+
+          # Start server in background
           cd apps/web && pnpm run start &
+          SERVER_PID=$!
+
+          # Cleanup function
+          cleanup() {
+            echo "Cleaning up server..."
+            kill $SERVER_PID 2>/dev/null || true
+            wait $SERVER_PID 2>/dev/null || true
+          }
+          trap cleanup EXIT
+
+          # Wait for server with timeout
           for i in {1..30}; do
             if curl -s http://localhost:3000 > /dev/null 2>&1; then
               echo "Server is ready"
               break
             fi
+            if [ $i -eq 30 ]; then
+              echo "ERROR: Server failed to start within 60 seconds"
+              exit 1
+            fi
             echo "Waiting for server... ($i/30)"
             sleep 2
           done
+
+          # Keep the script running (cleanup happens on EXIT)
+          wait
 
       - name: E2E Tests
         run: cd apps/web && pnpm run test:e2e
