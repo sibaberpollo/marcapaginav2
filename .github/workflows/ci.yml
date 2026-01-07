@@ -36,6 +36,18 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Debug BEFORE install (right after checkout)
+        run: |
+          echo "=== IMMEDIATELY AFTER CHECKOUT ==="
+          echo "File on disk:"
+          cat apps/web/src/components/feed/FeedTabs.tsx
+          echo ""
+          echo "=== Git show HEAD ==="
+          git show HEAD:apps/web/src/components/feed/FeedTabs.tsx
+          echo ""
+          echo "=== DIFF ==="
+          diff <(cat apps/web/src/components/feed/FeedTabs.tsx) <(git show HEAD:apps/web/src/components/feed/FeedTabs.tsx) || true
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4.2.0
 
@@ -52,7 +64,7 @@ jobs:
           rm -rf apps/web/.turbo
           pnpm install --frozen-lockfile
 
-      - name: Debug paths
+      - name: Debug AFTER install
         run: |
           echo "=== GIT INFO ==="
           echo "Current branch: $(git branch --show-current)"
