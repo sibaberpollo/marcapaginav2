@@ -133,6 +133,18 @@ importers:
       daisyui:
         specifier: ^5.0.0
         version: 5.5.14
+      eslint-plugin-react:
+        specifier: ^7.0.0
+        version: 7.37.5(eslint@9.39.2(jiti@2.6.1))
+      eslint-plugin-react-hooks:
+        specifier: ^5.0.0
+        version: 5.2.0(eslint@9.39.2(jiti@2.6.1))
+      eslint-plugin-react-refresh:
+        specifier: ^0.4.0
+        version: 0.4.26(eslint@9.39.2(jiti@2.6.1))
+      globals:
+        specifier: ^15.0.0
+        version: 15.15.0
       jsdom:
         specifier: ^24.0.0
         version: 24.1.3
