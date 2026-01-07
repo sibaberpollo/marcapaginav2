@@ -43,8 +43,12 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Install dependencies
-        run: pnpm install
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules
+          rm -rf apps/web/node_modules
+          rm -rf apps/web/.next
+          pnpm install --frozen-lockfile
 
       - name: Test
         run: pnpm run test
