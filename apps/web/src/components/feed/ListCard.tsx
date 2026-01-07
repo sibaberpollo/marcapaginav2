@@ -1,10 +1,10 @@
 import Link from 'next/link';
+import Avatar from './Avatar';
 
 interface ListCardProps {
   title: string;
   excerpt: string;
   author: string;
-  authorColor: string;
   timeAgo: string;
   tags: string[];
   likes: number;
@@ -18,7 +18,6 @@ export default function ListCard({
   title,
   excerpt,
   author,
-  authorColor,
   timeAgo,
   tags,
   likes,
@@ -77,7 +76,7 @@ export default function ListCard({
       <div className="px-4 py-3 border-t border-surface-2 bg-surface/30">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className={`w-6 h-6 ${authorColor} rounded-full`}></div>
+            <Avatar name={author} size="xs" />
             <span className="text-sm font-medium">{author}</span>
           </div>
           <div className="flex items-center gap-4 text-text-secondary">

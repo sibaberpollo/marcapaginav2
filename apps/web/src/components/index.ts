@@ -20,6 +20,7 @@ export { default as MemeCard } from './feed/MemeCard';
 
 // UI
 export { default as ThemeToggle } from './ui/ThemeToggle';
+export { default as Avatar } from './ui/Avatar';
 //forzar deploy
 
 // Layout helpers

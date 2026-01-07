@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { fetchSanity } from '@/lib/sanity';
+import Avatar from './Avatar';
 
 type LatestTranstexto = {
   slug: string;
@@ -72,7 +73,7 @@ export default async function LatestNarrativaPost() {
       {/* Footer */}
       <div className="px-5 py-3 flex items-center justify-between bg-orange-50 dark:bg-orange-950/20">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-orange-200 rounded-full"></div>
+          {post.author && <Avatar name={post.author} size="sm" />}
           <div>
             {post.author && (
               <span className="text-sm font-medium text-text-primary">{post.author}</span>

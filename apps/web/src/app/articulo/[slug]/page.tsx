@@ -4,7 +4,7 @@ import TravelGuideLayout from '@/components/travel/TravelGuideLayout';
 import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug, getRelatedArticles, getAllArticles } from '@/lib/articles';
 import { isTravelGuide, TravelGuide } from '@/lib/types/article';
-import { ArticlePageLayout } from '@/components';
+import { ArticlePageLayout, Avatar } from '@/components';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -111,7 +111,7 @@ export default async function ArticlePage({ params }: PageProps) {
               {article.title}
             </h1>
             <div className="flex items-center gap-4 pb-6 border-b border-surface-2">
-              <div className={`w-12 h-12 ${article.author.avatar} rounded-full`}></div>
+              <Avatar name={article.author.name} size="lg" />
               <div className="flex-1">
                 <div className="font-semibold">{article.author.name}</div>
                 <div className="text-sm text-brand-gray">{article.author.handle}</div>
@@ -239,7 +239,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
           <div className="p-6 bg-bg-primary rounded-lg border border-surface-2">
             <div className="flex items-start gap-4">
-              <div className={`w-16 h-16 ${article.author.avatar} rounded-full flex-shrink-0`}></div>
+              <Avatar name={article.author.name} size="xl" />
               <div>
                 <h3 className="font-bold text-lg">{article.author.name}</h3>
                 <p className="text-sm text-brand-gray mb-3">{article.author.handle}</p>
@@ -262,7 +262,7 @@ export default async function ArticlePage({ params }: PageProps) {
                     className="p-4 bg-bg-primary rounded-lg border border-surface-2 hover:border-brand-gray/30 transition-colors group"
                   >
                     <div className="flex items-center gap-3 mb-2">
-                      <div className={`w-6 h-6 ${item.author.avatar} rounded-full`}></div>
+                      <Avatar name={item.author.name} size="xs" />
                       <span className="text-sm text-brand-gray">{item.author.name}</span>
                     </div>
                     <h3 className="font-semibold group-hover:text-brand-gray transition-colors">
@@ -274,22 +274,18 @@ export default async function ArticlePage({ params }: PageProps) {
                   {
                     title: 'Los pájaros que vimos aquel verano',
                     author: 'Lucía Mbomío',
-                    color: 'bg-purple-200',
                   },
                   {
                     title: 'Instrucciones para desaparecer',
                     author: 'Daniel Monedero',
-                    color: 'bg-green-200',
                   },
                   {
                     title: 'El último café del mundo',
                     author: 'Carmen Laforet Jr.',
-                    color: 'bg-orange-200',
                   },
                   {
                     title: 'Cartografía de lo invisible',
                     author: 'Andrés Neuman',
-                    color: 'bg-blue-200',
                   },
                 ].map((item, index) => (
                   <Link
@@ -298,7 +294,7 @@ export default async function ArticlePage({ params }: PageProps) {
                     className="p-4 bg-bg-primary rounded-lg border border-surface-2 hover:border-brand-gray/30 transition-colors group"
                   >
                     <div className="flex items-center gap-3 mb-2">
-                      <div className={`w-6 h-6 ${item.color} rounded-full`}></div>
+                      <Avatar name={item.author} size="xs" />
                       <span className="text-sm text-brand-gray">{item.author}</span>
                     </div>
                     <h3 className="font-semibold group-hover:text-brand-gray transition-colors">

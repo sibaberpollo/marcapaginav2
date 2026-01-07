@@ -28,7 +28,6 @@ export default function Feed() {
         title="10 propósitos literarios de Año Nuevo"
         excerpt="Leer por placer, abandonar libros sin culpa, no fingir que entendiste ese libro... Una lista de buenos propósitos lectores."
         author="Redacción Marcapágina"
-        authorColor="bg-amber-200"
         timeAgo="hace 1h"
         tags={['humor', 'listas', 'lectura']}
         likes={0}
@@ -43,7 +42,6 @@ export default function Feed() {
         title="Manual de usuario para comenzar a leer"
         excerpt="Pensando siempre en nuestro entusiasta público, ofrecemos a continuación una sencilla guía para entender el funcionamiento de estos aparatos y participar del ritual pagano de la lectura."
         author="Hazael Valecillos"
-        authorColor="bg-purple-200"
         timeAgo="hace 3h"
         tags={['ensayo', 'humor', 'lectura']}
         likes={124}
@@ -57,7 +55,6 @@ export default function Feed() {
         title="Cómo identificar a un lector tóxico"
         excerpt="Dice que 'esto ya lo hizo Borges', menciona a Bolaño en cualquier conversación y desprecia los best sellers sin haberlos leído."
         author="Redacción Marcapágina"
-        authorColor="bg-rose-200"
         timeAgo="hace 2h"
         tags={['humor', 'listas', 'sátira']}
         likes={0}
@@ -82,7 +79,6 @@ export default function Feed() {
         title="Si los géneros literarios fueran personas en una fiesta"
         excerpt="La novela policial pregunta dónde estabas anoche. La poesía llega tarde y huele a lluvia."
         author="Redacción Marcapágina"
-        authorColor="bg-violet-200"
         timeAgo="hace 4h"
         tags={['humor', 'géneros-literarios']}
         likes={0}
@@ -96,7 +92,6 @@ export default function Feed() {
         title="Trastornos literarios no reconocidos por la OMS"
         excerpt="Del síndrome del subrayador compulsivo a la dependencia emocional de las reseñas de Goodreads."
         author="Redacción Marcapágina"
-        authorColor="bg-teal-200"
         timeAgo="hace 5h"
         tags={['humor', 'listas', 'sátira']}
         likes={0}

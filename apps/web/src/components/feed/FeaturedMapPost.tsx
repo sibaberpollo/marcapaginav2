@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Avatar from './Avatar';
 
 interface FeaturedMapPostProps {
   title: string;
@@ -93,7 +94,7 @@ export default function FeaturedMapPost({
       </div>
       <div className="px-5 py-3 flex items-center justify-between border-t border-surface-2">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-brand-gray rounded-full"></div>
+          <Avatar name={author} size="sm" />
           <div>
             <span className="text-sm font-medium">{author}</span>
             <span className="text-xs text-text-secondary ml-2">{date}</span>

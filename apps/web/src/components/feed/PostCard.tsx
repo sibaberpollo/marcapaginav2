@@ -1,10 +1,10 @@
 import Link from "next/link";
+import Avatar from "./Avatar";
 
 interface PostCardProps {
   title: string;
   excerpt: string;
   author: string;
-  authorColor: string;
   timeAgo: string;
   tags: string[];
   likes: number;
@@ -17,7 +17,6 @@ export default function PostCard({
   title,
   excerpt,
   author,
-  authorColor,
   timeAgo,
   tags,
   likes,
@@ -30,10 +29,7 @@ export default function PostCard({
       <div className="flex gap-4">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <div
-              data-testid="author-color-circle"
-              className={`w-6 h-6 ${authorColor} rounded-full`}
-            ></div>
+            <Avatar name={author} size="xs" />
             <span className="text-sm font-medium">{author}</span>
             <span className="text-xs text-text-secondary">{timeAgo}</span>
           </div>
