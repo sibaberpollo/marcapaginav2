@@ -17,7 +17,7 @@ export default function MemeCard({ title, imageUrl, alt, slug }: MemeCardProps) 
             <span className="badge badge-xs bg-brand-yellow text-brand-black-static border-none uppercase tracking-wide">
               Meme
             </span>
-            <h3 className="text-lg font-bold leading-snug mt-2 hover:text-brand-yellow transition-colors">{title}</h3>
+            <h3 className="text-lg font-bold leading-snug mt-2 hover:text-brand-gray transition-colors">{title}</h3>
           </div>
           <span className="text-xs text-text-secondary">Nueva entrada visual</span>
         </div>

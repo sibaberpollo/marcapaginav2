@@ -233,7 +233,7 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
                                                 </div>
                                                 <button
                                                     onClick={() => handleCardClick(id)}
-                                                    className="text-left hover:text-brand-yellow transition-colors"
+                                                    className="text-left hover:text-brand-gray transition-colors"
                                                 >
                                                     {location.icon && <span className="mr-1">{location.icon}</span>}
                                                     {location.name}

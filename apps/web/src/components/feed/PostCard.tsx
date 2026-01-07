@@ -36,7 +36,7 @@ export default function PostCard({
           <h3 className="text-lg font-bold leading-snug mb-2">
             <Link
               href={slug ? `/articulo/${slug}` : "#"}
-              className="hover:text-brand-yellow transition-colors"
+              className="hover:text-brand-gray transition-colors"
             >
               {title}
             </Link>

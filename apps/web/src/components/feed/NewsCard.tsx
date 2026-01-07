@@ -25,7 +25,7 @@ export default function NewsCard({ category, title, date }: NewsCardProps) {
             Noticias · {category}
           </span>
           <h3 className="text-base font-bold leading-snug mt-1">
-            <Link href="#" className="hover:text-brand-yellow transition-colors">
+            <Link href="#" className="hover:text-brand-gray transition-colors">
               {title}
             </Link>
           </h3>

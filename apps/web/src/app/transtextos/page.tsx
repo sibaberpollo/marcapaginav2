@@ -97,7 +97,7 @@ export default async function TranstextosPage({
                           {item.slug ? (
                             <Link
                               href={`/relato/${item.slug}`}
-                              className="hover:text-brand-yellow transition-colors"
+                              className="hover:text-brand-gray transition-colors"
                             >
                               {item.title}
                             </Link>

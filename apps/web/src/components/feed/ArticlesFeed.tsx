@@ -57,7 +57,7 @@ export default function ArticlesFeed({ articles }: ArticlesFeedProps) {
                     <span>{article.readTime}</span>
                   </div>
                   <h2 className="text-xl font-bold leading-snug">
-                    <Link href={`/articulo/${article.slug}`} className="hover:text-brand-yellow transition-colors">
+                    <Link href={`/articulo/${article.slug}`} className="hover:text-brand-gray transition-colors">
                       {article.title}
                     </Link>
                   </h2>

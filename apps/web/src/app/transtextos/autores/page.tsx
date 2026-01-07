@@ -98,7 +98,7 @@ export default async function AutoresPage() {
                           {autor.slug ? (
                             <Link
                               href={`/autor/${autor.slug}`}
-                              className="hover:text-brand-yellow transition-colors"
+                              className="hover:text-brand-gray transition-colors"
                             >
                               {autor.name}
                             </Link>

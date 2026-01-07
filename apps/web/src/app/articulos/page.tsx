@@ -29,7 +29,7 @@ export default async function ArticulosPage() {
                     Ensayos, reflexiones y guías literarias seleccionadas por la redacción.
                   </p>
                 </div>
-                <Link href="/" className="text-sm font-semibold text-text-secondary hover:text-brand-yellow transition-colors">
+                <Link href="/" className="text-sm font-semibold text-text-secondary hover:text-brand-gray transition-colors">
                   ← Volver al inicio
                 </Link>
               </div>

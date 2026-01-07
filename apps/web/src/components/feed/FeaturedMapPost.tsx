@@ -85,7 +85,7 @@ export default function FeaturedMapPost({
             {badge}
           </span>
           <h2 className="text-xl sm:text-2xl font-bold leading-tight mb-2">
-            <Link href={href} className="hover:text-brand-yellow transition-colors">
+            <Link href={href} className="hover:text-brand-gray transition-colors">
               {title}
             </Link>
           </h2>
