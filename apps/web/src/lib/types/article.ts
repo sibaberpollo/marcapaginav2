@@ -109,6 +109,11 @@ export const CATEGORIES: Category[] = [
         slug: 'columnas',
         description: 'Opinión y columnas de nuestros colaboradores',
     },
+    {
+        name: 'Listas',
+        slug: 'listas',
+        description: 'Listas, rankings y selecciones literarias con humor',
+    },
 ];
 
 export function getCategoryBySlug(slug: string): Category | undefined {
