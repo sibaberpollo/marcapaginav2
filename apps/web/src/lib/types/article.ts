@@ -115,6 +115,11 @@ export const CATEGORIES: Category[] = [
         slug: 'listas',
         description: 'Listas, rankings y selecciones literarias con humor',
     },
+    {
+        name: 'Memes',
+        slug: 'memes',
+        description: 'Memes literarios y humor visual',
+    },
 ];
 
 export function getCategoryBySlug(slug: string): Category | undefined {
