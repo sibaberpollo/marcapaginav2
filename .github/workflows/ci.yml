@@ -54,15 +54,28 @@ jobs:
 
       - name: Debug paths
         run: |
-          echo "Current directory: $(pwd)"
-          echo "apps/web directory contents:"
-          ls -la apps/web/
-          echo "apps/web/src directory exists:"
-          ls -la apps/web/src/ | head -5
-          echo "Vitest config:"
-          cat apps/web/vitest.config.ts
-          echo "FeedTabs component:"
+          echo "=== GIT INFO ==="
+          echo "Current branch: $(git branch --show-current)"
+          echo "Current commit: $(git rev-parse HEAD)"
+          echo "Git remote: $(git remote -v)"
+          echo ""
+          echo "=== GIT LOG FOR FeedTabs.tsx ==="
+          git log --oneline -5 -- apps/web/src/components/feed/FeedTabs.tsx
+          echo ""
+          echo "=== GIT SHOW FILE BLOB ==="
+          git ls-files -s apps/web/src/components/feed/FeedTabs.tsx
+          echo ""
+          echo "=== FILE ON DISK ==="
           cat apps/web/src/components/feed/FeedTabs.tsx
+          echo ""
+          echo "=== FILE FROM GIT ==="
+          git show HEAD:apps/web/src/components/feed/FeedTabs.tsx
+          echo ""
+          echo "=== DIFF BETWEEN DISK AND GIT ==="
+          diff <(cat apps/web/src/components/feed/FeedTabs.tsx) <(git show HEAD:apps/web/src/components/feed/FeedTabs.tsx) || true
+          echo ""
+          echo "=== ARTICLE TYPES FILE ==="
+          cat apps/web/src/lib/types/article.ts | grep -A 30 "export const CATEGORIES"
 
       - name: Test
         run: pnpm run test --force
