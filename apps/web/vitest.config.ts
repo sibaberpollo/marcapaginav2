@@ -13,9 +13,6 @@ export default defineConfig({
     setupFiles: ["./__tests__/setup/vitest.setup.ts"],
     globals: true,
     include: ["**/*.test.{ts,tsx}"],
-    alias: {
-      "@": join(__dirname, "./src"),
-    },
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
