@@ -1,18 +1,18 @@
 import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
-import { resolve, dirname } from "node:path";
+import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig({
-  plugins: [
-    react(),
-    tsconfigPaths({
-      projects: [resolve(__dirname, "./tsconfig.json")],
-    }),
-  ],
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
   test: {
     environment: "jsdom",
     setupFiles: ["./__tests__/setup/vitest.setup.ts"],
