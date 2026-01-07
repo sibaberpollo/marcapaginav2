@@ -69,9 +69,10 @@ export default function Feed() {
 
       {/* Meme en el centro del feed */}
       <MemeCard
-        title="Chapulines salvajes"
+        title="Los chapulines salvajes"
         imageUrl="https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png"
-        alt="Chapulines salvajes en marcha"
+        alt="Los chapulines salvajes - Parodia de Los detectives salvajes"
+        slug="los-chapulines-salvajes"
       />
 
       {/* Latest Narrativa/Transtextos Post */}

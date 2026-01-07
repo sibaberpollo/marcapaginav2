@@ -35,9 +35,10 @@ export default function ArticlesFeed({ articles }: ArticlesFeedProps) {
           <Fragment key={article.slug}>
             {index === insertIndex && (
               <MemeCard
-                title="Chapulines salvajes"
+                title="Los chapulines salvajes"
                 imageUrl="https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png"
-                alt="Chapulines salvajes en marcha"
+                alt="Los chapulines salvajes - Parodia de Los detectives salvajes"
+                slug="los-chapulines-salvajes"
               />
             )}
             <article
@@ -86,9 +87,10 @@ export default function ArticlesFeed({ articles }: ArticlesFeedProps) {
       {/* Fallback: si la lista es muy corta, aseguramos mostrar el meme al final */}
       {articles.length > 0 && articles.length <= 2 && (
         <MemeCard
-          title="Chapulines salvajes"
+          title="Los chapulines salvajes"
           imageUrl="https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png"
-          alt="Chapulines salvajes en marcha"
+          alt="Los chapulines salvajes - Parodia de Los detectives salvajes"
+          slug="los-chapulines-salvajes"
         />
       )}
     </div>
