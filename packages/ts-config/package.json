@@ -1,0 +1,14 @@
+{
+  "name": "@marcapagina/ts-config",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./base.json",
+  "exports": {
+    "base": "./base.json",
+    "nextjs": "./nextjs.json",
+    "react-library": "./react-library.json"
+  },
+  "scripts": {
+    "lint": "tsc --noEmit --pretty false"
+  }
+}

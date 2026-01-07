@@ -35,6 +35,16 @@ const mockedCategories = [
     slug: "columnas",
     description: "Opinión y columnas de nuestros colaboradores",
   },
+  {
+    name: "Listas",
+    slug: "listas",
+    description: "Listas, rankings y selecciones literarias con humor",
+  },
+  {
+    name: "Memes",
+    slug: "memes",
+    description: "Memes literarios y humor visual",
+  },
 ];
 
 function createMockRequest(url: string): Request {
@@ -74,12 +84,12 @@ describe("GET /api/categories", () => {
     }
   });
 
-  it("returns all 6 categories", async () => {
+  it("returns all 8 categories", async () => {
     const request = createMockRequest("/api/categories");
     const response = await GET(request);
     const body = await response.json();
 
-    expect(body.data.length).toBe(6);
+    expect(body.data.length).toBe(8);
   });
 
   it("response format matches expected structure", async () => {

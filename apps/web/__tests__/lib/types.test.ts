@@ -10,8 +10,8 @@ import type { Article, TravelGuide } from "../../src/lib/types/article";
 
 describe("lib/types/article.ts", () => {
   describe("CATEGORIES", () => {
-    it("has exactly 6 items", () => {
-      expect(CATEGORIES).toHaveLength(6);
+    it("has exactly 8 items", () => {
+      expect(CATEGORIES).toHaveLength(8);
     });
 
     it("each category has name, slug, description properties", () => {

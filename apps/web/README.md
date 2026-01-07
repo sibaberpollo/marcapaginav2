@@ -69,11 +69,28 @@ Create pages in `src/app/{route}/page.tsx` following the App Router convention.
 3. Import via `@/components`
 
 ```tsx
-// ✅ Correct
-import { Header, PostCard } from '@/components';
+// ✅ CORRECT — internal components via barrel export
+import { Header, PostCard } from "@/components";
 
-// ❌ Avoid
-import Header from '@/components/layout/Header';
+// ✅ CORRECT — shared components from Design System
+import { Button, Card, Input, Badge } from "@marcapagina/ds";
+
+// ❌ AVOID — relative imports
+import Header from "@/components/layout/Header";
+```
+
+### Design System
+
+Use components from `@marcapagina/ds` for consistency:
+
+```tsx
+import { Button, Card, Input, Badge, Toast } from '@marcapagina/ds';
+
+// Example usage
+<Button variant="primary">Submit</Button>
+<Card hoverable>Content</Card>
+<Input label="Email" error="Required field" />
+<Badge variant="success">Published</Badge>
 ```
 
 ### Using 'use client'
@@ -81,12 +98,12 @@ import Header from '@/components/layout/Header';
 Add `'use client'` only when using hooks or browser APIs:
 
 ```tsx
-'use client';
-import { useState } from 'react';
+"use client";
+import { useState } from "react";
 
 export default function InteractiveComponent() {
   const [count, setCount] = useState(0);
-  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
+  return <button onClick={() => setCount((c) => c + 1)}>{count}</button>;
 }
 ```
 
@@ -95,12 +112,12 @@ export default function InteractiveComponent() {
 Colors are defined as CSS variables in `globals.css`:
 
 ```css
---brand-yellow: #faff00;  /* Primary accent */
---brand-gray: #4b4b4b;    /* Secondary text */
---brand-black: #000000;   /* Primary text */
---surface: #f5f5f5;       /* Card backgrounds */
---surface-2: #e8e8e8;     /* Borders, dividers */
---bg-page: #f5f5f5;       /* Page background */
+--brand-yellow: #faff00; /* Primary accent */
+--brand-gray: #4b4b4b; /* Secondary text */
+--brand-black: #000000; /* Primary text */
+--surface: #f5f5f5; /* Card backgrounds */
+--surface-2: #e8e8e8; /* Borders, dividers */
+--bg-page: #f5f5f5; /* Page background */
 ```
 
 Toggle theme via `data-theme="light|dark"` on the `<html>` element.

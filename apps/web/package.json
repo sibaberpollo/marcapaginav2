@@ -21,8 +21,7 @@
     "next": "16.1.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "react-leaflet": "^5.0.0",
-    "shared": "*"
+    "react-leaflet": "^5.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",

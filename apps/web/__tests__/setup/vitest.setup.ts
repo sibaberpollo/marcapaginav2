@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
-import { vi } from "vitest";
+import { vi, beforeAll, afterEach, afterAll } from "vitest";
+import { server } from "../setup/msw/server";
 
 vi.mock("next/navigation", () => ({
   useRouter: () => ({
@@ -11,6 +12,11 @@ vi.mock("next/navigation", () => ({
   useSearchParams: vi.fn(() => new URLSearchParams()),
   useParams: vi.fn(() => ({})),
 }));
+
+// Set up MSW server for API mocking
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
 
 Object.defineProperty(window, "localStorage", {
   value: {
