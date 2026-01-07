@@ -159,7 +159,7 @@ export default async function AutorPage({
                       {relato.slug ? (
                         <Link
                           href={`/relato/${relato.slug}`}
-                          className="hover:text-brand-yellow transition-colors"
+                          className="hover:text-brand-gray transition-colors"
                         >
                           {relato.title}
                         </Link>

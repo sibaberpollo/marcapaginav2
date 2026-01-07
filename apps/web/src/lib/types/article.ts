@@ -23,7 +23,8 @@ export interface Article {
     likes?: number;
     comments?: number;
     // Optional: article type for special layouts
-    type?: 'standard' | 'travel-guide';
+    type?: 'standard' | 'travel-guide' | 'meme';
+    memeImageUrl?: string;
 }
 
 // Location for travel guides
@@ -108,6 +109,16 @@ export const CATEGORIES: Category[] = [
         name: 'Columnas',
         slug: 'columnas',
         description: 'Opinión y columnas de nuestros colaboradores',
+    },
+    {
+        name: 'Listas',
+        slug: 'listas',
+        description: 'Listas, rankings y selecciones literarias con humor',
+    },
+    {
+        name: 'Memes',
+        slug: 'memes',
+        description: 'Memes literarios y humor visual',
     },
 ];
 

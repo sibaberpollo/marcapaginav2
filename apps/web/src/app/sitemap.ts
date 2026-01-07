@@ -13,11 +13,11 @@ type SitemapEntry = {
 };
 
 /**
- * Get all transtextos/relatos from Sanity
+ * Get all relatos from Sanity (both Transtextos and MarcaPágina sites)
  */
-async function getAllTranstextos(): Promise<{ slug: string; date: string }[]> {
+async function getAllRelatos(): Promise<{ slug: string; date: string }[]> {
   try {
-    const query = `*[_type == "relato" && status == "published" && site->slug.current == "transtextos"]{
+    const query = `*[_type == "relato" && status == "published" && defined(slug.current)]{
       "slug": slug.current,
       "date": coalesce(date, publishedAt, _createdAt)
     }`;
@@ -25,7 +25,7 @@ async function getAllTranstextos(): Promise<{ slug: string; date: string }[]> {
     const result = await fetchSanity<{ slug: string; date: string }[]>(query);
     return result || [];
   } catch (error) {
-    console.error('Error fetching transtextos for sitemap:', error);
+    console.error('Error fetching relatos for sitemap:', error);
     return [];
   }
 }
@@ -98,12 +98,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching articles for sitemap:', error);
   }
 
-  // ===== TRANSTEXTOS/RELATOS (SANITY) =====
+  // ===== RELATOS (SANITY - Transtextos y MarcaPágina) =====
 
   try {
-    const transtextos = await getAllTranstextos();
+    const relatos = await getAllRelatos();
 
-    for (const relato of transtextos) {
+    for (const relato of relatos) {
       if (relato.slug) {
         entries.push({
           url: `${BASE_URL}/relato/${relato.slug}`,
@@ -114,7 +114,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
     }
   } catch (error) {
-    console.error('Error fetching transtextos for sitemap:', error);
+    console.error('Error fetching relatos for sitemap:', error);
   }
 
   return entries;

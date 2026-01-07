@@ -353,18 +353,18 @@ async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
 }
 
 /**
- * Get all Transtextos article slugs from Sanity
+ * Get all relato slugs from Sanity (both Transtextos and MarcaPágina sites)
  */
 export async function getAllTranstextosSlugs(): Promise<string[]> {
   try {
-    const query =
-      "*[_type != 'sanity.imageAsset' && defined(slug.current) && (categorySlug == 'transtextos' || _type == 'relato')]{ 'slug': slug.current }";
+    // Get all published relatos from both sites (transtextos and marcapagina)
+    const query = `*[_type == "relato" && status == "published" && defined(slug.current)]{ "slug": slug.current }`;
     const result = await fetchSanity<Array<{ slug?: string }>>(query);
     return result
       .map((item) => item.slug)
       .filter((slug): slug is string => typeof slug === "string");
   } catch (error) {
-    console.error("Error getting Transtextos slugs:", error);
+    console.error("Error getting relato slugs:", error);
     return [];
   }
 }

@@ -41,8 +41,7 @@ export async function fetchSanity<T>(
   });
 
   const res = await fetch(url.toString(), {
-    cache: "no-store",
-    next: { revalidate: 0 },
+    next: { revalidate: 60 }, // Revalidate every 60 seconds for ISR
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       Accept: "application/json",

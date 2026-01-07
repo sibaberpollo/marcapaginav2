@@ -5,6 +5,7 @@ import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug, getAllArticles, getAllTranstextosSlugs } from '@/lib/articles';
 import { isTravelGuide, TravelGuide } from '@/lib/types/article';
 import RelatoHeader from '@/components/layout/RelatoHeader';
+import { Avatar } from '@/components';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -116,7 +117,7 @@ export default async function RelatoPage({ params }: PageProps) {
             {article.title}
           </h1>
           <div className="flex items-center gap-3 text-sm text-text-secondary">
-            <div className={`w-10 h-10 ${article.author.avatar} rounded-full flex-shrink-0`}></div>
+            <Avatar name={article.author.name} size="md" />
             <div>
               <div className="font-semibold text-text-primary">{article.author.name}</div>
               {article.author.handle && <div>{article.author.handle}</div>}
@@ -165,7 +166,7 @@ export default async function RelatoPage({ params }: PageProps) {
         {/* Bio breve */}
         <div className="rounded-xl border border-surface-2 bg-bg-primary p-5">
           <div className="flex items-start gap-4">
-            <div className={`w-14 h-14 ${article.author.avatar} rounded-full flex-shrink-0`}></div>
+            <Avatar name={article.author.name} size="xl" />
             <div className="space-y-1">
               <h3 className="font-semibold text-lg">{article.author.name}</h3>
               {article.author.handle && (
