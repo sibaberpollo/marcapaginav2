@@ -486,13 +486,13 @@ describe("articles.ts", () => {
   });
 
   describe("getCategoriesWithCounts", () => {
-    it("returns all 6 categories with count property", async () => {
+    it("returns all 8 categories with count property", async () => {
       vi.mocked(fs.mkdir).mockResolvedValue(undefined);
       vi.mocked(fs.readdir).mockResolvedValue([]);
 
       const result = await getCategoriesWithCounts();
 
-      expect(result).toHaveLength(6);
+      expect(result).toHaveLength(8);
       expect(result.every((c) => "count" in c)).toBe(true);
     });
 

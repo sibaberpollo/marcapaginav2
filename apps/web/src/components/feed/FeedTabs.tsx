@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const tabs = ["Todo"];
+const tabs = ["NARRATIVA", "CRÍTICA", "AGENDA"];
 
 export default function FeedTabs() {
   const [activeTab, setActiveTab] = useState(0);

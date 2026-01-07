@@ -5,7 +5,6 @@ const defaultProps = {
   title: "Test Title",
   excerpt: "This is a test excerpt that should be truncated after two lines.",
   author: "Juan Pérez",
-  authorColor: "bg-purple-200",
   timeAgo: "hace 2h",
   tags: ["Literatura", "Cultura"],
   likes: 42,
@@ -35,10 +34,9 @@ describe("PostCard", () => {
     expect(screen.getByText("Juan Pérez")).toBeInTheDocument();
   });
 
-  it("Renders authorColor circle (div with bg-purple-200)", () => {
+  it("Renders author avatar with initials", () => {
     render(<PostCard {...defaultProps} />);
-    const colorCircle = screen.getByTestId("author-color-circle");
-    expect(colorCircle.className).toContain("bg-purple-200");
+    expect(screen.getByText("JP")).toBeInTheDocument();
   });
 
   it('Renders timeAgo text (e.g., "hace 2h")', () => {
@@ -67,12 +65,12 @@ describe("PostCard", () => {
     expect(screen.getByText("5 min")).toBeInTheDocument();
   });
 
-  it("Hover state on title (hover:text-brand-yellow)", () => {
+  it("Hover state on title (hover:text-brand-gray)", () => {
     render(<PostCard {...defaultProps} />);
     const titleLink = screen
       .getByRole("heading", { level: 3 })
       .querySelector("a");
-    expect(titleLink?.className).toContain("hover:text-brand-yellow");
+    expect(titleLink?.className).toContain("hover:text-brand-gray");
   });
 
   it("Hover state on tags (hover:bg-surface-2)", () => {

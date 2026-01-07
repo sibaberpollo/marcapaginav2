@@ -36,18 +36,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Debug BEFORE install (right after checkout)
-        run: |
-          echo "=== IMMEDIATELY AFTER CHECKOUT ==="
-          echo "File on disk:"
-          cat apps/web/src/components/feed/FeedTabs.tsx
-          echo ""
-          echo "=== Git show HEAD ==="
-          git show HEAD:apps/web/src/components/feed/FeedTabs.tsx
-          echo ""
-          echo "=== DIFF ==="
-          diff <(cat apps/web/src/components/feed/FeedTabs.tsx) <(git show HEAD:apps/web/src/components/feed/FeedTabs.tsx) || true
-
       - name: Install pnpm
         uses: pnpm/action-setup@v4.2.0
 
@@ -55,42 +43,11 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Clean install dependencies
-        run: |
-          rm -rf node_modules
-          rm -rf apps/web/node_modules
-          rm -rf apps/web/.next
-          rm -rf .turbo
-          rm -rf apps/web/.turbo
-          pnpm install --frozen-lockfile
-
-      - name: Debug AFTER install
-        run: |
-          echo "=== GIT INFO ==="
-          echo "Current branch: $(git branch --show-current)"
-          echo "Current commit: $(git rev-parse HEAD)"
-          echo "Git remote: $(git remote -v)"
-          echo ""
-          echo "=== GIT LOG FOR FeedTabs.tsx ==="
-          git log --oneline -5 -- apps/web/src/components/feed/FeedTabs.tsx
-          echo ""
-          echo "=== GIT SHOW FILE BLOB ==="
-          git ls-files -s apps/web/src/components/feed/FeedTabs.tsx
-          echo ""
-          echo "=== FILE ON DISK ==="
-          cat apps/web/src/components/feed/FeedTabs.tsx
-          echo ""
-          echo "=== FILE FROM GIT ==="
-          git show HEAD:apps/web/src/components/feed/FeedTabs.tsx
-          echo ""
-          echo "=== DIFF BETWEEN DISK AND GIT ==="
-          diff <(cat apps/web/src/components/feed/FeedTabs.tsx) <(git show HEAD:apps/web/src/components/feed/FeedTabs.tsx) || true
-          echo ""
-          echo "=== ARTICLE TYPES FILE ==="
-          cat apps/web/src/lib/types/article.ts | grep -A 30 "export const CATEGORIES"
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Test
-        run: pnpm run test --force
+        run: pnpm run test
 
       - name: Upload coverage
         uses: codecov/codecov-action@v5.5.2
