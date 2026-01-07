@@ -2,59 +2,8 @@ import FeedTabs from './FeedTabs';
 import FeaturedMapPost from './FeaturedMapPost';
 import LatestNarrativaPost from './LatestNarrativaPost';
 import PostCard from './PostCard';
+import ListCard from './ListCard';
 
-/*
-const posts = [
-  {
-    title: 'Los pájaros que vimos aquel verano',
-    excerpt:
-      'Mi abuela decía que los pájaros conocen el futuro. Que por eso cantan al amanecer, para advertirnos de lo que viene...',
-    author: 'Lucía Mbomío',
-    authorColor: 'bg-purple-200',
-    timeAgo: 'hace 2h',
-    tags: ['cuento', 'memoria'],
-    likes: 87,
-    comments: 12,
-    readTime: '5 min',
-  },
-  {
-    title: 'Instrucciones para desaparecer',
-    excerpt:
-      'Primero: elige un día cualquiera, preferiblemente martes. Los martes nadie presta atención. Segundo: no te despidas...',
-    author: 'Daniel Monedero',
-    authorColor: 'bg-green-200',
-    timeAgo: 'hace 5h',
-    tags: ['microrrelato', 'experimental'],
-    likes: 56,
-    comments: 8,
-    readTime: '3 min',
-  },
-  {
-    title: 'El último café del mundo',
-    excerpt:
-      'Cuando cerraron la última cafetería de la ciudad, nos quedamos sin lugares donde ser extraños juntos...',
-    author: 'Carmen Laforet Jr.',
-    authorColor: 'bg-orange-200',
-    timeAgo: 'hace 8h',
-    tags: ['cuento', 'nostalgia'],
-    likes: 43,
-    comments: 5,
-    readTime: '6 min',
-  },
-  {
-    title: 'Cartografía de lo invisible',
-    excerpt:
-      'Hay mapas que no existen en ningún atlas. Mi padre los dibujaba en servilletas de bar: el camino exacto del silencio...',
-    author: 'Andrés Neuman',
-    authorColor: 'bg-blue-200',
-    timeAgo: 'hace 12h',
-    tags: ['poesía', 'padre'],
-    likes: 98,
-    comments: 14,
-    readTime: '4 min',
-  },
-];
-*/
 export default function Feed() {
   return (
     <div className="space-y-4">
@@ -70,7 +19,22 @@ export default function Feed() {
         comments={0}
         readTime="8 min"
         slug="la-paris-de-hemingway"
-        badge="🗺️ A pie de página"
+        badge="A pie de página"
+      />
+
+      {/* Lista destacada */}
+      <ListCard
+        title="10 propósitos literarios de Año Nuevo"
+        excerpt="Leer por placer, abandonar libros sin culpa, no fingir que entendiste ese libro... Una lista de buenos propósitos lectores."
+        author="Redacción Marcapágina"
+        authorColor="bg-amber-200"
+        timeAgo="hace 1h"
+        tags={['humor', 'listas', 'lectura']}
+        likes={0}
+        comments={0}
+        readTime="2 min"
+        slug="10-propositos-literarios-de-ano-nuevo"
+        itemCount={10}
       />
 
       {/* Posts */}
@@ -87,25 +51,51 @@ export default function Feed() {
         slug="manual-de-usuario-para-comenzar-a-leer"
       />
 
-      {/* Posts 
-      <PostCard {...posts[0]} />
-      <PostCard {...posts[1]} />
-    */}
+      {/* Más listas */}
+      <ListCard
+        title="Cómo identificar a un lector tóxico"
+        excerpt="Dice que 'esto ya lo hizo Borges', menciona a Bolaño en cualquier conversación y desprecia los best sellers sin haberlos leído."
+        author="Redacción Marcapágina"
+        authorColor="bg-rose-200"
+        timeAgo="hace 2h"
+        tags={['humor', 'listas', 'sátira']}
+        likes={0}
+        comments={0}
+        readTime="2 min"
+        slug="como-identificar-a-un-lector-toxico"
+        itemCount={10}
+      />
 
       {/* Latest Narrativa/Transtextos Post */}
       <LatestNarrativaPost />
 
-      {/* News Card
-      <NewsCard
-        category="Premios"
-        title='El Premio Nacional de Narrativa 2026 recae en María Fernández por "Cielos de Ceniza"'
-        date="3 Ene 2026"
+      <ListCard
+        title="Si los géneros literarios fueran personas en una fiesta"
+        excerpt="La novela policial pregunta dónde estabas anoche. La poesía llega tarde y huele a lluvia."
+        author="Redacción Marcapágina"
+        authorColor="bg-violet-200"
+        timeAgo="hace 4h"
+        tags={['humor', 'géneros-literarios']}
+        likes={0}
+        comments={0}
+        readTime="1 min"
+        slug="si-los-generos-literarios-fueran-personas-en-una-fiesta"
+        itemCount={5}
       />
-      */}
-      {/*
-      <PostCard {...posts[2]} />
-      <PostCard {...posts[3]} />
-      */}
+
+      <ListCard
+        title="Trastornos literarios no reconocidos por la OMS"
+        excerpt="Del síndrome del subrayador compulsivo a la dependencia emocional de las reseñas de Goodreads."
+        author="Redacción Marcapágina"
+        authorColor="bg-teal-200"
+        timeAgo="hace 5h"
+        tags={['humor', 'listas', 'sátira']}
+        likes={0}
+        comments={0}
+        readTime="3 min"
+        slug="trastornos-literarios-no-reconocidos-por-la-oms"
+        itemCount={5}
+      />
     </div>
   );
 }

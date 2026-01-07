@@ -1,34 +1,11 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { getAllArticles } from '@/lib/articles';
 
 export const metadata: Metadata = {
   title: 'Artículos | Marcapágina',
   description: 'Artículos, ensayos y reflexiones sobre literatura, lectura y cultura.',
 };
-
-// Artículos estáticos por ahora (después se conectarán a JSON/CMS)
-const articles = [
-  {
-    slug: 'la-paris-de-hemingway',
-    title: 'La París de Hemingway',
-    excerpt: 'Una guía literaria para caminar, beber y leer. París fue para Ernest Hemingway algo más que una ciudad: fue su escuela, su refugio y su escenario.',
-    author: 'Redacción Marcapágina',
-    publishedAt: '2025-01-05',
-    readTime: '8 min',
-    category: 'A pie de página',
-    tags: ['viajes', 'hemingway', 'paris'],
-  },
-  {
-    slug: 'manual-de-usuario-para-comenzar-a-leer',
-    title: 'Manual de usuario para comenzar a leer',
-    excerpt: 'Pensando siempre en nuestro entusiasta público, ofrecemos a continuación una sencilla guía para entender el funcionamiento de estos aparatos y participar del ritual pagano de la lectura.',
-    author: 'Hazael Valecillos',
-    publishedAt: '2025-01-04',
-    readTime: '6 min',
-    category: 'El placer de leer',
-    tags: ['ensayo', 'humor', 'lectura'],
-  },
-];
 
 function formatDateParts(isoDate: string) {
   const date = new Date(isoDate);
@@ -38,7 +15,9 @@ function formatDateParts(isoDate: string) {
   };
 }
 
-export default function ArticulosPage() {
+export default async function ArticulosPage() {
+  const articles = await getAllArticles();
+
   return (
     <main className="min-h-screen pb-20">
       <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
@@ -87,7 +66,7 @@ export default function ArticulosPage() {
                         </Link>
                       </h2>
                       <p className="text-sm text-text-secondary mt-1">
-                        Por: <span className="font-medium">{article.author}</span>
+                        Por: <span className="font-medium">{article.author.name}</span>
                       </p>
                       <p className="text-sm text-text-secondary mt-2 line-clamp-2">
                         {article.excerpt}
@@ -116,8 +95,8 @@ export default function ArticulosPage() {
             {articles.length} artículos
           </div>
           <div className="flex items-center gap-2">
-            <span className="btn btn-ghost btn-sm btn-disabled">← Anterior</span>
-            <span className="btn btn-ghost btn-sm btn-disabled">Siguiente →</span>
+            <span className="btn btn-ghost btn-sm btn-disabled">Anterior</span>
+            <span className="btn btn-ghost btn-sm btn-disabled">Siguiente</span>
           </div>
         </div>
       </div>

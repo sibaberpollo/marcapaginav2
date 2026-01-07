@@ -12,6 +12,7 @@ export { default as FeedTabs } from './feed/FeedTabs';
 export { default as FeaturedPost } from './feed/FeaturedPost';
 export { default as PostCard } from './feed/PostCard';
 export { default as NewsCard } from './feed/NewsCard';
+export { default as ListCard } from './feed/ListCard';
 
 // Ads
 
