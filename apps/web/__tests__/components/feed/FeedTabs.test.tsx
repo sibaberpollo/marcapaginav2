@@ -3,10 +3,7 @@ import FeedTabs from "@/components/feed/FeedTabs";
 
 describe("FeedTabs", () => {
   it('Renders tab buttons for ["NARRATIVA", "CRÍTICA", "AGENDA"]', () => {
-    const { container } = render(<FeedTabs />);
-    console.log("FeedTabs component type:", FeedTabs);
-    console.log("Rendered HTML:", container.innerHTML);
-    console.log("All buttons:", screen.getAllByRole("button").map(b => b.textContent));
+    render(<FeedTabs />);
     expect(
       screen.getByRole("button", { name: "NARRATIVA" }),
     ).toBeInTheDocument();
