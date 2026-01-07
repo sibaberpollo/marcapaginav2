@@ -261,11 +261,12 @@ export async function getCategoriesWithCounts(): Promise<
 }
 
 /**
- * Get a Transtextos/Sanity article by slug
+ * Get a Sanity relato article by slug (from both MarcaPágina and Transtextos sites)
  */
 async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
   try {
-    const query = `*[_type != "sanity.imageAsset" && slug.current == $slug][0]{
+    // Query specifically for relato documents with the given slug
+    const query = `*[_type == "relato" && slug.current == $slug && status == "published"][0]{
             "slug": slug.current,
             title,
             "excerpt": coalesce(summary, excerpt, description, seoDescription, lead, ""),
@@ -279,19 +280,20 @@ async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
                 lead,
                 ""
             ),
-            "publishedAt": coalesce(publishedAt, _createdAt),
+            "publishedAt": coalesce(date + "T00:00:00Z", publishedAt, _createdAt),
             "readTime": readTime,
             featured,
             likes,
             comments,
             "tags": coalesce(tags[]->title, tags),
-            "category": coalesce(category->title, "Transtextos"),
-            "categorySlug": coalesce(category->slug.current, "transtextos"),
+            "category": coalesce(category->title, site->title, "Relato"),
+            "categorySlug": coalesce(category->slug.current, site->slug.current, "relatos"),
             "author": coalesce(
-                author->{name, handle},
+                author->{name, "handle": slug.current},
                 {"name": authorName, "handle": authorHandle},
-                {"name": "Transtextos", "handle": "@transtextos"}
-            )
+                {"name": "MarcaPágina", "handle": "@marcapagina"}
+            ),
+            "siteSlug": site->slug.current
         }`;
 
     const result = await fetchSanity<{
@@ -308,6 +310,7 @@ async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
       category?: string;
       categorySlug?: string;
       author?: { name?: string; handle?: string };
+      siteSlug?: string;
     }>(query, { slug });
 
     if (!result || !result.title) return null;
@@ -324,18 +327,24 @@ async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
           : formatPlainTextToHtml(rawContent)
         : `<p>${result.excerpt || ""}</p>`;
 
+    // Determine if this is a Transtextos or MarcaPágina relato
+    const isTranstextos = result.siteSlug === "transtextos";
+    const defaultAuthor = isTranstextos
+      ? { name: "Transtextos", handle: "@transtextos" }
+      : { name: "MarcaPágina", handle: "@marcapagina" };
+
     return {
       slug: result.slug || slug,
       title: result.title,
       excerpt: result.excerpt || "",
       content: safeContent,
       author: {
-        name: result.author?.name || "Transtextos",
-        handle: result.author?.handle || "@transtextos",
+        name: result.author?.name || defaultAuthor.name,
+        handle: result.author?.handle ? `@${result.author.handle}` : defaultAuthor.handle,
         avatar: "bg-brand-gray",
       },
-      category: result.category || "Transtextos",
-      categorySlug: result.categorySlug || "transtextos",
+      category: result.category || (isTranstextos ? "Transtextos" : "Relato"),
+      categorySlug: result.categorySlug || (isTranstextos ? "transtextos" : "relatos"),
       tags: (result.tags || []).filter((t): t is string =>
         Boolean(t && t.length > 0),
       ),
@@ -357,7 +366,9 @@ async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
  */
 export async function getAllTranstextosSlugs(): Promise<string[]> {
   try {
-    // Get all published relatos from both sites (transtextos and marcapagina)
+    // Get all published relatos from both sites:
+    // - MarcaPágina relatos: site is undefined OR site slug is not "transtextos"
+    // - Transtextos relatos: site->slug.current == "transtextos"
     const query = `*[_type == "relato" && status == "published" && defined(slug.current)]{ "slug": slug.current }`;
     const result = await fetchSanity<Array<{ slug?: string }>>(query);
     return result
