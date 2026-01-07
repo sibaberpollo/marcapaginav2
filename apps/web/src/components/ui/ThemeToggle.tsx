@@ -1,33 +1,34 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const initialTheme = savedTheme ?? (prefersDark ? 'dark' : 'light');
-    
-    document.documentElement.setAttribute('data-theme', initialTheme);
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    const initialTheme = savedTheme ?? (prefersDark ? "dark" : "light");
+
+    document.documentElement.setAttribute("data-theme", initialTheme);
     // Hydration from localStorage — valid use of setState in effect
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTheme(initialTheme);
   }, []);
 
   const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
+    const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem("theme", newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
   };
 
   return (
     <label className="swap swap-rotate">
       <input
         type="checkbox"
-        checked={theme === 'dark'}
+        checked={theme === "dark"}
         onChange={toggleTheme}
         className="theme-controller"
       />

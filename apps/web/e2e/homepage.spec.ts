@@ -23,8 +23,6 @@ test.describe("Homepage", () => {
   });
 
   test("Theme preference persists after page refresh", async ({ page }) => {
-    const themeToggle = page.locator(".theme-controller");
-
     await page.locator(".swap").click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 

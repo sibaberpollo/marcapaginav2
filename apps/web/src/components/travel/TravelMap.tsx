@@ -48,6 +48,8 @@ interface TravelMapProps {
   center?: [number, number];
   zoom?: number;
   activeLocationId?: string | null;
+  // Type signature parameter - intentionally unused in definition
+  // eslint-disable-next-line no-unused-vars
   onLocationClick?: (location: Location) => void;
   showRoute?: boolean;
   routeOrder?: string[];
