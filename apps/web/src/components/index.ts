@@ -21,3 +21,6 @@ export { default as MemeCard } from './feed/MemeCard';
 // UI
 export { default as ThemeToggle } from './ui/ThemeToggle';
 //forzar deploy
+
+// Layout helpers
+export { default as ArticlePageLayout } from './layout/ArticlePageLayout';
