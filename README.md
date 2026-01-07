@@ -15,22 +15,24 @@ marcapagina/
 │       │   └── components/  # React components
 │       └── package.json
 ├── packages/
-│   └── shared/              # Shared utilities (currently empty)
+│   ├── ds/                  # Design System components
+│   ├── eslint-config/       # Shared ESLint configuration
+│   └── ts-config/           # Shared TypeScript configurations
 └── package.json             # Workspace root with Turbo scripts
 ```
 
 ## Tech Stack
 
-| Technology | Version | Purpose |
-|------------|---------|---------|
-| **Next.js** | 16.1.1 | React framework with App Router |
-| **React** | 19.2.3 | UI library |
-| **TypeScript** | 5.9.3 | Type safety |
-| **Tailwind CSS** | 4 | Utility-first CSS framework |
-| **DaisyUI** | 5.5.14 | Component library with themes |
-| **Turbo** | 2.7.3 | Monorepo task orchestration |
-| **pnpm** | 9.0.0+ | Package manager |
-| **Node** | 24.6.0+ | Runtime |
+| Technology       | Version | Purpose                         |
+| ---------------- | ------- | ------------------------------- |
+| **Next.js**      | 16.1.1  | React framework with App Router |
+| **React**        | 19.2.3  | UI library                      |
+| **TypeScript**   | 5.9.3   | Type safety                     |
+| **Tailwind CSS** | 4       | Utility-first CSS framework     |
+| **DaisyUI**      | 5.5.14  | Component library with themes   |
+| **Turbo**        | 2.7.3   | Monorepo task orchestration     |
+| **pnpm**         | 9.0.0+  | Package manager                 |
+| **Node**         | 24.6.0+ | Runtime                         |
 
 ## Getting Started
 
@@ -95,9 +97,47 @@ The main web application containing all frontend code.
   - `ui/` — UI primitives (ThemeToggle)
 - `lib/` — Utilities, types, and API clients
 
-### `/packages/shared` — Shared Package
+### `/packages` — Shared Packages
 
-Placeholder for shared utilities, types, and configurations. Currently empty but structured for future use.
+The monorepo includes shared packages for consistency across applications:
+
+#### `@marcapagina/ts-config`
+
+TypeScript configurations for different use cases:
+
+- `base.json` — Base strict configuration
+- `nextjs.json` — Next.js app configuration
+- `react-library.json` — Library component configuration
+
+```json
+{
+  "extends": "@marcapagina/ts-config/nextjs.json"
+}
+```
+
+#### `@marcapagina/eslint-config`
+
+Shareable ESLint configuration with TypeScript, React, and React Hooks rules.
+
+```javascript
+import sharedConfig from "@marcapagina/eslint-config";
+```
+
+#### `@marcapagina/ds`
+
+Design System with reusable React components using DaisyUI and Tailwind:
+
+| Component | Purpose                                          |
+| --------- | ------------------------------------------------ |
+| `Button`  | Primary, secondary, danger, ghost, link variants |
+| `Card`    | Content containers with hoverable option         |
+| `Input`   | Form inputs with label and error support         |
+| `Badge`   | Status indicators in multiple variants           |
+| `Toast`   | Notification alerts with auto-dismiss            |
+
+```tsx
+import { Button, Card, Input, Badge, Toast } from "@marcapagina/ds";
+```
 
 ## Development Workflow
 
@@ -122,18 +162,18 @@ export default function PostCard({ title, excerpt }: PostCardProps) {
 }
 
 // 'use client' only when needed (hooks, browser APIs)
-'use client';
-import { useState } from 'react';
+("use client");
+import { useState } from "react";
 ```
 
 ### Import Patterns
 
 ```tsx
 // ✅ CORRECT — use barrel export from @/components
-import { Header, Feed, PostCard } from '@/components';
+import { Header, Feed, PostCard } from "@/components";
 
 // ❌ AVOID — relative imports
-import Header from '../components/layout/Header';
+import Header from "../components/layout/Header";
 ```
 
 ### Theme System
@@ -163,9 +203,8 @@ All jobs use Node 24 and pnpm with caching for fast feedback.
 
 ## Known Issues
 
-1. **Empty shared package** — The `packages/shared/` directory exists but contains no code
-2. **Mock data** — Components currently use hardcoded data; no API/CMS integration
-3. **Missing error boundaries** — No `not-found.tsx`, `error.tsx`, or `loading.tsx` files
+1. **Mock data** — Components currently use hardcoded data; no API/CMS integration
+2. **Missing error boundaries** — No `not-found.tsx`, `error.tsx`, or `loading.tsx` files
 
 ## Contributing
 

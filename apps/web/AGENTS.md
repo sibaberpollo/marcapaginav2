@@ -24,21 +24,24 @@ src/
 
 ## WHERE TO LOOK
 
-| Task | Location |
-|------|----------|
-| Add route | `src/app/{route}/page.tsx` |
-| Add component | `src/components/{domain}/` then export in `index.ts` |
-| Modify colors | `src/app/globals.css` — CSS variables |
-| Add client interactivity | Add `'use client'` directive at top |
+| Task                     | Location                                             |
+| ------------------------ | ---------------------------------------------------- |
+| Add route                | `src/app/{route}/page.tsx`                           |
+| Add component            | `src/components/{domain}/` then export in `index.ts` |
+| Modify colors            | `src/app/globals.css` — CSS variables                |
+| Add client interactivity | Add `'use client'` directive at top                  |
 
 ## IMPORT PATTERN
 
 ```tsx
-// CORRECT — use barrel export
-import { Header, Feed, PostCard } from '@/components';
+// ✅ CORRECT — shared components from Design System
+import { Button, Card, Input, Badge } from "@marcapagina/ds";
 
-// AVOID — relative imports
-import Header from '../components/layout/Header';
+// ✅ CORRECT — local components via barrel export
+import { Header, Feed, PostCard } from "@/components";
+
+// ❌ AVOID — relative imports for local components
+import Header from "../components/layout/Header";
 ```
 
 ## COMPONENT CONVENTIONS
@@ -56,13 +59,14 @@ export default function PostCard({ title, excerpt }: PostCardProps) {
 }
 
 // 3. 'use client' only when needed (hooks, browser APIs)
-'use client';
-import { useState } from 'react';
+("use client");
+import { useState } from "react";
 ```
 
 ## THEME SYSTEM
 
 **CSS Variables** (defined in globals.css):
+
 ```
 brand-yellow: #faff00    — Primary accent
 brand-gray: #4b4b4b      — Secondary text
@@ -73,6 +77,7 @@ bg-page: #f5f5f5         — Page background
 ```
 
 **Usage in Tailwind**:
+
 ```tsx
 <div className="bg-bg-primary text-text-primary border-surface-2">
 <span className="text-brand-yellow hover:text-brand-gray">
@@ -101,13 +106,13 @@ AdSense integration commented out — replace `ca-pub-XXXXXXX` when ready.
 
 ## CLIENT VS SERVER
 
-| Component | Type | Why |
-|-----------|------|-----|
-| Header | client | Scroll detection |
-| ThemeToggle | client | localStorage + state |
-| FeedTabs | client | Tab selection state |
-| MobileAnchorAd | client | Visibility toggle |
-| Feed, PostCard, etc. | server | No interactivity |
+| Component            | Type   | Why                  |
+| -------------------- | ------ | -------------------- |
+| Header               | client | Scroll detection     |
+| ThemeToggle          | client | localStorage + state |
+| FeedTabs             | client | Tab selection state  |
+| MobileAnchorAd       | client | Visibility toggle    |
+| Feed, PostCard, etc. | server | No interactivity     |
 
 ## ANTI-PATTERNS
 
@@ -116,9 +121,39 @@ AdSense integration commented out — replace `ca-pub-XXXXXXX` when ready.
 - Do NOT modify theme colors without updating both light AND dark variants
 - Do NOT add custom CSS when Tailwind utilities exist
 
+## SHARED PACKAGES
+
+All components should follow the Design System when possible:
+
+```tsx
+import { Button, Card, Input, Badge, Toast } from "@marcapagina/ds";
+```
+
+Use DaisyUI classes directly for custom components:
+
+```tsx
+<div className="card bg-base-100 shadow-xl">
+  <div className="card-body">
+    <h2 className="card-title">Title</h2>
+  </div>
+</div>
+```
+
+## COMMANDS
+
+All commands run from root:
+
+```bash
+pnpm run build        # Build all packages (apps + shared)
+pnpm run lint         # Lint all packages
+pnpm run test         # Run tests (all packages)
+pnpm run check-types  # TypeScript check (all packages)
+```
+
 ## GOTCHAS
 
 1. **Fonts**: Inter (body) + JetBrains Mono (code) loaded via `next/font/google`
 2. **Language**: `<html lang="es">` — Spanish content
 3. **Data**: All mock data hardcoded in components — no API layer
 4. **Path alias**: `@/*` resolves to `./src/*`
+5. **Shared packages**: @marcapagina/ts-config, @marcapagina/eslint-config, @marcapagina/ds available
