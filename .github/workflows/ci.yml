@@ -34,26 +34,26 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-       - name: Install pnpm
-         uses: pnpm/action-setup@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
-       - uses: actions/setup-node@v4
-         with:
-           node-version: "24"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
 
-       - name: Clean install dependencies
-         run: |
-           rm -rf node_modules
-           rm -rf apps/web/node_modules
-           rm -rf apps/web/.next
-           rm -rf .turbo
-           rm -rf apps/web/.turbo
-           pnpm install --frozen-lockfile
+      - name: Clean install dependencies
+        run: |
+          rm -rf node_modules
+          rm -rf apps/web/node_modules
+          rm -rf apps/web/.next
+          rm -rf .turbo
+          rm -rf apps/web/.turbo
+          pnpm install --frozen-lockfile
 
-       - name: Test
-         run: pnpm run test --force
+      - name: Test
+        run: pnpm run test --force
 
       - name: Upload coverage
         uses: codecov/codecov-action@v4
