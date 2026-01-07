@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@": path.join(process.cwd(), "src"),
+      "@": path.resolve(import.meta.dirname, "src"),
     },
   },
   test: {
