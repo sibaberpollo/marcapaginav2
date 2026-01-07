@@ -23,7 +23,8 @@ export interface Article {
     likes?: number;
     comments?: number;
     // Optional: article type for special layouts
-    type?: 'standard' | 'travel-guide';
+    type?: 'standard' | 'travel-guide' | 'meme';
+    memeImageUrl?: string;
 }
 
 // Location for travel guides

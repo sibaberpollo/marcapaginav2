@@ -3,6 +3,7 @@ import FeaturedMapPost from './FeaturedMapPost';
 import LatestNarrativaPost from './LatestNarrativaPost';
 import PostCard from './PostCard';
 import ListCard from './ListCard';
+import MemeCard from './MemeCard';
 
 export default function Feed() {
   return (
@@ -64,6 +65,13 @@ export default function Feed() {
         readTime="2 min"
         slug="como-identificar-a-un-lector-toxico"
         itemCount={10}
+      />
+
+      {/* Meme en el centro del feed */}
+      <MemeCard
+        title="Chapulines salvajes"
+        imageUrl="https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png"
+        alt="Chapulines salvajes en marcha"
       />
 
       {/* Latest Narrativa/Transtextos Post */}
