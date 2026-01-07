@@ -52,6 +52,18 @@ jobs:
           rm -rf apps/web/.turbo
           pnpm install --frozen-lockfile
 
+      - name: Debug paths
+        run: |
+          echo "Current directory: $(pwd)"
+          echo "apps/web directory contents:"
+          ls -la apps/web/
+          echo "apps/web/src directory exists:"
+          ls -la apps/web/src/ | head -5
+          echo "Vitest config:"
+          cat apps/web/vitest.config.ts
+          echo "FeedTabs component:"
+          cat apps/web/src/components/feed/FeedTabs.tsx
+
       - name: Test
         run: pnpm run test --force
 
