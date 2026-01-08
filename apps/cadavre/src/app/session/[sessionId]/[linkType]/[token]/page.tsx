@@ -1,11 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
-/**
- * Cadavre Collaborative Writing - Session Landing Page
- *
- * Displays session based on link type (contributor/observer) and session status.
- * Route: /cadavre/session/[sessionId]/[linkType]/[token]
- */
-
 import type { Metadata } from "next";
 
 import { sessionStore } from "@/lib/store";

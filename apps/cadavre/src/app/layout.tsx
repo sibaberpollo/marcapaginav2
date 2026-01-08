@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -42,14 +41,35 @@ export const metadata: Metadata = {
   },
 };
 
+/**
+ * Theme initialization script - runs before React hydration
+ * Prevents flash of unstyled content and Dark Reader conflicts
+ */
+const themeScript = `
+(function() {
+  try {
+    var theme = localStorage.getItem('cadavre-theme');
+    if (!theme) {
+      theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" data-theme="light">
-      <body className="antialiased bg-bg-page text-text-primary">
+    <html lang="es" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="antialiased bg-bg-page text-text-primary transition-colors duration-200">
         {children}
       </body>
     </html>

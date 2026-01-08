@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 
 import { type LinkType } from "@/lib/links";
 import type { SessionState } from "@/lib/types";
+import { Header } from "../layout/Header";
 
 interface SessionWaitingProps {
   sessionState: SessionState;
@@ -21,7 +22,6 @@ export function SessionWaiting({
   const [isJoining, setIsJoining] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Get token from URL
   const token = searchParams.get("token") || "";
 
   const handleJoinQueue = useCallback(async () => {
@@ -43,7 +43,6 @@ export function SessionWaiting({
         throw new Error(data.error || "Failed to join queue");
       }
 
-      // Refresh to get updated state
       window.location.reload();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to join queue");
@@ -54,105 +53,133 @@ export function SessionWaiting({
 
   const isContributor = linkType === "contributor";
   const queuePosition = myPosition >= 0 ? myPosition : contributors.length;
-  const estimatedWait = queuePosition * 5; // 5 minutes per contributor
+  const estimatedWait = queuePosition * 5;
 
   return (
-    <div className="min-h-screen bg-bg-page">
-      <main className="max-w-2xl mx-auto px-4 py-12 space-y-8">
-        {/* Header */}
-        <header className="text-center space-y-4">
-          <div className="text-6xl">⏳</div>
-          <h1 className="text-3xl font-bold text-base-content">
-            Esperando para comenzar
-          </h1>
-          {session.theme && (
-            <p className="text-xl text-base-content/70 italic">
-              &ldquo;{session.theme}&rdquo;
-            </p>
-          )}
-        </header>
+    <>
+      <Header />
+      <div className="min-h-screen bg-bg-page pt-16">
+        <main className="max-w-xl mx-auto px-4 py-12 space-y-8">
+          <header className="text-center space-y-4">
+            <div className="text-5xl" aria-hidden="true">
+              ⏳
+            </div>
+            <h1 className="text-3xl font-bold text-text-primary">
+              Esperando para comenzar
+            </h1>
+            {session.theme && (
+              <p className="text-xl text-text-secondary italic">
+                &ldquo;{session.theme}&rdquo;
+              </p>
+            )}
+          </header>
 
-        {/* Session Info */}
-        <div className="card bg-base-100 shadow-sm">
-          <div className="card-body space-y-4">
-            <div className="flex justify-between items-center py-2 border-b border-base-200">
-              <span className="text-base-content/70">Estado</span>
-              <span className="badge badge-warning">En espera</span>
+          <div className="bg-bg-primary border border-surface-2 p-6 space-y-4">
+            <div className="flex justify-between items-center py-2 border-b border-surface-2">
+              <span className="text-text-secondary">Estado</span>
+              <span className="px-3 py-1 text-sm font-medium bg-amber-500/10 text-amber-500">
+                En espera
+              </span>
             </div>
 
-            <div className="flex justify-between items-center py-2 border-b border-base-200">
-              <span className="text-base-content/70">Colaboradores</span>
-              <span className="font-medium">
+            <div className="flex justify-between items-center py-2 border-b border-surface-2">
+              <span className="text-text-secondary">Colaboradores</span>
+              <span className="font-medium text-text-primary">
                 {contributors.length} / {session.maxContributors}
               </span>
             </div>
 
             {isContributor && (
               <>
-                <div className="flex justify-between items-center py-2 border-b border-base-200">
-                  <span className="text-base-content/70">
+                <div className="flex justify-between items-center py-2 border-b border-surface-2">
+                  <span className="text-text-secondary">
                     Tu posición en la cola
                   </span>
-                  <span className="font-medium">#{queuePosition}</span>
+                  <span className="font-medium text-text-primary">
+                    #{queuePosition}
+                  </span>
                 </div>
 
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-base-content/70">
+                  <span className="text-text-secondary">
                     Tiempo estimado de espera
                   </span>
-                  <span className="font-medium">~{estimatedWait} minutos</span>
+                  <span className="font-medium text-text-primary">
+                    ~{estimatedWait} minutos
+                  </span>
                 </div>
               </>
             )}
           </div>
-        </div>
 
-        {/* Action */}
-        {isContributor && (
-          <div className="space-y-4">
-            <button
-              onClick={handleJoinQueue}
-              disabled={isJoining}
-              className="btn btn-primary btn-wide w-full rounded-xl"
-            >
-              {isJoining ? (
-                <>
-                  <span className="loading loading-spinner" />
-                  Uniéndote...
-                </>
-              ) : (
-                "Unirse a la cola"
+          {isContributor && (
+            <div className="space-y-4">
+              <button
+                onClick={handleJoinQueue}
+                disabled={isJoining}
+                className="w-full py-4 bg-brand-yellow text-brand-black-static font-bold hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity flex items-center justify-center gap-2"
+              >
+                {isJoining ? (
+                  <>
+                    <svg
+                      className="w-5 h-5 animate-spin"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    Uniéndote...
+                  </>
+                ) : (
+                  "Unirse a la cola"
+                )}
+              </button>
+
+              {error && (
+                <div
+                  className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-sm"
+                  role="alert"
+                >
+                  {error}
+                </div>
               )}
-            </button>
 
-            {error && (
-              <div className="alert alert-error">
-                <span>{error}</span>
-              </div>
-            )}
+              <p className="text-center text-sm text-text-secondary">
+                Necesitamos al menos {session.maxContributors} escritores para
+                comenzar
+              </p>
+            </div>
+          )}
 
-            <p className="text-center text-sm text-base-content/60">
-              Necesitamos al menos {session.maxContributors} escritores para
-              comenzar
-            </p>
-          </div>
-        )}
-
-        {!isContributor && (
-          <div className="text-center space-y-4">
-            <p className="text-base-content/70">
-              Esta historia aún no ha comenzado. Como observador, podrás ver el
-              progreso en tiempo real cuando inicie.
-            </p>
-            <Link
-              href={`/cadavre/session/${session.id}/contributor/${session.id}`}
-              className="btn btn-outline btn-wide rounded-xl"
-            >
-              ¿Quieres participar como escritor?
-            </Link>
-          </div>
-        )}
-      </main>
-    </div>
+          {!isContributor && (
+            <div className="text-center space-y-4">
+              <p className="text-text-secondary">
+                Esta historia aún no ha comenzado. Como observador, podrás ver
+                el progreso en tiempo real cuando inicie.
+              </p>
+              <Link
+                href={`/session/${session.id}/contributor/${session.id}`}
+                className="inline-block px-8 py-3 border border-surface-2 text-text-primary font-medium hover:bg-surface transition-colors"
+              >
+                ¿Quieres participar como escritor?
+              </Link>
+            </div>
+          )}
+        </main>
+      </div>
+    </>
   );
 }

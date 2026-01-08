@@ -180,10 +180,13 @@ interface QRCodePlaceholderProps {
 function QRCodePlaceholder({ label }: QRCodePlaceholderProps) {
   return (
     <div className="flex flex-col items-center gap-2">
-      <div className="w-24 h-24 bg-base-200 rounded-lg flex items-center justify-center border-2 border-dashed border-base-300">
-        <QRCodeIcon className="w-10 h-10 text-base-content/40" />
+      <div
+        className="w-24 h-24 bg-surface flex items-center justify-center border-2 border-dashed border-surface-2"
+        aria-hidden="true"
+      >
+        <QRCodeIcon className="w-10 h-10 text-text-secondary/40" />
       </div>
-      <span className="text-xs text-base-content/60 text-center">{label}</span>
+      <span className="text-xs text-text-secondary text-center">{label}</span>
     </div>
   );
 }
@@ -206,19 +209,23 @@ function LinkCard({ type, link, sessionTitle, copied, onCopy }: LinkCardProps) {
         title: "Enlace para escribir",
         subtitle: "Comparte con quienes quieres que escriban",
         icon: PenIcon,
-        gradient: "from-amber-500 to-orange-600",
-        bgAccent: "bg-amber-500/10",
-        borderAccent: "border-amber-500/30",
-        hoverBorder: "hover:border-amber-500/60",
+        headerBg: "bg-brand-yellow",
+        headerText: "text-brand-black-static",
+        bgAccent: "bg-brand-yellow/10",
+        borderAccent: "border-brand-yellow/30",
+        hoverBorder: "hover:border-brand-yellow/60",
+        buttonBg: "bg-brand-yellow text-brand-black-static",
       }
     : {
         title: "Enlace para observar",
         subtitle: "Solo lectura, sin participación",
         icon: EyeIcon,
-        gradient: "from-violet-500 to-purple-600",
-        bgAccent: "bg-violet-500/10",
-        borderAccent: "border-violet-500/30",
-        hoverBorder: "hover:border-violet-500/60",
+        headerBg: "bg-text-primary",
+        headerText: "text-bg-page",
+        bgAccent: "bg-surface",
+        borderAccent: "border-surface-2",
+        hoverBorder: "hover:border-text-secondary",
+        buttonBg: "bg-text-primary text-bg-page",
       };
 
   const Icon = config.icon;
@@ -249,20 +256,20 @@ function LinkCard({ type, link, sessionTitle, copied, onCopy }: LinkCardProps) {
   return (
     <div
       className={`
-        relative overflow-hidden rounded-2xl border-2 
+        relative overflow-hidden border 
         ${config.borderAccent} ${config.hoverBorder}
-        bg-base-100 transition-all duration-300
-        hover:shadow-lg hover:shadow-base-content/5
+        bg-bg-primary transition-all duration-200
+        hover:shadow-lg hover:shadow-brand-yellow/5
       `}
     >
-      <div className={`bg-gradient-to-r ${config.gradient} p-4`}>
+      <div className={`${config.headerBg} ${config.headerText} p-4`}>
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-white/20 rounded-xl backdrop-blur-sm">
-            <Icon className="w-6 h-6 text-white" />
+          <div className="p-2 bg-bg-page/20 backdrop-blur-sm">
+            <Icon className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="font-bold text-white text-lg">{config.title}</h3>
-            <p className="text-white/80 text-sm">{config.subtitle}</p>
+            <h3 className="font-bold text-lg">{config.title}</h3>
+            <p className="opacity-80 text-sm">{config.subtitle}</p>
           </div>
         </div>
       </div>
@@ -270,20 +277,20 @@ function LinkCard({ type, link, sessionTitle, copied, onCopy }: LinkCardProps) {
       <div className="p-4 space-y-4">
         <div className="flex gap-2">
           <div
-            className={`flex-1 ${config.bgAccent} rounded-xl p-3 border ${config.borderAccent}`}
+            className={`flex-1 ${config.bgAccent} p-3 border ${config.borderAccent} overflow-hidden`}
           >
-            <code className="text-sm break-all text-base-content/80 font-mono">
+            <code className="text-sm break-all text-text-secondary font-mono block truncate">
               {link}
             </code>
           </div>
           <button
             onClick={() => onCopy(type)}
             className={`
-              btn btn-square rounded-xl transition-all duration-300
+              p-3 transition-all duration-200 flex items-center justify-center
               ${
                 isCopied
-                  ? "btn-success text-success-content"
-                  : `bg-gradient-to-r ${config.gradient} text-white border-0 hover:opacity-90`
+                  ? "bg-emerald-500 text-white"
+                  : `${config.buttonBg} hover:opacity-90`
               }
             `}
             aria-label={
@@ -299,7 +306,7 @@ function LinkCard({ type, link, sessionTitle, copied, onCopy }: LinkCardProps) {
         </div>
 
         {isCopied && (
-          <div className="flex items-center gap-2 text-success text-sm font-medium animate-pulse">
+          <div className="flex items-center gap-2 text-emerald-500 text-sm font-medium">
             <CheckIcon className="w-4 h-4" />
             <span>¡Copiado!</span>
           </div>
@@ -309,28 +316,28 @@ function LinkCard({ type, link, sessionTitle, copied, onCopy }: LinkCardProps) {
           <QRCodePlaceholder link={link} label="Escanea para acceder" />
         </div>
 
-        <div className="pt-2 border-t border-base-200">
-          <p className="text-xs text-base-content/60 mb-3 text-center font-medium uppercase tracking-wide">
+        <div className="pt-2 border-t border-surface-2">
+          <p className="text-xs text-text-secondary mb-3 text-center font-medium uppercase tracking-wide">
             Compartir en redes
           </p>
           <div className="flex justify-center gap-2">
             <button
               onClick={handleWhatsAppShare}
-              className="btn btn-circle btn-sm bg-[#25D366] hover:bg-[#128C7E] text-white border-0"
+              className="w-9 h-9 flex items-center justify-center bg-[#25D366] hover:bg-[#128C7E] text-white transition-colors"
               aria-label="Compartir en WhatsApp"
             >
               <WhatsAppIcon className="w-4 h-4" />
             </button>
             <button
               onClick={handleTwitterShare}
-              className="btn btn-circle btn-sm bg-black hover:bg-gray-800 text-white border-0"
+              className="w-9 h-9 flex items-center justify-center bg-text-primary text-bg-page hover:opacity-80 transition-opacity"
               aria-label="Compartir en X (Twitter)"
             >
               <TwitterIcon className="w-4 h-4" />
             </button>
             <button
               onClick={handleFacebookShare}
-              className="btn btn-circle btn-sm bg-[#1877F2] hover:bg-[#166FE5] text-white border-0"
+              className="w-9 h-9 flex items-center justify-center bg-[#1877F2] hover:bg-[#166FE5] text-white transition-colors"
               aria-label="Compartir en Facebook"
             >
               <FacebookIcon className="w-4 h-4" />
@@ -378,22 +385,22 @@ export default function ShareLinks({
 
   return (
     <section
-      className="w-full max-w-4xl mx-auto space-y-6"
+      className="w-full max-w-3xl mx-auto space-y-6"
       aria-labelledby="share-links-heading"
     >
       <header className="text-center space-y-2">
         <h2
           id="share-links-heading"
-          className="text-2xl md:text-3xl font-bold text-base-content"
+          className="text-2xl md:text-3xl font-bold text-text-primary"
         >
           Comparte tu historia
         </h2>
         {sessionTitle && (
-          <p className="text-lg text-base-content/70 italic">
+          <p className="text-lg text-text-secondary italic">
             &ldquo;{sessionTitle}&rdquo;
           </p>
         )}
-        <p className="text-base-content/60">
+        <p className="text-text-secondary">
           Invita a otros a escribir o seguir la creación
         </p>
       </header>
@@ -419,11 +426,11 @@ export default function ShareLinks({
         <button
           onClick={handleCopyAll}
           className={`
-            btn btn-wide gap-2 rounded-xl transition-all duration-300
+            px-8 py-3 flex items-center gap-2 font-medium transition-all duration-200
             ${
               isAllCopied
-                ? "btn-success"
-                : "btn-outline border-2 hover:bg-base-content hover:text-base-100"
+                ? "bg-emerald-500 text-white"
+                : "border border-surface-2 text-text-primary hover:bg-surface"
             }
           `}
         >

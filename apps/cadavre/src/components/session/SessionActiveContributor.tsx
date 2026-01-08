@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 
 import type { SessionState } from "@/lib/types";
+import { Header } from "../layout/Header";
 import { SessionStoryDisplay } from "./SessionStoryDisplay";
 
 interface SessionActiveContributorProps {
@@ -13,6 +14,9 @@ interface SessionActiveContributorProps {
 }
 
 const WORD_COUNT_RANGE = { min: 50, max: 100 };
+const COUNTDOWN_SECONDS = 300;
+
+type WordCountStatus = "neutral" | "warning" | "error" | "success";
 
 function countWords(text: string): number {
   return text
@@ -21,14 +25,26 @@ function countWords(text: string): number {
     .filter((w) => w.length > 0).length;
 }
 
-function getWordCountStatus(
-  count: number,
-): "neutral" | "warning" | "error" | "success" {
+function getWordCountStatus(count: number): WordCountStatus {
   if (count === 0) return "neutral";
   if (count < WORD_COUNT_RANGE.min) return "warning";
   if (count > WORD_COUNT_RANGE.max) return "error";
   return "success";
 }
+
+const statusColors: Record<WordCountStatus, string> = {
+  neutral: "text-text-secondary",
+  warning: "text-amber-500",
+  error: "text-red-500",
+  success: "text-emerald-500",
+};
+
+const progressColors: Record<WordCountStatus, string> = {
+  neutral: "bg-surface-2",
+  warning: "bg-amber-500",
+  error: "bg-red-500",
+  success: "bg-emerald-500",
+};
 
 export function SessionActiveContributor({
   sessionState,
@@ -44,27 +60,21 @@ export function SessionActiveContributor({
   const [isPassing, setIsPassing] = useState(false);
   const [isVoting, setIsVoting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [countdown, setCountdown] = useState(300); // 5 minutes countdown
+  const [countdown, setCountdown] = useState(COUNTDOWN_SECONDS);
 
   const wordCount = countWords(content);
   const wordCountStatus = getWordCountStatus(wordCount);
   const isWordCountValid =
     wordCount >= WORD_COUNT_RANGE.min && wordCount <= WORD_COUNT_RANGE.max;
 
-  // Get current contributor info
   const currentContributor = contributors.find(
     (c) => c.id === currentContributorId,
   );
-
-  // Find the segment by current contributor to get author info
   const currentSegment = segments.find(
     (s) => s.authorId === currentContributor?.userId,
   );
-
-  // Get the last segment (what current writer sees)
   const lastSegment = segments[segments.length - 1];
 
-  // Countdown timer
   useEffect(() => {
     if (!isMyTurn) return;
 
@@ -80,14 +90,12 @@ export function SessionActiveContributor({
     return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Refresh session state
   const refreshState = useCallback(() => {
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.set("t", Date.now().toString());
     router.replace(`?${searchParams.toString()}`);
   }, [router]);
 
-  // Handle segment submission
   const handleSubmit = useCallback(() => {
     if (!isWordCountValid || isSubmitting) return;
 
@@ -109,10 +117,8 @@ export function SessionActiveContributor({
         }
 
         if (data.sessionState.session.status === "completed") {
-          // Navigate to completed page
-          router.push(`/cadavre/session/${session.id}/contributor/token`);
+          router.push(`/session/${session.id}/contributor/token`);
         } else {
-          // Refresh to update state
           refreshState();
           setContent("");
         }
@@ -133,7 +139,6 @@ export function SessionActiveContributor({
     router,
   ]);
 
-  // Handle pass turn
   const handlePass = useCallback(() => {
     if (isPassing) return;
 
@@ -163,7 +168,6 @@ export function SessionActiveContributor({
     })();
   }, [session.id, isPassing, refreshState]);
 
-  // Handle vote to end
   const handleVoteEnd = useCallback(() => {
     if (isVoting || !voteStatus?.canProposeEnd) return;
 
@@ -185,7 +189,7 @@ export function SessionActiveContributor({
         }
 
         if (data.votePassed) {
-          router.push(`/cadavre/session/${session.id}/contributor/token`);
+          router.push(`/session/${session.id}/contributor/token`);
         } else {
           refreshState();
         }
@@ -201,129 +205,144 @@ export function SessionActiveContributor({
   const remainingContributors = session.maxContributors - segments.length;
 
   return (
-    <div className="min-h-screen bg-bg-page">
-      <main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
-        {/* Header with countdown */}
-        <header className="text-center space-y-2">
-          <h1 className="text-2xl font-bold text-base-content">
-            {isMyTurn ? "¡Es tu turno!" : "Esperando tu turno"}
-          </h1>
-          {session.theme && (
-            <p className="text-lg text-base-content/70 italic">
-              {session.theme}
-            </p>
-          )}
-        </header>
+    <>
+      <Header />
+      <div className="min-h-screen bg-bg-page pt-16">
+        <main className="max-w-xl mx-auto px-4 py-8 space-y-6">
+          <header className="text-center space-y-2">
+            <h1 className="text-2xl font-bold text-text-primary">
+              {isMyTurn ? "¡Es tu turno!" : "Esperando tu turno"}
+            </h1>
+            {session.theme && (
+              <p className="text-lg text-text-secondary italic">
+                {session.theme}
+              </p>
+            )}
+          </header>
 
-        {/* Progress bar */}
-        <div className="card bg-base-100 shadow-sm">
-          <div className="card-body py-4">
+          <div className="bg-bg-primary border border-surface-2 p-4">
             <div className="flex justify-between text-sm mb-2">
-              <span className="text-base-content/70">
+              <span className="text-text-secondary">
                 Progreso: {segments.length}/{session.maxContributors} segmentos
               </span>
-              <span className="font-medium">
+              <span className="font-medium text-text-primary">
                 {remainingContributors} restantes
               </span>
             </div>
-            <progress
-              className="progress progress-warning w-full"
-              value={progress}
-              max="100"
-            />
-          </div>
-        </div>
-
-        {/* Countdown timer */}
-        {isMyTurn && (
-          <div className="card bg-warning/10 border-2 border-warning">
-            <div className="card-body py-4 text-center">
-              <span className="text-warning font-medium">Tiempo restante</span>
-              <span className="text-4xl font-bold tabular-nums">
-                {formatTime(countdown)}
-              </span>
+            <div className="w-full h-2 bg-surface-2 overflow-hidden">
+              <div
+                className="h-full bg-brand-yellow transition-all duration-300"
+                style={{ width: `${progress}%` }}
+                role="progressbar"
+                aria-valuenow={segments.length}
+                aria-valuemin={0}
+                aria-valuemax={session.maxContributors}
+                aria-label={`Progreso: ${segments.length} de ${session.maxContributors} segmentos`}
+              />
             </div>
           </div>
-        )}
 
-        {!isMyTurn && currentContributor && currentSegment && (
-          <div className="card bg-base-100 shadow-sm">
-            <div className="card-body py-4">
-              <div className="flex items-center gap-4">
-                <div className="avatar placeholder">
-                  <div className="bg-brand-yellow text-brand-black rounded-full w-12">
-                    <span className="text-lg">✍️</span>
-                  </div>
-                </div>
-                <div>
-                  <p className="text-sm text-base-content/70">
-                    {currentSegment.isAnonymous
-                      ? "Escritor actual"
-                      : currentSegment.authorName}{" "}
-                    está escribiendo...
-                  </p>
-                </div>
+          {isMyTurn && (
+            <div className="bg-amber-500/10 border border-amber-500/30 p-4 text-center">
+              <span className="text-amber-500 font-medium text-sm">
+                Tiempo restante
+              </span>
+              <div
+                className="text-4xl font-bold tabular-nums text-text-primary mt-1"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                {formatTime(countdown)}
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Story display (last segment for context) */}
-        {lastSegment && (
-          <SessionStoryDisplay
-            segment={lastSegment}
-            label="Último segmento visible"
-          />
-        )}
-
-        {/* Your position */}
-        <div className="card bg-base-100 shadow-sm">
-          <div className="card-body py-4">
-            <div className="flex justify-between items-center">
-              <span className="text-base-content/70">Tu posición</span>
-              <span className="font-medium">#{myPosition + 1}</span>
+          {!isMyTurn && currentContributor && currentSegment && (
+            <div className="bg-bg-primary border border-surface-2 p-4">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-brand-yellow text-brand-black-static flex items-center justify-center">
+                  <span className="text-lg" aria-hidden="true">
+                    ✍️
+                  </span>
+                </div>
+                <p className="text-sm text-text-secondary">
+                  {currentSegment.isAnonymous
+                    ? "Escritor actual"
+                    : currentSegment.authorName}{" "}
+                  está escribiendo...
+                </p>
+              </div>
             </div>
-          </div>
-        </div>
+          )}
 
-        {/* Contribution editor (your turn) */}
-        {isMyTurn && (
-          <div className="card bg-base-100 shadow-sm">
-            <div className="card-body space-y-4">
-              <h2 className="card-title">Tu contribución</h2>
+          {lastSegment && (
+            <SessionStoryDisplay
+              segment={lastSegment}
+              label="Último segmento visible"
+            />
+          )}
+
+          <div className="bg-bg-primary border border-surface-2 p-4 flex justify-between items-center">
+            <span className="text-text-secondary">Tu posición</span>
+            <span className="font-medium text-text-primary">
+              #{myPosition + 1}
+            </span>
+          </div>
+
+          {isMyTurn && (
+            <div className="bg-bg-primary border border-surface-2 p-6 space-y-4">
+              <h2 className="text-lg font-bold text-text-primary">
+                Tu contribución
+              </h2>
 
               <textarea
-                className="textarea textarea-bordered w-full h-32"
+                className="w-full h-32 px-4 py-3 bg-bg-page border border-surface-2 text-text-primary placeholder:text-text-secondary/40 focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow outline-none transition-colors resize-none"
                 placeholder="Escribe aquí tu segmento (50-100 palabras)..."
                 maxLength={500}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 disabled={isSubmitting}
+                aria-describedby="word-count-status"
               />
 
               <div className="flex justify-between items-center">
                 <span
-                  className={`text-sm ${
-                    wordCountStatus === "success"
-                      ? "text-success"
-                      : wordCountStatus === "error"
-                        ? "text-error"
-                        : wordCountStatus === "warning"
-                          ? "text-warning"
-                          : "text-base-content/60"
-                  }`}
+                  id="word-count-status"
+                  className={`text-sm font-mono ${statusColors[wordCountStatus]}`}
+                  role="status"
+                  aria-live="polite"
                 >
                   {wordCount} / {WORD_COUNT_RANGE.min}-{WORD_COUNT_RANGE.max}{" "}
                   palabras
+                  {wordCountStatus === "success" && " ✓"}
                 </span>
                 <button
-                  className="btn btn-primary rounded-xl"
+                  className="px-6 py-2 bg-brand-yellow text-brand-black-static font-bold hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity flex items-center gap-2"
                   disabled={!isWordCountValid || isSubmitting}
                   onClick={handleSubmit}
                 >
                   {isSubmitting ? (
                     <>
-                      <span className="loading loading-spinner loading-sm" />
+                      <svg
+                        className="w-4 h-4 animate-spin"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
                       Enviando...
                     </>
                   ) : (
@@ -332,43 +351,70 @@ export function SessionActiveContributor({
                 </button>
               </div>
 
+              <div className="w-full h-1 bg-surface-2 overflow-hidden">
+                <div
+                  className={`h-full transition-all duration-300 ${progressColors[wordCountStatus]}`}
+                  style={{
+                    width: `${Math.min(100, (wordCount / WORD_COUNT_RANGE.max) * 100)}%`,
+                  }}
+                />
+              </div>
+
               {error && (
-                <div className="alert alert-error">
-                  <span>{error}</span>
+                <div
+                  className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-sm"
+                  role="alert"
+                >
+                  {error}
                 </div>
               )}
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Pass option */}
-        {isMyTurn && (
-          <div className="text-center">
-            <button
-              className="btn btn-ghost btn-sm text-base-content/60"
-              onClick={handlePass}
-              disabled={isPassing}
-            >
-              {isPassing ? "Pasando..." : "Pasar mi turno"}
-            </button>
-          </div>
-        )}
+          {isMyTurn && (
+            <div className="text-center">
+              <button
+                className="text-sm text-text-secondary hover:text-text-primary transition-colors"
+                onClick={handlePass}
+                disabled={isPassing}
+              >
+                {isPassing ? "Pasando..." : "Pasar mi turno"}
+              </button>
+            </div>
+          )}
 
-        {/* Vote to end */}
-        {voteStatus?.canProposeEnd && !isMyTurn && (
-          <div className="card bg-base-100 shadow-sm">
-            <div className="card-body py-4 text-center">
-              <p className="text-sm text-base-content/70 mb-2">
+          {voteStatus?.canProposeEnd && !isMyTurn && (
+            <div className="bg-bg-primary border border-surface-2 p-4 text-center">
+              <p className="text-sm text-text-secondary mb-3">
                 ¿Ya tiene suficiente historia?
               </p>
               <button
-                className="btn btn-outline btn-sm rounded-xl"
+                className="px-6 py-2 border border-surface-2 text-text-primary font-medium hover:bg-surface transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
                 onClick={handleVoteEnd}
                 disabled={isVoting || voteStatus.hasVoted}
               >
                 {isVoting ? (
                   <>
-                    <span className="loading loading-spinner loading-sm" />
+                    <svg
+                      className="w-4 h-4 animate-spin"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
                     Votando...
                   </>
                 ) : voteStatus.hasVoted ? (
@@ -378,14 +424,14 @@ export function SessionActiveContributor({
                 )}
               </button>
               {voteStatus.inProgress && (
-                <p className="text-xs text-base-content/50 mt-2">
+                <p className="text-xs text-text-secondary mt-2">
                   {voteStatus.votesForEnd}/{voteStatus.totalVotes} votos
                 </p>
               )}
             </div>
-          </div>
-        )}
-      </main>
-    </div>
+          )}
+        </main>
+      </div>
+    </>
   );
 }
