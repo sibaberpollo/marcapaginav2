@@ -10,7 +10,7 @@ import {
 
 // Mock fetch for HTTP-based functions
 const mockFetch = vi.fn();
-global.fetch = mockFetch;
+(global as any).fetch = mockFetch;
 
 vi.mock("@/lib/sanity", () => ({
   fetchSanity: vi.fn().mockResolvedValue([]),
