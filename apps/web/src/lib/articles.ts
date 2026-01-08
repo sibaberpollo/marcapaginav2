@@ -1,3 +1,5 @@
+import path from "path";
+import fs from "fs/promises";
 import { Article, ArticleSummary, CATEGORIES, Category } from "./types/article";
 import { fetchSanity } from "./sanity";
 
@@ -317,6 +319,99 @@ export async function getAllTranstextosSlugs(): Promise<string[]> {
   } catch (error) {
     console.error("Error getting relato slugs:", error);
     return [];
+  }
+}
+
+/**
+ * Ensure content directories exist for all categories
+ */
+export async function ensureContentDirectories(): Promise<void> {
+  const contentDir = path.join(process.cwd(), "content");
+
+  // Ensure base content directory exists
+  try {
+    await fs.mkdir(contentDir, { recursive: true });
+  } catch (error) {
+    // Directory might already exist, ignore
+  }
+
+  // Ensure category directories exist
+  for (const category of CATEGORIES) {
+    const categoryDir = path.join(contentDir, category.slug);
+    try {
+      await fs.mkdir(categoryDir, { recursive: true });
+    } catch (error) {
+      // Directory might already exist, ignore
+    }
+  }
+}
+
+/**
+ * Get an article by category and slug from filesystem
+ */
+export async function getArticleByCategoryAndSlug(
+  categorySlug: string,
+  slug: string,
+): Promise<Article | null> {
+  try {
+    const filePath = path.join(
+      process.cwd(),
+      "content",
+      categorySlug,
+      `${slug}.json`,
+    );
+    const content = await fs.readFile(filePath, "utf-8");
+    return JSON.parse(content);
+  } catch (error) {
+    return null;
+  }
+}
+
+/**
+ * Save an article to filesystem
+ */
+export async function saveArticle(article: Article): Promise<boolean> {
+  try {
+    await ensureContentDirectories();
+
+    const filePath = path.join(
+      process.cwd(),
+      "content",
+      article.categorySlug,
+      `${article.slug}.json`,
+    );
+
+    await fs.writeFile(filePath, JSON.stringify(article, null, 2), "utf-8");
+    return true;
+  } catch (error) {
+    console.error("Error saving article:", error);
+    return false;
+  }
+}
+
+/**
+ * Delete an article from filesystem
+ */
+export async function deleteArticle(
+  categorySlug: string,
+  slug: string,
+): Promise<boolean> {
+  try {
+    const filePath = path.join(
+      process.cwd(),
+      "content",
+      categorySlug,
+      `${slug}.json`,
+    );
+    await fs.unlink(filePath);
+    return true;
+  } catch (error) {
+    // ENOENT means file doesn't exist, which is fine
+    if (error instanceof Error && "code" in error && error.code === "ENOENT") {
+      return false;
+    }
+    console.error("Error deleting article:", error);
+    return false;
   }
 }
 
