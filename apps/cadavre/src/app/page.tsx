@@ -45,6 +45,8 @@ interface FormErrors {
   submit?: string;
 }
 
+("use client");
+
 export default function CadavreLanding() {
   const router = useRouter();
   const formId = useId();
