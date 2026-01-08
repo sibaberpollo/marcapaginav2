@@ -14,19 +14,23 @@ import "leaflet/dist/leaflet.css";
 import { Location } from "@/lib/types/article";
 
 // Fix for default marker icons in Leaflet with Next.js
-const createNumberedIcon = (number: number, isActive: boolean = false) => {
+const createNumberedIcon = (number: number, isActive: boolean = false, compact: boolean = false) => {
+  const size = compact ? 24 : 32;
+  const fontSize = compact ? "text-xs" : "text-sm";
+
   return L.divIcon({
     className: "custom-marker",
     html: `
-      <div class="flex items-center justify-center w-8 h-8 rounded-full 
-        ${isActive ? "bg-brand-yellow text-brand-black-static scale-125" : "bg-brand-black-static text-brand-yellow"} 
-        font-bold text-sm shadow-lg transition-all duration-300 border-2 border-white">
+      <div class="flex items-center justify-center w-${compact ? 6 : 8} h-${compact ? 6 : 8} rounded-full
+        ${isActive ? "bg-brand-yellow text-brand-black-static scale-125" : "bg-brand-black-static text-brand-yellow"}
+        font-bold ${fontSize} shadow-lg transition-all duration-300 border-2 border-white"
+        style="width: ${size}px; height: ${size}px;">
         ${number}
       </div>
     `,
-    iconSize: [32, 32],
-    iconAnchor: [16, 16],
-    popupAnchor: [0, -16],
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+    popupAnchor: [0, -size / 2],
   });
 };
 
@@ -53,6 +57,7 @@ interface TravelMapProps {
   onLocationClick?: (location: Location) => void;
   showRoute?: boolean;
   routeOrder?: string[];
+  compact?: boolean;
 }
 
 export default function TravelMap({
@@ -63,6 +68,7 @@ export default function TravelMap({
   onLocationClick,
   showRoute = true,
   routeOrder,
+  compact = false,
 }: TravelMapProps) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -106,9 +112,12 @@ export default function TravelMap({
   return (
     <MapContainer
       center={mapCenter}
-      zoom={zoom}
+      zoom={compact ? zoom - 1 : zoom}
       className="w-full h-full rounded-lg"
-      scrollWheelZoom={true}
+      scrollWheelZoom={!compact}
+      dragging={!compact}
+      zoomControl={!compact}
+      attributionControl={!compact}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -144,6 +153,7 @@ export default function TravelMap({
           icon={createNumberedIcon(
             location.order,
             activeLocationId === location.id,
+            compact,
           )}
           eventHandlers={{
             click: () => onLocationClick?.(location),
