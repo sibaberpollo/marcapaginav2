@@ -497,7 +497,10 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      // Add 5 segments to allow voting
+      // Start the session first
+      store.startSession(result.session.id);
+
+      // Add 5 segments to allow voting (4 more after opening)
       for (let i = 0; i < 4; i++) {
         store.addSegment(result.session.id, {
           authorId: `author${i}`,
@@ -512,7 +515,8 @@ describe("SessionStore", () => {
         result.creatorContributor.id,
       );
 
-      expect(votePassed).toBe(false); // Need 60% of eligible voters
+      // With 1 eligible voter (the creator), 1 vote reaches 60% threshold
+      expect(votePassed).toBe(true);
 
       // Check vote status with userId to verify hasVoted
       const voteStatus = store.getVoteStatus(

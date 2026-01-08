@@ -664,7 +664,15 @@ export class SessionStore {
 
     // If passing the current turn, advance to next
     if (contributorIndex === session.currentTurnIndex) {
-      return this.advanceTurn(sessionId);
+      const advanced = this.advanceTurn(sessionId);
+      // If advanceTurn returns false (no more contributors), still return true
+      // because the pass was successful - we just can't advance further
+      if (!advanced) {
+        // Save the updated contributors before returning
+        this.contributors.set(sessionId, contributors);
+        return true;
+      }
+      return advanced;
     }
 
     this.contributors.set(sessionId, contributors);

@@ -12,7 +12,7 @@ import { describe, it, expect } from "vitest";
 const SEGMENT_OPENING_50_WORDS =
   "En el corazón de la noche, cuando las sombras bailaban silenciosamente, un personaje misterioso apareció en el horizonte. Su silueta se recortaba contra la luz de la luna, creando una atmósfera de intriga y expectativa. Los habitantes del pueblo miraban con asombro, sin comprender qué era aquello que se avecinaba.";
 const SEGMENT_VALID =
-  "La noche era oscura y llena de estrellas. El viento susurraba secretos antiguos entre los árboles.";
+  "La noche era oscura y llena de estrellas. El viento susurraba secretos antiguos entre los árboles silenciosos, llevando consigo memórias de tiempos pasados que nadie recuerda pero todos sienten en lo más profundo de sus almas inquietas y curiosas, esperando ser descubiertas alguna vez por aquellos que se atreven a escuchar.";
 const SEGMENT_SHORT = "Hola.";
 
 describe("Session API Endpoints", () => {
