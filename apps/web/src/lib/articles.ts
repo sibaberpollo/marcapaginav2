@@ -11,15 +11,15 @@ export type {
   Location,
 } from "./types/article";
 
-// Base URL for content - works both in build time and runtime
+// Base URL for fetching content from public/
 const getContentBaseUrl = () => {
-  // In build time or server-side, use absolute URL
-  if (typeof window === "undefined") {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-    return `${baseUrl}/content`;
+  // NEXT_PUBLIC_SITE_URL must be set in Vercel (e.g., https://marcapagina.page)
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  if (siteUrl) {
+    return `${siteUrl}/content`;
   }
-  // In client-side, use relative URL
-  return "/content";
+  // Fallback for local development
+  return "http://localhost:3000/content";
 };
 
 // Convert Article to ArticleSummary
@@ -45,7 +45,7 @@ function toSummary(article: Article): ArticleSummary {
 }
 
 /**
- * Fetch a JSON file from public/content/
+ * Fetch a JSON file from public/content/ via HTTP
  */
 async function fetchContentJson<T>(path: string): Promise<T | null> {
   try {
@@ -59,8 +59,7 @@ async function fetchContentJson<T>(path: string): Promise<T | null> {
 }
 
 /**
- * List all JSON files in a category directory
- * Since we can't list files from public/, we maintain a manifest
+ * Fetch manifest file to get list of articles in a category
  */
 async function fetchCategoryManifest(categorySlug: string): Promise<string[]> {
   const manifest = await fetchContentJson<{ files: string[] }>(`${categorySlug}/_manifest.json`);
