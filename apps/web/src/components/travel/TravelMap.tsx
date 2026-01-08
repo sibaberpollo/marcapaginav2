@@ -95,44 +95,62 @@ function MapInteractionDisabler({
     // Ensure map is fully initialized before accessing interaction controls
     if (!map) return;
 
-    // Deshabilitar interacciones según las props
-    if (map.dragging) {
-      if (!dragging) {
-        map.dragging.disable();
-      } else {
-        map.dragging.enable();
+    // Safely handle map interactions with try-catch for React 19 compatibility
+    try {
+      // Deshabilitar interacciones según las props
+      if (map.dragging && typeof map.dragging.disable === "function") {
+        if (!dragging) {
+          map.dragging.disable();
+        } else {
+          map.dragging.enable();
+        }
       }
-    }
 
-    if (map.touchZoom) {
-      if (!touchZoom) {
-        map.touchZoom.disable();
-      } else {
-        map.touchZoom.enable();
+      if (map.touchZoom && typeof map.touchZoom.disable === "function") {
+        if (!touchZoom) {
+          map.touchZoom.disable();
+        } else {
+          map.touchZoom.enable();
+        }
       }
-    }
 
-    if (map.doubleClickZoom) {
-      if (!doubleClickZoom) {
-        map.doubleClickZoom.disable();
-      } else {
-        map.doubleClickZoom.enable();
+      if (
+        map.doubleClickZoom &&
+        typeof map.doubleClickZoom.disable === "function"
+      ) {
+        if (!doubleClickZoom) {
+          map.doubleClickZoom.disable();
+        } else {
+          map.doubleClickZoom.enable();
+        }
       }
-    }
 
-    if (map.scrollWheelZoom) {
-      if (!scrollWheelZoom) {
-        map.scrollWheelZoom.disable();
-      } else {
-        map.scrollWheelZoom.enable();
+      if (
+        map.scrollWheelZoom &&
+        typeof map.scrollWheelZoom.disable === "function"
+      ) {
+        if (!scrollWheelZoom) {
+          map.scrollWheelZoom.disable();
+        } else {
+          map.scrollWheelZoom.enable();
+        }
       }
+    } catch (error) {
+      // Silently handle any Leaflet interaction errors for React 19 compatibility
+      console.warn("Map interaction setup failed:", error);
     }
 
     // Prevenir que el scroll se quede en el mapa - propagar a la página
-    const mapContainer =
-      map.getContainer && typeof map.getContainer === "function"
-        ? map.getContainer()
-        : null;
+    let mapContainer = null;
+    try {
+      mapContainer =
+        map && typeof map.getContainer === "function"
+          ? map.getContainer()
+          : null;
+    } catch (error) {
+      // Silently handle getContainer errors for React 19 compatibility
+      console.warn("Map container access failed:", error);
+    }
     if (mapContainer) {
       // Interceptar eventos de scroll y propagarlos al contenedor padre
       const handleWheel = (e: WheelEvent) => {
