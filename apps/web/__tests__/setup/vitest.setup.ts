@@ -18,17 +18,21 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+// Mock localStorage for testing
+const localStorageMock = {
+  getItem: vi.fn(() => "dark"),
+  setItem: vi.fn(),
+  removeItem: vi.fn(),
+  clear: vi.fn(),
+};
+
 Object.defineProperty(window, "localStorage", {
-  value: {
-    getItem: vi.fn(() => "dark"),
-    setItem: vi.fn(),
-    removeItem: vi.fn(),
-    clear: vi.fn(),
-  },
+  value: localStorageMock,
   writable: true,
 });
 
-// Type the localStorage mock for TypeScript - types are inferred from the mock setup above
+// Type assertion for TypeScript
+(window as any).localStorage = localStorageMock;
 
 window.matchMedia = vi.fn((query: string) => ({
   matches: query === "(prefers-color-scheme: dark)",
