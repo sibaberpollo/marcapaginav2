@@ -28,17 +28,7 @@ Object.defineProperty(window, "localStorage", {
   writable: true,
 });
 
-// Type the localStorage mock for TypeScript
-declare global {
-  interface Window {
-    localStorage: {
-      getItem: ReturnType<typeof vi.fn>;
-      setItem: ReturnType<typeof vi.fn>;
-      removeItem: ReturnType<typeof vi.fn>;
-      clear: ReturnType<typeof vi.fn>;
-    };
-  }
-}
+// Type the localStorage mock for TypeScript - types are inferred from the mock setup above
 
 window.matchMedia = vi.fn((query: string) => ({
   matches: query === "(prefers-color-scheme: dark)",
