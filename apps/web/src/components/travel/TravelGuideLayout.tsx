@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { TravelGuide, Location } from '@/lib/types/article';
@@ -31,6 +31,92 @@ function formatDate(isoDate: string): string {
 
 export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
     const [activeLocationId, setActiveLocationId] = useState<string | null>(null);
+    const [isMapSticky, setIsMapSticky] = useState(false);
+    const locationRefs = useRef<Map<string, HTMLElement>>(new Map());
+    const headerRef = useRef<HTMLElement>(null);
+
+    const sortedLocations = [...article.locations].sort((a, b) => a.order - b.order);
+
+    // Intersection Observer para detectar cuando el header sale del viewport (mapa se vuelve sticky)
+    useEffect(() => {
+        const headerElement = headerRef.current;
+        if (!headerElement) return;
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0,
+        };
+
+        const observerCallback = (entries: IntersectionObserverEntry[]) => {
+            entries.forEach((entry) => {
+                // Si el header no está visible, el mapa está sticky
+                setIsMapSticky(!entry.isIntersecting);
+            });
+        };
+
+        const headerObserver = new IntersectionObserver(observerCallback, observerOptions);
+        headerObserver.observe(headerElement);
+
+        return () => {
+            headerObserver.disconnect();
+        };
+    }, []);
+
+    // Intersection Observer para detectar qué sección está visible al hacer scroll
+    useEffect(() => {
+        const observerOptions = {
+            root: null,
+            rootMargin: '-100px 0px -50% 0px', // Activa cuando la sección está cerca del top (considerando el mapa sticky de 90px)
+            threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        };
+
+        const observerCallback = (entries: IntersectionObserverEntry[]) => {
+            // Encontrar la entrada más visible que esté en la parte superior del viewport
+            let mostVisibleEntry: IntersectionObserverEntry | null = null;
+            let maxRatio = 0;
+            let closestToTop = Infinity;
+
+            for (const entry of entries) {
+                if (entry.isIntersecting) {
+                    const rect = entry.boundingClientRect;
+                    const distanceFromTop = Math.abs(rect.top - 100); // 100px para considerar el mapa sticky
+
+                    // Priorizar elementos que están cerca del top y tienen buena visibilidad
+                    if (entry.intersectionRatio > 0.1 && distanceFromTop < closestToTop) {
+                        closestToTop = distanceFromTop;
+                        mostVisibleEntry = entry;
+                        maxRatio = entry.intersectionRatio;
+                    } else if (entry.intersectionRatio > maxRatio && distanceFromTop < 200) {
+                        // Si hay múltiples elementos cerca del top, elegir el más visible
+                        maxRatio = entry.intersectionRatio;
+                        mostVisibleEntry = entry;
+                    }
+                }
+            }
+
+            if (mostVisibleEntry !== null) {
+                const locationId = (mostVisibleEntry.target as HTMLElement).getAttribute('data-location-id');
+                if (locationId) {
+                    setActiveLocationId(locationId);
+                }
+            }
+        };
+
+        const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+        // Observar todas las tarjetas de ubicación
+        sortedLocations.forEach((location) => {
+            const element = locationRefs.current.get(location.id);
+            if (element) {
+                observer.observe(element);
+            }
+        });
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [sortedLocations]);
 
     const handleLocationClick = (location: Location) => {
         setActiveLocationId(location.id);
@@ -45,12 +131,18 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
         setActiveLocationId(locationId);
     };
 
-    const sortedLocations = [...article.locations].sort((a, b) => a.order - b.order);
+    const setLocationRef = (locationId: string, element: HTMLElement | null) => {
+        if (element) {
+            locationRefs.current.set(locationId, element);
+        } else {
+            locationRefs.current.delete(locationId);
+        }
+    };
 
     return (
         <main className="min-h-screen pb-20 lg:pb-0">
             {/* Hero Header */}
-            <header className="bg-brand-black-static text-brand-white-static">
+            <header ref={headerRef} className="bg-brand-black-static text-brand-white-static">
                 <div className="max-w-7xl mx-auto px-4 py-12">
                     <div className="flex items-center gap-3 mb-4">
                         <span className="badge bg-brand-yellow text-brand-black-static border-none text-xs font-bold">
@@ -81,13 +173,36 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
                 </div>
             </header>
 
+            {/* Sticky Map Header - Mobile only */}
+            <div className="lg:hidden sticky top-0 z-50 bg-bg-primary border-b border-surface-2">
+                <div 
+                    className={`w-full overflow-hidden transition-all duration-300 ease-in-out ${
+                        isMapSticky ? 'h-[150px]' : 'h-[250px]'
+                    }`}
+                >
+                    <TravelMap
+                        locations={article.locations}
+                        center={article.mapCenter}
+                        zoom={article.mapZoom || 13}
+                        activeLocationId={activeLocationId}
+                        onLocationClick={handleLocationClick}
+                        showRoute={true}
+                        routeOrder={article.suggestedRoute}
+                        scrollWheelZoom={false}
+                        dragging={false}
+                        touchZoom={false}
+                        doubleClickZoom={false}
+                    />
+                </div>
+            </div>
+
             {/* Main content with sticky map */}
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="lg:grid lg:grid-cols-5 lg:gap-8">
-                    {/* Map - Sticky on desktop */}
-                    <div className="lg:col-span-2 mb-8 lg:mb-0">
+                    {/* Map - Sticky on desktop, hidden on mobile */}
+                    <div className="hidden lg:block lg:col-span-2 mb-8 lg:mb-0">
                         <div className="lg:sticky lg:top-20 space-y-4">
-                            <div className="h-[400px] lg:h-[500px] rounded-xl overflow-hidden shadow-lg border border-surface-2">
+                            <div className="h-[500px] rounded-xl overflow-hidden shadow-lg border border-surface-2">
                                 <TravelMap
                                     locations={article.locations}
                                     center={article.mapCenter}
@@ -142,6 +257,8 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
                                 <div key={location.id}>
                                     <article
                                         id={`location-${location.id}`}
+                                        ref={(el) => setLocationRef(location.id, el)}
+                                        data-location-id={location.id}
                                         onClick={() => handleCardClick(location.id)}
                                         className={`group cursor-pointer rounded-xl overflow-hidden border transition-all duration-300
                                         ${activeLocationId === location.id

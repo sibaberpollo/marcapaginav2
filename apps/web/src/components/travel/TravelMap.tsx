@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   MapContainer,
   TileLayer,
@@ -38,8 +38,126 @@ interface MapUpdaterProps {
 function MapUpdater({ center, zoom }: MapUpdaterProps) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo(center, zoom, { duration: 0.5 });
+    // Validar que las coordenadas sean números válidos antes de usar
+    if (!Array.isArray(center) || center.length !== 2) {
+      return;
+    }
+
+    const lat = center[0];
+    const lng = center[1];
+    
+    // Validación exhaustiva
+    if (
+      typeof lat !== 'number' ||
+      typeof lng !== 'number' ||
+      isNaN(lat) ||
+      isNaN(lng) ||
+      !isFinite(lat) ||
+      !isFinite(lng) ||
+      lat < -90 ||
+      lat > 90 ||
+      lng < -180 ||
+      lng > 180
+    ) {
+      console.warn('MapUpdater: Invalid coordinates', { lat, lng, center });
+      return;
+    }
+
+    try {
+      // Verificar que el mapa esté inicializado
+      if (map && typeof map.flyTo === 'function') {
+        map.flyTo(center as [number, number], zoom, { duration: 0.5 });
+      }
+    } catch (error) {
+      // Silenciar errores de Leaflet si el mapa no está listo
+      console.warn('Error updating map center:', error);
+    }
   }, [center, zoom, map]);
+  return null;
+}
+
+interface MapInteractionDisablerProps {
+  dragging: boolean;
+  touchZoom: boolean;
+  doubleClickZoom: boolean;
+  scrollWheelZoom: boolean;
+}
+
+function MapInteractionDisabler({
+  dragging,
+  touchZoom,
+  doubleClickZoom,
+  scrollWheelZoom,
+}: MapInteractionDisablerProps) {
+  const map = useMap();
+
+  useEffect(() => {
+    // Deshabilitar interacciones según las props
+    if (!dragging) {
+      map.dragging.disable();
+    } else {
+      map.dragging.enable();
+    }
+
+    if (!touchZoom) {
+      map.touchZoom.disable();
+    } else {
+      map.touchZoom.enable();
+    }
+
+    if (!doubleClickZoom) {
+      map.doubleClickZoom.disable();
+    } else {
+      map.doubleClickZoom.enable();
+    }
+
+    if (!scrollWheelZoom) {
+      map.scrollWheelZoom.disable();
+    } else {
+      map.scrollWheelZoom.enable();
+    }
+
+    // Prevenir que el scroll se quede en el mapa - propagar a la página
+    const mapContainer = map.getContainer();
+    if (mapContainer) {
+      // Interceptar eventos de scroll y propagarlos al contenedor padre
+      const handleWheel = (e: WheelEvent) => {
+        if (!scrollWheelZoom) {
+          e.preventDefault();
+          e.stopPropagation();
+          const parent = mapContainer.parentElement;
+          if (parent) {
+            parent.scrollBy({
+              top: e.deltaY,
+              behavior: 'auto'
+            });
+          }
+        }
+      };
+
+      const handleTouchMove = (e: TouchEvent) => {
+        if (!dragging && !touchZoom) {
+          // Permitir que el scroll se propague
+          const target = e.target as HTMLElement;
+          if (target.closest('.leaflet-container')) {
+            // Solo prevenir si no es un marcador o popup
+            if (!target.closest('.leaflet-marker-icon') && !target.closest('.leaflet-popup')) {
+              // No hacer nada, dejar que el scroll se propague naturalmente
+            }
+          }
+        }
+      };
+
+      mapContainer.addEventListener('wheel', handleWheel, { passive: false });
+      mapContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
+
+      return () => {
+        mapContainer.removeEventListener('wheel', handleWheel);
+        mapContainer.removeEventListener('touchmove', handleTouchMove);
+      };
+    }
+  }, [map, dragging, touchZoom, doubleClickZoom, scrollWheelZoom]);
+
   return null;
 }
 
@@ -53,6 +171,10 @@ interface TravelMapProps {
   onLocationClick?: (location: Location) => void;
   showRoute?: boolean;
   routeOrder?: string[];
+  scrollWheelZoom?: boolean;
+  dragging?: boolean;
+  touchZoom?: boolean;
+  doubleClickZoom?: boolean;
 }
 
 export default function TravelMap({
@@ -63,6 +185,10 @@ export default function TravelMap({
   onLocationClick,
   showRoute = true,
   routeOrder,
+  scrollWheelZoom = true,
+  dragging = true,
+  touchZoom = true,
+  doubleClickZoom = true,
 }: TravelMapProps) {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -75,6 +201,132 @@ export default function TravelMap({
     return () => cancelAnimationFrame(rafId);
   }, []);
 
+  // Calculate center from locations if not provided - usando useMemo para estabilidad
+  // IMPORTANTE: Los hooks deben estar antes de cualquier early return
+  const mapCenter = useMemo((): [number, number] => {
+    // Si hay un center válido, usarlo
+    if (center && Array.isArray(center) && center.length === 2) {
+      const [lat, lng] = center;
+      if (
+        typeof lat === 'number' &&
+        typeof lng === 'number' &&
+        !isNaN(lat) &&
+        !isNaN(lng) &&
+        isFinite(lat) &&
+        isFinite(lng) &&
+        lat >= -90 &&
+        lat <= 90 &&
+        lng >= -180 &&
+        lng <= 180
+      ) {
+        return [lat, lng] as [number, number];
+      }
+    }
+
+    // Calcular desde las ubicaciones
+    if (locations && locations.length > 0) {
+      const validLocations = locations.filter(
+        (l) =>
+          l &&
+          l.coordinates &&
+          Array.isArray(l.coordinates) &&
+          l.coordinates.length === 2 &&
+          typeof l.coordinates[0] === 'number' &&
+          typeof l.coordinates[1] === 'number' &&
+          !isNaN(l.coordinates[0]) &&
+          !isNaN(l.coordinates[1]) &&
+          isFinite(l.coordinates[0]) &&
+          isFinite(l.coordinates[1]) &&
+          l.coordinates[0] >= -90 &&
+          l.coordinates[0] <= 90 &&
+          l.coordinates[1] >= -180 &&
+          l.coordinates[1] <= 180
+      );
+
+      if (validLocations.length > 0) {
+        const lats = validLocations.map((l) => l.coordinates[0]);
+        const lngs = validLocations.map((l) => l.coordinates[1]);
+        const calculatedLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+        const calculatedLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+        
+        // Validar que el cálculo no resulte en NaN
+        if (
+          !isNaN(calculatedLat) &&
+          !isNaN(calculatedLng) &&
+          isFinite(calculatedLat) &&
+          isFinite(calculatedLng)
+        ) {
+          return [calculatedLat, calculatedLng] as [number, number];
+        }
+      }
+    }
+
+    // Fallback: coordenadas por defecto (Madrid)
+    return [40.4168, -3.7038] as [number, number];
+  }, [center, locations]);
+
+  // Calculate active center - usando useMemo para estabilidad
+  const activeCenter = useMemo((): [number, number] => {
+    if (activeLocationId) {
+      const activeLocation = locations.find((l) => l.id === activeLocationId);
+      if (
+        activeLocation &&
+        activeLocation.coordinates &&
+        Array.isArray(activeLocation.coordinates) &&
+        activeLocation.coordinates.length === 2
+      ) {
+        const [lat, lng] = activeLocation.coordinates;
+        if (
+          typeof lat === 'number' &&
+          typeof lng === 'number' &&
+          !isNaN(lat) &&
+          !isNaN(lng) &&
+          isFinite(lat) &&
+          isFinite(lng) &&
+          lat >= -90 &&
+          lat <= 90 &&
+          lng >= -180 &&
+          lng <= 180
+        ) {
+          return [lat, lng] as [number, number];
+        }
+      }
+    }
+    return mapCenter;
+  }, [activeLocationId, locations, mapCenter]);
+
+  // Helper function to validate coordinates
+  const isValidCoord = (coord: unknown): coord is [number, number] => {
+    if (!Array.isArray(coord) || coord.length !== 2) return false;
+    const [lat, lng] = coord;
+    return (
+      typeof lat === 'number' &&
+      typeof lng === 'number' &&
+      !isNaN(lat) &&
+      !isNaN(lng) &&
+      isFinite(lat) &&
+      isFinite(lng) &&
+      lat >= -90 &&
+      lat <= 90 &&
+      lng >= -180 &&
+      lng <= 180
+    );
+  };
+
+  // Filter locations with valid coordinates
+  const validLocations = useMemo(() => {
+    return locations.filter((l) => l && l.coordinates && isValidCoord(l.coordinates));
+  }, [locations]);
+
+  // Create route polyline coordinates
+  const routeCoordinates = routeOrder
+    ? routeOrder
+        .map((id) => validLocations.find((l) => l.id === id))
+        .filter((l): l is Location => l !== undefined)
+        .map((l) => l.coordinates)
+    : validLocations.sort((a, b) => a.order - b.order).map((l) => l.coordinates);
+
+  // Early return después de todos los hooks
   if (!isMounted) {
     return (
       <div className="w-full h-full bg-surface-2 animate-pulse rounded-lg flex items-center justify-center">
@@ -83,32 +335,55 @@ export default function TravelMap({
     );
   }
 
-  // Calculate center from locations if not provided
-  const mapCenter =
-    center ||
-    (() => {
-      const lats = locations.map((l) => l.coordinates[0]);
-      const lngs = locations.map((l) => l.coordinates[1]);
-      return [
-        (Math.min(...lats) + Math.max(...lats)) / 2,
-        (Math.min(...lngs) + Math.max(...lngs)) / 2,
-      ] as [number, number];
-    })();
+  // Validación final antes de renderizar - asegurar que mapCenter sea válido
+  // Usar una función helper para validar coordenadas (type guard)
+  const isValidCoordinate = (coord: unknown): coord is [number, number] => {
+    if (!Array.isArray(coord) || coord.length !== 2) return false;
+    const [lat, lng] = coord;
+    return (
+      typeof lat === 'number' &&
+      typeof lng === 'number' &&
+      !isNaN(lat) &&
+      !isNaN(lng) &&
+      isFinite(lat) &&
+      isFinite(lng) &&
+      lat >= -90 &&
+      lat <= 90 &&
+      lng >= -180 &&
+      lng <= 180
+    );
+  };
 
-  // Create route polyline coordinates
-  const routeCoordinates = routeOrder
-    ? routeOrder
-        .map((id) => locations.find((l) => l.id === id))
-        .filter((l): l is Location => l !== undefined)
-        .map((l) => l.coordinates)
-    : locations.sort((a, b) => a.order - b.order).map((l) => l.coordinates);
+  const defaultCenter: [number, number] = [40.4168, -3.7038];
+
+  // Validación final antes de renderizar - asegurar que mapCenter sea válido
+  const safeMapCenter: [number, number] = isValidCoordinate(mapCenter) 
+    ? mapCenter 
+    : defaultCenter;
+
+  // Validación final para activeCenter
+  const safeActiveCenter: [number, number] = isValidCoordinate(activeCenter)
+    ? activeCenter
+    : safeMapCenter;
+
+  // Verificación final antes de renderizar - nunca renderizar con coordenadas inválidas
+  if (!isValidCoordinate(safeMapCenter)) {
+    return (
+      <div className="w-full h-full bg-surface-2 rounded-lg flex items-center justify-center">
+        <span className="text-text-secondary">Error al cargar el mapa</span>
+      </div>
+    );
+  }
 
   return (
     <MapContainer
-      center={mapCenter}
+      center={safeMapCenter}
       zoom={zoom}
       className="w-full h-full rounded-lg"
-      scrollWheelZoom={true}
+      scrollWheelZoom={scrollWheelZoom}
+      dragging={dragging}
+      touchZoom={touchZoom}
+      doubleClickZoom={doubleClickZoom}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -116,13 +391,15 @@ export default function TravelMap({
       />
 
       <MapUpdater
-        center={
-          activeLocationId
-            ? locations.find((l) => l.id === activeLocationId)?.coordinates ||
-              mapCenter
-            : mapCenter
-        }
+        center={safeActiveCenter}
         zoom={activeLocationId ? 15 : zoom}
+      />
+
+      <MapInteractionDisabler
+        dragging={dragging}
+        touchZoom={touchZoom}
+        doubleClickZoom={doubleClickZoom}
+        scrollWheelZoom={scrollWheelZoom}
       />
 
       {showRoute && routeCoordinates.length > 1 && (
@@ -137,7 +414,7 @@ export default function TravelMap({
         />
       )}
 
-      {locations.map((location) => (
+      {validLocations.map((location) => (
         <Marker
           key={location.id}
           position={location.coordinates}
