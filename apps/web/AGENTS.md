@@ -150,10 +150,47 @@ pnpm run test         # Run tests (all packages)
 pnpm run check-types  # TypeScript check (all packages)
 ```
 
+## ARTICLES SYSTEM
+
+Articles are stored as JSON files in `public/content/{category}/` and loaded via fetch.
+
+**Structure:**
+```
+public/content/
+├── a-pie-de-pagina/
+│   ├── _manifest.json          # List of files: {"files": ["article.json"]}
+│   ├── el-viejo-y-el-ron.json
+│   └── la-paris-de-hemingway.json
+├── listas/
+│   ├── _manifest.json
+│   └── ...
+└── {other-categories}/
+```
+
+**To publish a new article:**
+1. Create JSON file in `public/content/{category}/slug.json`
+2. Add filename to `_manifest.json` in that category
+3. Push to deploy
+
+**Article types:**
+- `standard` — Default article
+- `travel-guide` — Has `locations[]` with coordinates for maps
+- `recipe` — Has `ingredients[]`, `steps[]`, `literaryContent`
+- `meme` — Has `memeImageUrl`
+
+**Key files:**
+- `src/lib/articles.ts` — Fetch and query articles
+- `src/lib/types/article.ts` — Type definitions
+- `src/app/articulo/[slug]/page.tsx` — Article page
+- `src/components/recipe/RecipeLayout.tsx` — Recipe layout
+- `src/components/travel/TravelGuideLayout.tsx` — Travel guide layout
+
+**Fallback:** If article not found in local files, searches Sanity CMS (for Transtextos/relatos).
+
 ## GOTCHAS
 
 1. **Fonts**: Inter (body) + JetBrains Mono (code) loaded via `next/font/google`
 2. **Language**: `<html lang="es">` — Spanish content
-3. **Data**: All mock data hardcoded in components — no API layer
-4. **Path alias**: `@/*` resolves to `./src/*`
-5. **Shared packages**: @marcapagina/ts-config, @marcapagina/eslint-config, @marcapagina/ds available
+3. **Path alias**: `@/*` resolves to `./src/*`
+4. **Shared packages**: @marcapagina/ts-config, @marcapagina/eslint-config, @marcapagina/ds available
+5. **Articles**: Stored in `public/content/`, require `_manifest.json` per category
