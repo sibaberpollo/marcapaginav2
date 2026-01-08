@@ -20,13 +20,14 @@ marcapagina/
 
 ## WHERE TO LOOK
 
-| Task | Location | Notes |
-|------|----------|-------|
-| Add pages | `apps/web/src/app/` | App Router |
-| Add components | `apps/web/src/components/` | Barrel export via index.ts |
-| Modify theme | `apps/web/src/app/globals.css` | CSS variables for light/dark |
-| Build config | `apps/web/next.config.ts` | Currently minimal |
-| Monorepo tasks | `turbo.json` | build, dev, lint, test |
+| Task              | Location                       | Notes                        |
+| ----------------- | ------------------------------ | ---------------------------- |
+| Add pages         | `apps/web/src/app/`            | App Router                   |
+| Add components    | `apps/web/src/components/`     | Barrel export via index.ts   |
+| Modify theme      | `apps/web/src/app/globals.css` | CSS variables for light/dark |
+| Build config      | `apps/web/next.config.ts`      | Currently minimal            |
+| Monorepo tasks    | `turbo.json`                   | build, dev, lint, test       |
+| Add/edit articles | `apps/web/content/{category}/` | JSON files by category slug  |
 
 ## CRITICAL RULES
 
