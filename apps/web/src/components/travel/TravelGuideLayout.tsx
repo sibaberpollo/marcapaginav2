@@ -4,6 +4,7 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { TravelGuide, Location } from '@/lib/types/article';
+import { Avatar } from '@/components';
 
 // Dynamic import for the map to avoid SSR issues with Leaflet
 const TravelMap = dynamic(() => import('./TravelMap'), {
@@ -69,7 +70,7 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
 
                     {/* Author and meta */}
                     <div className="flex items-center gap-4">
-                        <div className={`w-10 h-10 ${article.author.avatar} rounded-full`}></div>
+                        <Avatar name={article.author.name} size="md" className="bg-brand-yellow text-brand-black-static" />
                         <div>
                             <div className="font-medium">{article.author.name}</div>
                             <div className="text-sm text-gray-400">
@@ -284,7 +285,7 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
                         {/* Author bio */}
                         <div className="mt-8 p-6 bg-bg-primary rounded-lg border border-surface-2">
                             <div className="flex items-start gap-4">
-                                <div className={`w-16 h-16 ${article.author.avatar} rounded-full flex-shrink-0`}></div>
+                                <Avatar name={article.author.name} size="xl" className="bg-brand-yellow text-brand-black-static" />
                                 <div>
                                     <h3 className="font-bold text-lg">{article.author.name}</h3>
                                     <p className="text-sm text-brand-gray mb-3">{article.author.handle}</p>
