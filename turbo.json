@@ -11,7 +11,8 @@
       "persistent": true
     },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["^lint"],
+      "inputs": ["$TURBO_DEFAULT$", "!.github/workflows/ci.yml"]
     },
     "test": {
       "dependsOn": [],
