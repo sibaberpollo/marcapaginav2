@@ -128,7 +128,7 @@ function buildSessionUrl(
   linkType: "contributor" | "observer",
   token: string,
 ): string {
-  return `${baseUrl}/cadavre/session/${sessionId}/${linkType}/${token}`;
+  return `${baseUrl}/session/${sessionId}/${linkType}/${token}`;
 }
 
 /**

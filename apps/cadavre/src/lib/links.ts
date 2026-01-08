@@ -12,14 +12,10 @@ import type { NextRequest } from "next/server";
 // =============================================================================
 
 /**
- * Base path for all Cadavre routes.
- */
-export const CADAVRE_PATH = "/cadavre";
-
-/**
  * Path segment for session routes.
+ * Note: No basePath configured, so routes are directly under root.
  */
-export const SESSION_PATH = `${CADAVRE_PATH}/session`;
+export const SESSION_PATH = "/session";
 
 /**
  * Link type identifier for contributors.
@@ -90,7 +86,7 @@ export function getBaseUrl(request?: NextRequest): string {
  * @example
  * ```typescript
  * const url = buildContributorLink("abc12345", "token123");
- * // Returns: "http://localhost:3001/cadavre/session/abc12345/contributor/token123"
+ * // Returns: "http://localhost:3001/session/abc12345/contributor/token123"
  * ```
  */
 export function buildContributorLink(
@@ -113,7 +109,7 @@ export function buildContributorLink(
  * @example
  * ```typescript
  * const url = buildObserverLink("abc12345", "token456");
- * // Returns: "http://localhost:3001/cadavre/session/abc12345/observer/token456"
+ * // Returns: "http://localhost:3001/session/abc12345/observer/token456"
  * ```
  */
 export function buildObserverLink(
@@ -158,10 +154,10 @@ export function buildSessionLinks(
 
 /**
  * Regular expression for matching session URL pathnames.
- * Matches: /cadavre/session/{sessionId}/{linkType}/{token}
+ * Matches: /session/{sessionId}/{linkType}/{token}
  */
 const SESSION_URL_PATTERN =
-  /^\/cadavre\/session\/([A-Za-z0-9]{8})\/(contributor|observer)\/([A-Za-z0-9]{16})$/;
+  /^\/session\/([A-Za-z0-9]{8})\/(contributor|observer)\/([A-Za-z0-9]{16})$/;
 
 /**
  * Parse a session URL pathname into its components.
@@ -171,19 +167,17 @@ const SESSION_URL_PATTERN =
  *
  * @example
  * ```typescript
- * const result = parseSessionUrl("/cadavre/session/abc12345/contributor/token123");
- * // Returns: { sessionId: "abc12345", linkType: "contributor", token: "token123" }
+ * const result = parseSessionUrl("/session/abc12345/contributor/token123456789");
+ * // Returns: { sessionId: "abc12345", linkType: "contributor", token: "token123456789" }
  * ```
  *
  * @example
  * ```typescript
- * const invalid = parseSessionUrl("/cadavre/session/abc/contributor/token");
+ * const invalid = parseSessionUrl("/session/abc/contributor/token");
  * // Returns: null (sessionId must be 8 chars, token must be 16 chars)
  * ```
  */
-export function parseSessionUrl(
-  pathname: string,
-): {
+export function parseSessionUrl(pathname: string): {
   sessionId: string;
   linkType: "contributor" | "observer";
   token: string;
