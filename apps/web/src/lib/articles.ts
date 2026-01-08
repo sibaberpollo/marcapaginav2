@@ -63,7 +63,9 @@ async function fetchContentJson<T>(path: string): Promise<T | null> {
  * Fetch manifest file to get list of articles in a category
  */
 async function fetchCategoryManifest(categorySlug: string): Promise<string[]> {
-  const manifest = await fetchContentJson<{ files: string[] }>(`${categorySlug}/_manifest.json`);
+  const manifest = await fetchContentJson<{ files: string[] }>(
+    `${categorySlug}/_manifest.json`,
+  );
   return manifest?.files || [];
 }
 
@@ -74,32 +76,15 @@ export async function getAllArticles(): Promise<ArticleSummary[]> {
   const articles: ArticleSummary[] = [];
 
   for (const category of CATEGORIES) {
-    const categoryArticles = await getArticlesByCategory(category.slug);
-    articles.push(...categoryArticles);
-  }
+    const files = await fetchCategoryManifest(category.slug);
 
-  // Sort by published date (newest first)
-  articles.sort(
-    (a, b) =>
-      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-  );
-
-  return articles;
-}
-
-/**
- * Get articles by category
- */
-export async function getArticlesByCategory(
-  categorySlug: string,
-): Promise<ArticleSummary[]> {
-  const files = await fetchCategoryManifest(categorySlug);
-  const articles: ArticleSummary[] = [];
-
-  for (const file of files) {
-    const article = await fetchContentJson<Article>(`${categorySlug}/${file}`);
-    if (article) {
-      articles.push(toSummary(article));
+    for (const file of files) {
+      const article = await fetchContentJson<Article>(
+        `${category.slug}/${file}`,
+      );
+      if (article) {
+        articles.push(toSummary(article));
+      }
     }
   }
 
@@ -118,7 +103,9 @@ export async function getArticlesByCategory(
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
   // Search in all categories
   for (const category of CATEGORIES) {
-    const article = await fetchContentJson<Article>(`${category.slug}/${slug}.json`);
+    const article = await fetchContentJson<Article>(
+      `${category.slug}/${slug}.json`,
+    );
     if (article) {
       return article;
     }
@@ -131,36 +118,6 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
   }
 
   return null;
-}
-
-/**
- * Get a single article by category and slug
- */
-export async function getArticleByCategoryAndSlug(
-  categorySlug: string,
-  slug: string,
-): Promise<Article | null> {
-  return fetchContentJson<Article>(`${categorySlug}/${slug}.json`);
-}
-
-/**
- * Save an article - writes to public/content/ and updates manifest
- * Note: This only works in development, not in production
- */
-export async function saveArticle(article: Article): Promise<boolean> {
-  console.warn("saveArticle requires server-side file access - use in development only");
-  return false;
-}
-
-/**
- * Delete an article
- */
-export async function deleteArticle(
-  categorySlug: string,
-  slug: string,
-): Promise<boolean> {
-  console.warn("deleteArticle requires server-side file access - use in development only");
-  return false;
 }
 
 /**
@@ -210,8 +167,8 @@ export async function getCategoriesWithCounts(): Promise<
 > {
   const categoriesWithCounts = await Promise.all(
     CATEGORIES.map(async (category) => {
-      const articles = await getArticlesByCategory(category.slug);
-      return { ...category, count: articles.length };
+      const files = await fetchCategoryManifest(category.slug);
+      return { ...category, count: files.length };
     }),
   );
 
@@ -297,11 +254,14 @@ async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
       content: safeContent,
       author: {
         name: result.author?.name || defaultAuthor.name,
-        handle: result.author?.handle ? `@${result.author.handle}` : defaultAuthor.handle,
+        handle: result.author?.handle
+          ? `@${result.author.handle}`
+          : defaultAuthor.handle,
         avatar: "bg-brand-gray",
       },
       category: result.category || (isTranstextos ? "Transtextos" : "Relato"),
-      categorySlug: result.categorySlug || (isTranstextos ? "transtextos" : "relatos"),
+      categorySlug:
+        result.categorySlug || (isTranstextos ? "transtextos" : "relatos"),
       tags: (result.tags || []).filter((t): t is string =>
         Boolean(t && t.length > 0),
       ),
