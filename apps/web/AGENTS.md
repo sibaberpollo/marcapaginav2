@@ -194,3 +194,10 @@ public/content/
 3. **Path alias**: `@/*` resolves to `./src/*`
 4. **Shared packages**: @marcapagina/ts-config, @marcapagina/eslint-config, @marcapagina/ds available
 5. **Articles**: Stored in `public/content/`, require `_manifest.json` per category
+
+
+## SUBAGENT DELEGATION
+
+There are a number of specialized subagents available for delegation of tasks. **Don't assume anything**. Delegate them to one or more of the subagents for a quicker and efficient solution.
+
+Subagents should ultrathink their approach before proposing a solution. **Always**.
