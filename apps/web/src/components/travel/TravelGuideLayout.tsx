@@ -32,6 +32,7 @@ function formatDate(isoDate: string): string {
 export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
     const [activeLocationId, setActiveLocationId] = useState<string | null>(null);
     const [isMapSticky, setIsMapSticky] = useState(false);
+    const [isMapCollapsed, setIsMapCollapsed] = useState(false);
     const locationRefs = useRef<Map<string, HTMLElement>>(new Map());
     const headerRef = useRef<HTMLElement>(null);
 
@@ -175,9 +176,9 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
 
             {/* Sticky Map Header - Mobile only */}
             <div className="lg:hidden sticky top-0 z-50 bg-bg-primary border-b border-surface-2">
-                <div 
+                <div
                     className={`w-full overflow-hidden transition-all duration-300 ease-in-out ${
-                        isMapSticky ? 'h-[150px]' : 'h-[250px]'
+                        isMapCollapsed ? 'h-0' : isMapSticky ? 'h-[150px]' : 'h-[250px]'
                     }`}
                 >
                     <TravelMap
@@ -194,6 +195,22 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
                         doubleClickZoom={false}
                     />
                 </div>
+                {/* Toggle button */}
+                <button
+                    onClick={() => setIsMapCollapsed(!isMapCollapsed)}
+                    className="w-full py-2 flex items-center justify-center gap-2 text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+                    aria-label={isMapCollapsed ? 'Mostrar mapa' : 'Ocultar mapa'}
+                >
+                    <svg
+                        className={`w-4 h-4 transition-transform duration-300 ${isMapCollapsed ? 'rotate-180' : ''}`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 15l7-7 7 7" />
+                    </svg>
+                    <span>{isMapCollapsed ? 'Mostrar mapa' : 'Ocultar mapa'}</span>
+                </button>
             </div>
 
             {/* Main content with sticky map */}
