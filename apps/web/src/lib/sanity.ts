@@ -24,9 +24,8 @@ export async function fetchSanity<T>(
   params: Record<string, unknown> = {},
 ): Promise<T> {
   if (!projectId || !dataset) {
-    // Return appropriate empty result when env vars are missing (e.g., during build without credentials)
-    // For arrays, return empty array; for objects, return empty object
-    return (Array.isArray([] as unknown as T) ? [] : {}) as T;
+    // Return empty result when env vars are missing (e.g., during build without credentials)
+    return {} as T;
   }
 
   const url = new URL(
@@ -93,9 +92,7 @@ export interface SanityAuthor {
  * Busca un autor en Sanity por nombre (case-insensitive).
  * Retorna null si no existe o si Sanity no está configurado.
  */
-export async function getAuthorByName(
-  name: string,
-): Promise<SanityAuthor | null> {
+export async function getAuthorByName(name: string): Promise<SanityAuthor | null> {
   if (!projectId || !dataset) {
     return null;
   }

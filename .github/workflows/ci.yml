@@ -137,9 +137,6 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Check build output
-        run: ls -la apps/web/.next/
-
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
         with:
