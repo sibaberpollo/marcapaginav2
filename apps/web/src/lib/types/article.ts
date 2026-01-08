@@ -23,7 +23,7 @@ export interface Article {
     likes?: number;
     comments?: number;
     // Optional: article type for special layouts
-    type?: 'standard' | 'travel-guide' | 'meme';
+    type?: 'standard' | 'travel-guide' | 'meme' | 'recipe';
     memeImageUrl?: string;
 }
 
@@ -55,6 +55,43 @@ export interface TravelGuide extends Article {
 // Type guard to check if an article is a travel guide
 export function isTravelGuide(article: Article): article is TravelGuide {
     return article.type === 'travel-guide';
+}
+
+// Ingredient for recipes
+export interface Ingredient {
+    name: string;
+    quantity?: string;
+    unit?: string;
+    notes?: string;
+}
+
+// Recipe step
+export interface RecipeStep {
+    order: number;
+    instruction: string;
+    literaryNote?: string; // Optional literary content to interweave
+}
+
+// Recipe extends Article with cooking/drink specific fields
+export interface Recipe extends Article {
+    type: 'recipe';
+    recipeType: 'drink' | 'food'; // Type of recipe
+    ingredients: Ingredient[];
+    steps: RecipeStep[];
+    servings?: string;
+    prepTime?: string;
+    utensils?: string[];
+    featuredImage?: string;
+    relatedAuthor?: {
+        name: string;
+        bio?: string; // Brief Wikipedia-style bio
+    };
+    literaryContent: string; // The main literary essay content (HTML)
+}
+
+// Type guard to check if an article is a recipe
+export function isRecipe(article: Article): article is Recipe {
+    return article.type === 'recipe';
 }
 
 export interface ArticleSummary {

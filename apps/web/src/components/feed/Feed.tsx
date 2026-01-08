@@ -1,5 +1,6 @@
 import FeedTabs from './FeedTabs';
 import FeaturedMapPost from './FeaturedMapPost';
+import FeaturedRecipePost from './FeaturedRecipePost';
 import LatestNarrativaPost from './LatestNarrativaPost';
 import PostCard from './PostCard';
 import ListCard from './ListCard';
@@ -9,6 +10,20 @@ export default function Feed() {
   return (
     <div className="space-y-4">
       <FeedTabs />
+
+      {/* Featured Recipe - El viejo y el ron */}
+      <FeaturedRecipePost
+        title="El viejo y el ron"
+        excerpt="Ernest Hemingway y el mojito cubano: una receta literaria donde el ron, la menta y la genialidad se mezclan en cada sorbo."
+        author="Mirco Ferri"
+        date="11 Jun"
+        likes={0}
+        comments={0}
+        readTime="6 min"
+        slug="el-viejo-y-el-ron"
+        badge="A pie de página"
+        recipeType="drink"
+      />
 
       {/* Featured Travel Guide */}
       <FeaturedMapPost

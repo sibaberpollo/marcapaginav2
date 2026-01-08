@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import TravelGuideLayout from '@/components/travel/TravelGuideLayout';
+import { notFound, redirect } from 'next/navigation';
 import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug, getAllArticles, getAllTranstextosSlugs } from '@/lib/articles';
-import { isTravelGuide, TravelGuide } from '@/lib/types/article';
+import { isTravelGuide, isRecipe } from '@/lib/types/article';
 import RelatoHeader from '@/components/layout/RelatoHeader';
 import { Avatar } from '@/components';
 
@@ -93,9 +92,10 @@ export default async function RelatoPage({ params }: PageProps) {
     notFound();
   }
 
-  // Si llega una guía, reusa el layout de viaje.
-  if (isTravelGuide(article)) {
-    return <TravelGuideLayout article={article as TravelGuide} />;
+  // Si es contenido de "A pie de página" (guías de viaje, recetas), redirigir a /articulo/
+  // La ruta /relato/ es exclusiva para narrativa
+  if (isTravelGuide(article) || isRecipe(article)) {
+    redirect(`/articulo/${slug}`);
   }
 
   return (

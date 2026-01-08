@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import TravelGuideLayout from '@/components/travel/TravelGuideLayout';
+import RecipeLayout from '@/components/recipe/RecipeLayout';
 import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug, getRelatedArticles, getAllArticles } from '@/lib/articles';
-import { isTravelGuide, TravelGuide } from '@/lib/types/article';
+import { isTravelGuide, TravelGuide, isRecipe, Recipe } from '@/lib/types/article';
 import { ArticlePageLayout, Avatar } from '@/components';
 
 interface PageProps {
@@ -84,6 +85,11 @@ export default async function ArticlePage({ params }: PageProps) {
   // Check if this is a travel guide and render special layout
   if (isTravelGuide(article)) {
     return <TravelGuideLayout article={article as TravelGuide} />;
+  }
+
+  // Check if this is a recipe and render special layout
+  if (isRecipe(article)) {
+    return <RecipeLayout article={article as Recipe} />;
   }
 
   const relatedArticles = await getRelatedArticles(article, 4);

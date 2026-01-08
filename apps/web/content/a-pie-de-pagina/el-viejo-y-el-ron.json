@@ -1,0 +1,90 @@
+{
+    "slug": "el-viejo-y-el-ron",
+    "title": "El viejo y el ron",
+    "excerpt": "Ernest Hemingway y el mojito cubano: una receta literaria donde el ron, la menta y la genialidad se mezclan en cada sorbo.",
+    "type": "recipe",
+    "recipeType": "drink",
+    "content": "",
+    "author": {
+        "name": "Mirco Ferri",
+        "handle": "@mircoferri",
+        "avatar": "bg-amber-200",
+        "bio": "Escritor y cronista gastronómico. Explora las conexiones entre literatura, comida y bebida."
+    },
+    "category": "A pie de página",
+    "categorySlug": "a-pie-de-pagina",
+    "tags": [
+        "recetas",
+        "hemingway",
+        "cuba",
+        "literatura",
+        "tragos",
+        "mojito"
+    ],
+    "featured": true,
+    "publishedAt": "2024-06-11T12:00:00.000Z",
+    "readTime": "6 min",
+    "likes": 0,
+    "comments": 0,
+    "featuredImage": "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=800&q=80",
+    "servings": "1 persona",
+    "prepTime": "5 minutos",
+    "ingredients": [
+        {
+            "name": "hojas de hierbabuena",
+            "quantity": "5-7",
+            "notes": "1 ramita"
+        },
+        {
+            "name": "jugo de limón",
+            "quantity": "1",
+            "unit": "copita"
+        },
+        {
+            "name": "azúcar blanca",
+            "notes": "al gusto"
+        },
+        {
+            "name": "hielo picado"
+        },
+        {
+            "name": "ron blanco",
+            "quantity": "1/2",
+            "unit": "taza"
+        },
+        {
+            "name": "agua carbonatada",
+            "quantity": "1/2",
+            "unit": "taza",
+            "notes": "soda o agua mineral con gas"
+        }
+    ],
+    "utensils": [
+        "Mortero",
+        "Cuchara",
+        "Mezclador",
+        "1 vaso alto"
+    ],
+    "relatedAuthor": {
+        "name": "Ernest Hemingway",
+        "bio": "Ernest Miller Hemingway (Oak Park, Illinois, 21 de julio de 1899 – Ketchum, Idaho, 2 de julio de 1961) fue un escritor y periodista estadounidense, y uno de los principales novelistas y cuentistas del siglo XX. Ganó el Premio Pulitzer en 1953 por El viejo y el mar y al año siguiente el Premio Nobel de Literatura por su obra completa."
+    },
+    "steps": [
+        {
+            "order": 1,
+            "instruction": "Triturar en un mortero las hojas de hierbabuena, el azúcar y el jugo de limón, hasta sacar todos los jugos y mezclarlos bien.",
+            "literaryNote": "<p class=\"text-lg leading-relaxed\">El primer contacto deja una marca indeleble, que va a privar sobre todas las percepciones posteriores. Y, si pasa en la infancia, la impresión es tal vez más profunda. Por lo menos eso suele sucederme: ciertos objetos, personajes, lugares, se me quedaron registrados en la memoria de determinada manera, y a partir de ese momento pasaron a ser así para mí, aunque la realidad sea otra. Por ejemplo, Hemingway. Lo asocio siempre con la primera imagen que le vi: un señor barbudo, canoso, de mirada amable y escrutadora. Es el hombre mayor de la foto que acompañaba el primer artículo que leí sobre él, cuando tenía unos 10 u 11 años. Del artículo no recuerdo mucho; sin embargo, la imagen fue tan poderosa que se me instaló en el cerebro de manera permanente.</p>"
+        },
+        {
+            "order": 2,
+            "instruction": "Luego se pone la mezcla en un vaso alto, se añade el ron y se remueve muy bien todo, agregando al final los cubos de hielo, preferiblemente en estilo frappé (picado).",
+            "literaryNote": "<p class=\"text-lg leading-relaxed\">Un viejo: así es en mi percepción. Errada: en realidad, no llegó a cumplir los 62 años, una edad que dista mucho de la ancianidad. Se puede decir que murió prematuramente, incluso para los estándares de la época. Pero, a despecho de su duración, la cantidad de experiencias que acumuló a lo largo de su vida fue tal que hubiera podido servir para llenar 80 o 90 años: desde conductor de ambulancias en la Primera Guerra Mundial, pasando por su estadía en Francia donde formó parte de la infame generación perdida, corresponsal en la guerra civil española, cazador en África, autonombrado capitán de tropas en la Segunda Guerra Mundial, pescador en Cuba. Estuvo al borde de la muerte en por lo menos un par de oportunidades. Amante de los deportes extremos, boxeador aficionado, jugador compulsivo. Y bebedor. Gran bebedor. Protagonista de borracheras memorables, en donde se perdieron amistades y otras se volvieron mucho más sólidas. Cabe preguntarse si fue tan buen escritor gracias a la bebida o a pesar de ella.</p>"
+        },
+        {
+            "order": 3,
+            "instruction": "Por último, se agrega el agua mineral con gas o agua carbonatada.",
+            "literaryNote": "<p class=\"text-lg leading-relaxed\">Hemingway echó raíces en Cuba durante los últimos quince años de su vida. Tal vez quiso vivir de cerca la gesta que los barbudos de Sierra Maestra libraban contra Batista, aunque hay voces maliciosas que insinúan que su única motivación era pescar agujas en el mar Caribe, con la comodidad que le brindaba el trópico. Lo cierto es que se encontraba a gusto en la isla, y asimiló sin problema alguno sus costumbres y sabores. Entre ellos, el ron. Dada su inveterada afición a todo lo que tuviera que ver con las bebidas alcohólicas, era inevitable que se volviera asiduo al destilado de la caña, producto que alcanzó en Cuba su máxima calidad. ¿Y cuál mejor manera de tomarlo que en esa combinación refrescante de azúcar, limón, menta y soda? Quiero creer que lo de Ernest y el mojito fue amor a primera vista. Y de por vida. Acodado en la barra de La Bodeguita del Medio, solo o acompañado, a media luz, escribiendo el borrador de El viejo y el mar, el vaso nunca lleno, el vaso nunca vacío. La hojita de menta masticada al descuido, el calor del ron recorriendo su interior, la chispa de la genialidad en cada línea que ensucia de tinta el papel rayado. Ya va, ya va. Ernest escribía en los locales públicos cuando vivía en París y era pobre, tan pobre como para no poder pagar un apartamento con calefacción, y en invierno para no congelarse iba a bares en donde lo dejaban estar si pedía una copa eventual y se instalaba a escribir en una mesita del fondo, en donde no molestara mucho. Ya para cuando vivía en Cuba era bastante rico, tanto como para tener una mansión con piscina, y había adquirido el hábito de escribir en las mañanas, en una máquina Remington, tal vez empantuflado, seguro en pijamas. E iba a la Bodeguita tan solo para impregnarse del color local necesario para su relato, o más seguramente para ligar con alguna mulata risueña y licenciosa, cuando su esposa no estaba cerca. Porque para él nunca fue problema conseguir compañía femenina: tenía ángel y cuentos de sobra para ello.</p>"
+        }
+    ],
+    "literaryContent": "<p class=\"text-lg leading-relaxed mb-6\">Hemingway fue más personaje que escritor. O mejor dicho, permítanme refrasear: Hemingway fue el mejor personaje de Hemingway. Cada novela suya tiene algún rasgo autobiográfico, así sea de soslayo. Tal vez vivió su vida como se la imaginó para sus obras. Trató de habitar siempre en parajes exóticos, ajenos a su natal Illinois; se involucró en situaciones riesgosas durante toda su existencia; trató de absorber para sí toda la riqueza de los hechos que presenció o protagonizó a lo largo de su vida.</p><p class=\"text-lg leading-relaxed\">Y cuando determinó que ya había experimentado todo lo que podía, o necesitaba, se descargó un tiro en la cabeza. Así de sencillo. A lo mejor hubiera preferido que ese proyectil proviniera del arma de algún enemigo de la causa que estuviera defendiendo en ese momento, pero estaba ya demasiado cansado como para embarcarse en otra aventura. Así que se fue a Ohio, aceitó su fiel escopeta con la cual abatiera a centenares de piezas de cacería, le introdujo una bala, y combatió la última batalla de su guerra particular: aquella contra una vida ordinaria y aburrida.</p>"
+}
