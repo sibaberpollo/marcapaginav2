@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { TravelGuide, Location } from '@/lib/types/article';
@@ -9,8 +9,8 @@ import { TravelGuide, Location } from '@/lib/types/article';
 const TravelMap = dynamic(() => import('./TravelMap'), {
     ssr: false,
     loading: () => (
-        <div className="w-full h-20 lg:h-full bg-surface-2 animate-pulse rounded-lg flex items-center justify-center">
-            <span className="text-text-secondary text-sm">Cargando mapa...</span>
+        <div className="w-full h-[400px] lg:h-full bg-surface-2 animate-pulse rounded-lg flex items-center justify-center">
+            <span className="text-text-secondary">Cargando mapa...</span>
         </div>
     ),
 });
@@ -30,77 +30,21 @@ function formatDate(isoDate: string): string {
 
 export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
     const [activeLocationId, setActiveLocationId] = useState<string | null>(null);
-    const [isUserScrolling, setIsUserScrolling] = useState(false);
-    const locationRefs = useRef<Map<string, HTMLElement>>(new Map());
-    const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-    const sortedLocations = [...article.locations].sort((a, b) => a.order - b.order);
-
-    // Track scroll position to highlight the nearest visible location
-    useEffect(() => {
-        const handleScroll = () => {
-            // Skip auto-detection if user just clicked a location
-            if (isUserScrolling) return;
-
-            const headerOffset = 160; // Header + sticky map height
-            let closestLocation: string | null = null;
-            let closestDistance = Infinity;
-
-            locationRefs.current.forEach((element, id) => {
-                const rect = element.getBoundingClientRect();
-                const distance = Math.abs(rect.top - headerOffset);
-
-                // Only consider locations that are visible or about to be visible
-                if (rect.top < window.innerHeight && rect.bottom > headerOffset) {
-                    if (distance < closestDistance) {
-                        closestDistance = distance;
-                        closestLocation = id;
-                    }
-                }
-            });
-
-            if (closestLocation && closestLocation !== activeLocationId) {
-                setActiveLocationId(closestLocation);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, [activeLocationId, isUserScrolling]);
 
     const handleLocationClick = (location: Location) => {
-        setIsUserScrolling(true);
         setActiveLocationId(location.id);
-
         // Scroll to the location card
-        const element = locationRefs.current.get(location.id);
+        const element = document.getElementById(`location-${location.id}`);
         if (element) {
-            const headerOffset = 160; // Header + sticky map
-            const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({ top: elementPosition - headerOffset, behavior: 'smooth' });
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-
-        // Reset user scrolling flag after animation
-        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-        scrollTimeoutRef.current = setTimeout(() => setIsUserScrolling(false), 1000);
     };
 
     const handleCardClick = (locationId: string) => {
-        setIsUserScrolling(true);
         setActiveLocationId(locationId);
-
-        // Reset user scrolling flag after a short delay
-        if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-        scrollTimeoutRef.current = setTimeout(() => setIsUserScrolling(false), 1000);
     };
 
-    const setLocationRef = (id: string) => (el: HTMLElement | null) => {
-        if (el) {
-            locationRefs.current.set(id, el);
-        } else {
-            locationRefs.current.delete(id);
-        }
-    };
+    const sortedLocations = [...article.locations].sort((a, b) => a.order - b.order);
 
     return (
         <main className="min-h-screen pb-20 lg:pb-0">
@@ -136,29 +80,13 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
                 </div>
             </header>
 
-            {/* Mobile Sticky Map - 80px height, sticks below header */}
-            <div className="lg:hidden sticky top-[60px] z-40 bg-bg-page border-b border-surface-2 shadow-sm">
-                <div className="h-20 w-full">
-                    <TravelMap
-                        locations={article.locations}
-                        center={article.mapCenter}
-                        zoom={article.mapZoom || 13}
-                        activeLocationId={activeLocationId}
-                        onLocationClick={handleLocationClick}
-                        showRoute={true}
-                        routeOrder={article.suggestedRoute}
-                        compact={true}
-                    />
-                </div>
-            </div>
-
             {/* Main content with sticky map */}
             <div className="max-w-7xl mx-auto px-4 py-8">
                 <div className="lg:grid lg:grid-cols-5 lg:gap-8">
-                    {/* Map - Sticky on desktop only */}
-                    <div className="hidden lg:block lg:col-span-2">
+                    {/* Map - Sticky on desktop */}
+                    <div className="lg:col-span-2 mb-8 lg:mb-0">
                         <div className="lg:sticky lg:top-20 space-y-4">
-                            <div className="h-[500px] rounded-xl overflow-hidden shadow-lg border border-surface-2">
+                            <div className="h-[400px] lg:h-[500px] rounded-xl overflow-hidden shadow-lg border border-surface-2">
                                 <TravelMap
                                     locations={article.locations}
                                     center={article.mapCenter}
@@ -210,7 +138,7 @@ export default function TravelGuideLayout({ article }: TravelGuideLayoutProps) {
                         {/* Location Cards */}
                         <div className="space-y-8">
                             {sortedLocations.map((location) => (
-                                <div key={location.id} ref={setLocationRef(location.id)}>
+                                <div key={location.id}>
                                     <article
                                         id={`location-${location.id}`}
                                         onClick={() => handleCardClick(location.id)}
