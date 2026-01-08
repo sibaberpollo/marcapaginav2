@@ -17,6 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Delete unused files from base branch
+        run: rm -f apps/web/src/components/feed/CategoryFeed.tsx apps/web/src/components/feed/FeaturedRecipePost.tsx
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4.2.0
 
