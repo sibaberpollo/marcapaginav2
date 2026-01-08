@@ -2,6 +2,7 @@ import { Article, ArticleSummary, CATEGORIES, Category } from "./types/article";
 import { fetchSanity } from "./sanity";
 
 // Re-export types and constants for convenience
+// TODO: Review if this re-export pattern is necessary or if direct imports are preferred
 export { CATEGORIES, isTravelGuide } from "./types/article";
 export type {
   Article,
