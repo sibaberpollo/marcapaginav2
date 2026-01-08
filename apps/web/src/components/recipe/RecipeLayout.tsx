@@ -213,14 +213,19 @@ export default function RecipeLayout({ article }: RecipeLayoutProps) {
                             <div className="flex items-start gap-4">
                                 <Avatar name={article.author.name} size="xl" className="bg-brand-yellow text-brand-black-static" />
                                 <div>
-                                    <h3 className="font-bold text-lg">{article.author.name}</h3>
+                                    <h3 className="font-bold text-lg">
+                                        {article.author.slug ? (
+                                            <Link href={`/autor/${article.author.slug}`} className="hover:underline">
+                                                {article.author.name}
+                                            </Link>
+                                        ) : (
+                                            article.author.name
+                                        )}
+                                    </h3>
                                     <p className="text-sm text-brand-gray mb-3">{article.author.handle}</p>
                                     {article.author.bio && (
                                         <p className="text-sm text-brand-gray">{article.author.bio}</p>
                                     )}
-                                    <button className="mt-4 btn btn-sm bg-brand-black-static text-brand-white-static hover:bg-brand-gray">
-                                        Seguir
-                                    </button>
                                 </div>
                             </div>
                         </div>

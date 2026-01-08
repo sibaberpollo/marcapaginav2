@@ -72,3 +72,48 @@ export async function fetchSanity<T>(
 
   return data.result;
 }
+
+/**
+ * Autor de Sanity con datos enriquecidos
+ */
+export interface SanityAuthor {
+  id: string;
+  name: string;
+  slug?: string;
+  bio?: string;
+  avatar?: string;
+  pais?: string;
+  instagram?: string;
+  twitter?: string;
+  website?: string;
+}
+
+/**
+ * Busca un autor en Sanity por nombre (case-insensitive).
+ * Retorna null si no existe o si Sanity no está configurado.
+ */
+export async function getAuthorByName(name: string): Promise<SanityAuthor | null> {
+  if (!projectId || !dataset) {
+    return null;
+  }
+
+  try {
+    const query = `*[_type == "autor" && lower(name) == lower($name)][0]{
+      "id": _id,
+      name,
+      "slug": slug.current,
+      bio,
+      avatar,
+      pais,
+      instagram,
+      twitter,
+      website
+    }`;
+
+    const result = await fetchSanity<SanityAuthor | null>(query, { name });
+    return result;
+  } catch {
+    // Si hay error en Sanity, seguimos con los datos locales
+    return null;
+  }
+}

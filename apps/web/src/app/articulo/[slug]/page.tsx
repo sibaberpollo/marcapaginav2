@@ -6,6 +6,7 @@ import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug, getRelatedArticles, getAllArticles } from '@/lib/articles';
 import { isTravelGuide, TravelGuide, isRecipe, Recipe } from '@/lib/types/article';
 import { ArticlePageLayout, Avatar } from '@/components';
+import { getAuthorByName } from '@/lib/sanity';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -87,10 +88,24 @@ export default async function ArticlePage({ params }: PageProps) {
     return <TravelGuideLayout article={article as TravelGuide} />;
   }
 
+  // Enriquecer datos del autor si existe en Sanity
+  const sanityAuthor = await getAuthorByName(article.author.name);
+  const enrichedAuthor = {
+    ...article.author,
+    bio: sanityAuthor?.bio || article.author.bio,
+    slug: sanityAuthor?.slug,
+  };
+
   // Check if this is a recipe and render special layout
   if (isRecipe(article)) {
-    return <RecipeLayout article={article as Recipe} />;
+    const enrichedArticle = {
+      ...article,
+      author: enrichedAuthor,
+    } as Recipe;
+    return <RecipeLayout article={enrichedArticle} />;
   }
+
+  const author = enrichedAuthor;
 
   const relatedArticles = await getRelatedArticles(article, 4);
 
@@ -245,14 +260,19 @@ export default async function ArticlePage({ params }: PageProps) {
 
           <div className="p-6 bg-bg-primary rounded-lg border border-surface-2">
             <div className="flex items-start gap-4">
-              <Avatar name={article.author.name} size="xl" />
+              <Avatar name={author.name} size="xl" />
               <div>
-                <h3 className="font-bold text-lg">{article.author.name}</h3>
-                <p className="text-sm text-brand-gray mb-3">{article.author.handle}</p>
-                <p className="text-sm text-brand-gray">{article.author.bio}</p>
-                <button className="mt-4 btn btn-sm bg-brand-black-static text-brand-white-static hover:bg-brand-gray">
-                  Seguir
-                </button>
+                <h3 className="font-bold text-lg">
+                  {author.slug ? (
+                    <Link href={`/autor/${author.slug}`} className="hover:underline">
+                      {author.name}
+                    </Link>
+                  ) : (
+                    author.name
+                  )}
+                </h3>
+                <p className="text-sm text-brand-gray mb-3">{author.handle}</p>
+                <p className="text-sm text-brand-gray">{author.bio}</p>
               </div>
             </div>
           </div>

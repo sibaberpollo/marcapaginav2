@@ -15,6 +15,7 @@ export { default as NewsCard } from './feed/NewsCard';
 export { default as ListCard } from './feed/ListCard';
 export { default as ArticlesFeed } from './feed/ArticlesFeed';
 export { default as MemeCard } from './feed/MemeCard';
+export { default as CategoryFeed } from './feed/CategoryFeed';
 
 // Ads
 

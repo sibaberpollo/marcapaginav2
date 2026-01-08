@@ -5,6 +5,7 @@ export interface Author {
     handle: string;
     avatar: string;
     bio?: string;
+    slug?: string; // Slug del autor en Sanity para enlazar a su página
 }
 
 export interface Article {
