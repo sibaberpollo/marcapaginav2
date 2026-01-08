@@ -131,6 +131,32 @@ export async function getFeaturedArticles(
 }
 
 /**
+ * Get articles by category
+ */
+export async function getArticlesByCategory(
+  categorySlug: string,
+): Promise<ArticleSummary[]> {
+  const files = await fetchCategoryManifest(categorySlug);
+
+  const articles: ArticleSummary[] = [];
+
+  for (const file of files) {
+    const article = await fetchContentJson<Article>(`${categorySlug}/${file}`);
+    if (article) {
+      articles.push(toSummary(article));
+    }
+  }
+
+  // Sort by published date (newest first)
+  articles.sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+  );
+
+  return articles;
+}
+
+/**
  * Get related articles (same category or tags)
  */
 export async function getRelatedArticles(
