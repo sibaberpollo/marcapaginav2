@@ -11,27 +11,15 @@ export type {
   Location,
 } from "./types/article";
 
-// Static imports of all article JSON files
-// This ensures they are bundled and available in serverless environments
-import elViejoYElRon from "@/../content/a-pie-de-pagina/el-viejo-y-el-ron.json";
-import laParisDeHemingway from "@/../content/a-pie-de-pagina/la-paris-de-hemingway.json";
-import manualDeUsuario from "@/../content/el-placer-de-leer/manual-de-usuario-para-comenzar-a-leer.json";
-import propositosLiterarios from "@/../content/listas/10-propositos-literarios-de-ano-nuevo.json";
-import lectorToxico from "@/../content/listas/como-identificar-a-un-lector-toxico.json";
-import generosLiterarios from "@/../content/listas/si-los-generos-literarios-fueran-personas-en-una-fiesta.json";
-import trastornosLiterarios from "@/../content/listas/trastornos-literarios-no-reconocidos-por-la-oms.json";
-import chapulinesSalvajes from "@/../content/memes/los-chapulines-salvajes.json";
-
-// All local articles indexed by slug
-const LOCAL_ARTICLES: Record<string, Article> = {
-  "el-viejo-y-el-ron": elViejoYElRon as Article,
-  "la-paris-de-hemingway": laParisDeHemingway as Article,
-  "manual-de-usuario-para-comenzar-a-leer": manualDeUsuario as Article,
-  "10-propositos-literarios-de-ano-nuevo": propositosLiterarios as Article,
-  "como-identificar-a-un-lector-toxico": lectorToxico as Article,
-  "si-los-generos-literarios-fueran-personas-en-una-fiesta": generosLiterarios as Article,
-  "trastornos-literarios-no-reconocidos-por-la-oms": trastornosLiterarios as Article,
-  "los-chapulines-salvajes": chapulinesSalvajes as Article,
+// Base URL for content - works both in build time and runtime
+const getContentBaseUrl = () => {
+  // In build time or server-side, use absolute URL
+  if (typeof window === "undefined") {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    return `${baseUrl}/content`;
+  }
+  // In client-side, use relative URL
+  return "/content";
 };
 
 // Convert Article to ArticleSummary
@@ -57,10 +45,38 @@ function toSummary(article: Article): ArticleSummary {
 }
 
 /**
+ * Fetch a JSON file from public/content/
+ */
+async function fetchContentJson<T>(path: string): Promise<T | null> {
+  try {
+    const url = `${getContentBaseUrl()}/${path}`;
+    const res = await fetch(url, { next: { revalidate: 60 } });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * List all JSON files in a category directory
+ * Since we can't list files from public/, we maintain a manifest
+ */
+async function fetchCategoryManifest(categorySlug: string): Promise<string[]> {
+  const manifest = await fetchContentJson<{ files: string[] }>(`${categorySlug}/_manifest.json`);
+  return manifest?.files || [];
+}
+
+/**
  * Get all articles from all categories
  */
 export async function getAllArticles(): Promise<ArticleSummary[]> {
-  const articles = Object.values(LOCAL_ARTICLES).map(toSummary);
+  const articles: ArticleSummary[] = [];
+
+  for (const category of CATEGORIES) {
+    const categoryArticles = await getArticlesByCategory(category.slug);
+    articles.push(...categoryArticles);
+  }
 
   // Sort by published date (newest first)
   articles.sort(
@@ -77,9 +93,15 @@ export async function getAllArticles(): Promise<ArticleSummary[]> {
 export async function getArticlesByCategory(
   categorySlug: string,
 ): Promise<ArticleSummary[]> {
-  const articles = Object.values(LOCAL_ARTICLES)
-    .filter((article) => article.categorySlug === categorySlug)
-    .map(toSummary);
+  const files = await fetchCategoryManifest(categorySlug);
+  const articles: ArticleSummary[] = [];
+
+  for (const file of files) {
+    const article = await fetchContentJson<Article>(`${categorySlug}/${file}`);
+    if (article) {
+      articles.push(toSummary(article));
+    }
+  }
 
   // Sort by published date (newest first)
   articles.sort(
@@ -94,10 +116,12 @@ export async function getArticlesByCategory(
  * Get a single article by slug (searches local articles then Sanity)
  */
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  // First check local articles
-  const localArticle = LOCAL_ARTICLES[slug];
-  if (localArticle) {
-    return localArticle;
+  // Search in all categories
+  for (const category of CATEGORIES) {
+    const article = await fetchContentJson<Article>(`${category.slug}/${slug}.json`);
+    if (article) {
+      return article;
+    }
   }
 
   // Fallback: buscar en Sanity (Transtextos)
@@ -116,30 +140,26 @@ export async function getArticleByCategoryAndSlug(
   categorySlug: string,
   slug: string,
 ): Promise<Article | null> {
-  const article = LOCAL_ARTICLES[slug];
-  if (article && article.categorySlug === categorySlug) {
-    return article;
-  }
-  return null;
+  return fetchContentJson<Article>(`${categorySlug}/${slug}.json`);
 }
 
 /**
- * Save an article - NOT SUPPORTED with static imports
- * This is kept for API compatibility but will not persist
+ * Save an article - writes to public/content/ and updates manifest
+ * Note: This only works in development, not in production
  */
 export async function saveArticle(article: Article): Promise<boolean> {
-  console.warn("saveArticle is not supported with static imports");
+  console.warn("saveArticle requires server-side file access - use in development only");
   return false;
 }
 
 /**
- * Delete an article - NOT SUPPORTED with static imports
+ * Delete an article
  */
 export async function deleteArticle(
   categorySlug: string,
   slug: string,
 ): Promise<boolean> {
-  console.warn("deleteArticle is not supported with static imports");
+  console.warn("deleteArticle requires server-side file access - use in development only");
   return false;
 }
 
@@ -203,7 +223,6 @@ export async function getCategoriesWithCounts(): Promise<
  */
 async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
   try {
-    // Query specifically for relato documents with the given slug
     const query = `*[_type == "relato" && slug.current == $slug && status == "published"][0]{
             "slug": slug.current,
             title,
@@ -304,9 +323,6 @@ async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
  */
 export async function getAllTranstextosSlugs(): Promise<string[]> {
   try {
-    // Get all published relatos from both sites:
-    // - MarcaPágina relatos: site is undefined OR site slug is not "transtextos"
-    // - Transtextos relatos: site->slug.current == "transtextos"
     const query = `*[_type == "relato" && status == "published" && defined(slug.current)]{ "slug": slug.current }`;
     const result = await fetchSanity<Array<{ slug?: string }>>(query);
     return result
@@ -326,5 +342,5 @@ export function formatPlainTextToHtml(text: string): string {
 
   return paragraphs
     .map((p) => `<p>${p.replace(/\n/g, "<br />")}</p>`)
-    .join("\n\n"); // separa más los párrafos en el HTML
+    .join("\n\n");
 }

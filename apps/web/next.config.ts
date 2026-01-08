@@ -9,10 +9,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Include content directory in all serverless functions
-  outputFileTracingIncludes: {
-    "/*": ["./content/**/*.json"],
-  },
 };
 
 export default nextConfig;
