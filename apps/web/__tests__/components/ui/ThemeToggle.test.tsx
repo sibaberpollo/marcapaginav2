@@ -7,7 +7,7 @@ describe("ThemeToggle", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    localStorage.getItem.mockReturnValue(null);
+    vi.mocked(localStorage.getItem).mockReturnValue(null);
     (window.matchMedia as ReturnType<typeof vi.fn>).mockImplementation(
       (query: string) => ({
         matches: query === "(prefers-color-scheme: dark)",
@@ -52,7 +52,7 @@ describe("ThemeToggle", () => {
   });
 
   test("Checkbox starts unchecked when no localStorage or system prefers light", () => {
-    localStorage.getItem.mockReturnValue(null);
+    vi.mocked(localStorage.getItem).mockReturnValue(null);
     (window.matchMedia as ReturnType<typeof vi.fn>).mockImplementation(
       (query: string) => ({
         matches: false,
@@ -76,7 +76,7 @@ describe("ThemeToggle", () => {
   });
 
   test("Checkbox starts checked when localStorage has dark", () => {
-    localStorage.getItem.mockReturnValue("dark");
+    vi.mocked(localStorage.getItem).mockReturnValue("dark");
 
     const { container } = render(<ThemeToggle />, {
       container: document.body.appendChild(document.createElement("div")),
@@ -88,7 +88,7 @@ describe("ThemeToggle", () => {
   });
 
   test("Checkbox starts checked when system prefers dark", () => {
-    localStorage.getItem.mockReturnValue(null);
+    vi.mocked(localStorage.getItem).mockReturnValue(null);
     (window.matchMedia as ReturnType<typeof vi.fn>).mockImplementation(
       (query: string) => ({
         matches: true,
@@ -112,7 +112,7 @@ describe("ThemeToggle", () => {
   });
 
   test("Clicking checkbox toggles theme from light to dark", () => {
-    localStorage.getItem.mockReturnValue("light");
+    vi.mocked(localStorage.getItem).mockReturnValue("light");
     (window.matchMedia as ReturnType<typeof vi.fn>).mockImplementation(
       (query: string) => ({
         matches: false,
@@ -138,7 +138,7 @@ describe("ThemeToggle", () => {
   });
 
   test("Clicking checkbox toggles theme from dark to light", () => {
-    localStorage.getItem.mockReturnValue("dark");
+    vi.mocked(localStorage.getItem).mockReturnValue("dark");
 
     const { container } = render(<ThemeToggle />, {
       container: document.body.appendChild(document.createElement("div")),
@@ -152,7 +152,7 @@ describe("ThemeToggle", () => {
   });
 
   test("localStorage.setItem called with theme and new value on toggle", () => {
-    localStorage.getItem.mockReturnValue("light");
+    vi.mocked(localStorage.getItem).mockReturnValue("light");
     (window.matchMedia as ReturnType<typeof vi.fn>).mockImplementation(
       (query: string) => ({
         matches: false,
@@ -177,7 +177,7 @@ describe("ThemeToggle", () => {
   });
 
   test("document.documentElement.setAttribute called with data-theme dark on dark toggle", () => {
-    localStorage.getItem.mockReturnValue("light");
+    vi.mocked(localStorage.getItem).mockReturnValue("light");
     (window.matchMedia as ReturnType<typeof vi.fn>).mockImplementation(
       (query: string) => ({
         matches: false,
@@ -205,7 +205,7 @@ describe("ThemeToggle", () => {
   });
 
   test("document.documentElement.setAttribute called with data-theme light on light toggle", () => {
-    localStorage.getItem.mockReturnValue("dark");
+    vi.mocked(localStorage.getItem).mockReturnValue("dark");
 
     const { container } = render(<ThemeToggle />, {
       container: document.body.appendChild(document.createElement("div")),
@@ -221,7 +221,7 @@ describe("ThemeToggle", () => {
   });
 
   test("useEffect reads localStorage.getItem(theme)", () => {
-    localStorage.getItem.mockReturnValue("light");
+    vi.mocked(localStorage.getItem).mockReturnValue("light");
     (window.matchMedia as ReturnType<typeof vi.fn>).mockImplementation(
       (query: string) => ({
         matches: false,
@@ -242,7 +242,7 @@ describe("ThemeToggle", () => {
   });
 
   test("useEffect calls matchMedia(prefers-color-scheme: dark) for system preference", () => {
-    localStorage.getItem.mockReturnValue(null);
+    vi.mocked(localStorage.getItem).mockReturnValue(null);
     (window.matchMedia as ReturnType<typeof vi.fn>).mockImplementation(
       (query: string) => ({
         matches: false,
@@ -265,7 +265,7 @@ describe("ThemeToggle", () => {
   });
 
   test("No hydration mismatch (initial state uses localStorage in useEffect)", () => {
-    localStorage.getItem.mockReturnValue("dark");
+    vi.mocked(localStorage.getItem).mockReturnValue("dark");
 
     const { container } = render(<ThemeToggle />, {
       container: document.body.appendChild(document.createElement("div")),
