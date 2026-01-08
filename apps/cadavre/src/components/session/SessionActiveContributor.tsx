@@ -85,7 +85,7 @@ export function SessionActiveContributor({
     const searchParams = new URLSearchParams(window.location.search);
     searchParams.set("t", Date.now().toString());
     router.replace(`?${searchParams.toString()}`);
-  }, []);
+  }, [router]);
 
   // Handle segment submission
   const handleSubmit = useCallback(() => {
@@ -124,7 +124,14 @@ export function SessionActiveContributor({
         setIsSubmitting(false);
       }
     })();
-  }, [session.id, content, isWordCountValid, isSubmitting, refreshState]);
+  }, [
+    session.id,
+    content,
+    isWordCountValid,
+    isSubmitting,
+    refreshState,
+    router,
+  ]);
 
   // Handle pass turn
   const handlePass = useCallback(() => {
