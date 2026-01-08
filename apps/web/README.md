@@ -51,10 +51,59 @@ src/
 │   ├── sidebar/             # LeftSidebar, RightSidebar
 │   ├── ads/                 # AdBanner, InFeedAd
 │   └── ui/                  # ThemeToggle
+├── content/                     # Local JSON article storage
+│   ├── listas/              # Listicle articles
+│   ├── memes/               # Meme posts
+│   ├── a-pie-de-pagina/     # Travel/location articles
+│   └── el-placer-de-leer/   # Reading essays
 └── lib/
     ├── types/               # TypeScript interfaces
     └── sanity.ts            # CMS client (placeholder)
 ```
+
+## Content Management
+
+Articles are stored as JSON files in the `content/` directory, organized by category slug:
+
+```
+content/
+├── listas/                    # Category: Listas
+│   └── article-slug.json
+├── memes/                     # Category: Memes
+├── a-pie-de-pagina/           # Category: A Pie de Página
+└── el-placer-de-leer/         # Category: El Placer de Leer
+```
+
+### Article JSON Structure
+
+```json
+{
+  "slug": "article-slug",
+  "title": "Article Title",
+  "excerpt": "Short description",
+  "content": "<p>HTML content</p>",
+  "author": {
+    "name": "Author Name",
+    "handle": "@handle",
+    "avatar": "bg-brand-yellow"
+  },
+  "category": "Category Name",
+  "categorySlug": "category-slug",
+  "tags": ["tag1", "tag2"],
+  "featured": false,
+  "publishedAt": "2026-01-07T00:00:00.000Z",
+  "readTime": "2 min",
+  "likes": 0,
+  "comments": 0
+}
+```
+
+The `lib/articles.ts` module provides functions for reading/writing articles:
+
+- `getAllArticles()` — Get all articles from all categories
+- `getArticlesByCategory(slug)` — Get articles by category
+- `getArticleBySlug(slug)` — Get single article
+- `saveArticle(article)` — Save/update an article
 
 ## Development Guidelines
 
