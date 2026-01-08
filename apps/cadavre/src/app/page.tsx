@@ -1,5 +1,7 @@
 "use client";
 
+"use client";
+
 import { useState, useCallback, useId } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components";
@@ -44,8 +46,6 @@ interface FormErrors {
   openingSegment?: string;
   submit?: string;
 }
-
-("use client");
 
 export default function CadavreLanding() {
   const router = useRouter();
