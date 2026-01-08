@@ -9,11 +9,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Include content directory in serverless functions for runtime file access
+  // Include content directory in all serverless functions
   outputFileTracingIncludes: {
-    "/articulo/[slug]": ["./content/**/*"],
-    "/categoria/[slug]": ["./content/**/*"],
-    "/api/articles": ["./content/**/*"],
+    "/*": ["./content/**/*.json"],
   },
 };
 

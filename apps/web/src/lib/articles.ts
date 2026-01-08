@@ -1,5 +1,3 @@
-import fs from "fs/promises";
-import path from "path";
 import { Article, ArticleSummary, CATEGORIES, Category } from "./types/article";
 import { fetchSanity } from "./sanity";
 
@@ -13,48 +11,64 @@ export type {
   Location,
 } from "./types/article";
 
-// Base path for content
-const CONTENT_DIR = path.join(process.cwd(), "content");
+// Static imports of all article JSON files
+// This ensures they are bundled and available in serverless environments
+import elViejoYElRon from "@/../content/a-pie-de-pagina/el-viejo-y-el-ron.json";
+import laParisDeHemingway from "@/../content/a-pie-de-pagina/la-paris-de-hemingway.json";
+import manualDeUsuario from "@/../content/el-placer-de-leer/manual-de-usuario-para-comenzar-a-leer.json";
+import propositosLiterarios from "@/../content/listas/10-propositos-literarios-de-ano-nuevo.json";
+import lectorToxico from "@/../content/listas/como-identificar-a-un-lector-toxico.json";
+import generosLiterarios from "@/../content/listas/si-los-generos-literarios-fueran-personas-en-una-fiesta.json";
+import trastornosLiterarios from "@/../content/listas/trastornos-literarios-no-reconocidos-por-la-oms.json";
+import chapulinesSalvajes from "@/../content/memes/los-chapulines-salvajes.json";
 
-/**
- * Ensures the content directory structure exists
- */
-export async function ensureContentDirectories(): Promise<void> {
-  // Create base content directory
-  await fs.mkdir(CONTENT_DIR, { recursive: true });
+// All local articles indexed by slug
+const LOCAL_ARTICLES: Record<string, Article> = {
+  "el-viejo-y-el-ron": elViejoYElRon as Article,
+  "la-paris-de-hemingway": laParisDeHemingway as Article,
+  "manual-de-usuario-para-comenzar-a-leer": manualDeUsuario as Article,
+  "10-propositos-literarios-de-ano-nuevo": propositosLiterarios as Article,
+  "como-identificar-a-un-lector-toxico": lectorToxico as Article,
+  "si-los-generos-literarios-fueran-personas-en-una-fiesta": generosLiterarios as Article,
+  "trastornos-literarios-no-reconocidos-por-la-oms": trastornosLiterarios as Article,
+  "los-chapulines-salvajes": chapulinesSalvajes as Article,
+};
 
-  // Create category subdirectories
-  for (const category of CATEGORIES) {
-    const categoryDir = path.join(CONTENT_DIR, category.slug);
-    await fs.mkdir(categoryDir, { recursive: true });
-  }
+// Convert Article to ArticleSummary
+function toSummary(article: Article): ArticleSummary {
+  return {
+    slug: article.slug,
+    title: article.title,
+    excerpt: article.excerpt,
+    author: {
+      name: article.author.name,
+      handle: article.author.handle,
+      avatar: article.author.avatar,
+    },
+    category: article.category,
+    categorySlug: article.categorySlug,
+    tags: article.tags,
+    featured: article.featured,
+    publishedAt: article.publishedAt,
+    readTime: article.readTime,
+    likes: article.likes,
+    comments: article.comments,
+  };
 }
 
 /**
  * Get all articles from all categories
  */
 export async function getAllArticles(): Promise<ArticleSummary[]> {
-  const articles: ArticleSummary[] = [];
+  const articles = Object.values(LOCAL_ARTICLES).map(toSummary);
 
-  try {
-    await ensureContentDirectories();
+  // Sort by published date (newest first)
+  articles.sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+  );
 
-    for (const category of CATEGORIES) {
-      const categoryArticles = await getArticlesByCategory(category.slug);
-      articles.push(...categoryArticles);
-    }
-
-    // Sort by published date (newest first)
-    articles.sort(
-      (a, b) =>
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-    );
-
-    return articles;
-  } catch (error) {
-    console.error("Error getting all articles:", error);
-    return [];
-  }
+  return articles;
 }
 
 /**
@@ -63,92 +77,36 @@ export async function getAllArticles(): Promise<ArticleSummary[]> {
 export async function getArticlesByCategory(
   categorySlug: string,
 ): Promise<ArticleSummary[]> {
-  const categoryDir = path.join(CONTENT_DIR, categorySlug);
+  const articles = Object.values(LOCAL_ARTICLES)
+    .filter((article) => article.categorySlug === categorySlug)
+    .map(toSummary);
 
-  try {
-    await fs.mkdir(categoryDir, { recursive: true });
-    const files = await fs.readdir(categoryDir);
-    const jsonFiles = files.filter((file) => file.endsWith(".json"));
+  // Sort by published date (newest first)
+  articles.sort(
+    (a, b) =>
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+  );
 
-    const articles: ArticleSummary[] = [];
-
-    for (const file of jsonFiles) {
-      try {
-        const filePath = path.join(categoryDir, file);
-        const content = await fs.readFile(filePath, "utf-8");
-        const article: Article = JSON.parse(content);
-
-        // Return summary (without full content)
-        articles.push({
-          slug: article.slug,
-          title: article.title,
-          excerpt: article.excerpt,
-          author: {
-            name: article.author.name,
-            handle: article.author.handle,
-            avatar: article.author.avatar,
-          },
-          category: article.category,
-          categorySlug: article.categorySlug,
-          tags: article.tags,
-          featured: article.featured,
-          publishedAt: article.publishedAt,
-          readTime: article.readTime,
-          likes: article.likes,
-          comments: article.comments,
-        });
-      } catch (fileError) {
-        console.error(`Error reading article file ${file}:`, fileError);
-      }
-    }
-
-    // Sort by published date (newest first)
-    articles.sort(
-      (a, b) =>
-        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
-    );
-
-    return articles;
-  } catch (error) {
-    console.error(
-      `Error getting articles for category ${categorySlug}:`,
-      error,
-    );
-    return [];
-  }
+  return articles;
 }
 
 /**
- * Get a single article by slug (searches all categories)
+ * Get a single article by slug (searches local articles then Sanity)
  */
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
-  try {
-    await ensureContentDirectories();
-
-    for (const category of CATEGORIES) {
-      const filePath = path.join(CONTENT_DIR, category.slug, `${slug}.json`);
-
-      try {
-        const content = await fs.readFile(filePath, "utf-8");
-        return JSON.parse(content) as Article;
-      } catch {
-        // File not found in this category, continue searching
-        continue;
-      }
-    }
-
-    // Fallback: buscar en Sanity (Transtextos)
-    // Fallback: buscar en Sanity (Transtextos)
-    const sanityArticle = await getSanityArticleBySlug(slug);
-    if (sanityArticle) {
-      return sanityArticle;
-    }
-
-    return null;
-  } catch (error) {
-    console.error(`Error getting article ${slug}:`, error);
-    return null;
+  // First check local articles
+  const localArticle = LOCAL_ARTICLES[slug];
+  if (localArticle) {
+    return localArticle;
   }
+
+  // Fallback: buscar en Sanity (Transtextos)
+  const sanityArticle = await getSanityArticleBySlug(slug);
+  if (sanityArticle) {
+    return sanityArticle;
+  }
+
+  return null;
 }
 
 /**
@@ -158,51 +116,31 @@ export async function getArticleByCategoryAndSlug(
   categorySlug: string,
   slug: string,
 ): Promise<Article | null> {
-  const filePath = path.join(CONTENT_DIR, categorySlug, `${slug}.json`);
-
-  try {
-    const content = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(content) as Article;
-  } catch {
-    return null;
+  const article = LOCAL_ARTICLES[slug];
+  if (article && article.categorySlug === categorySlug) {
+    return article;
   }
+  return null;
 }
 
 /**
- * Save an article
+ * Save an article - NOT SUPPORTED with static imports
+ * This is kept for API compatibility but will not persist
  */
 export async function saveArticle(article: Article): Promise<boolean> {
-  try {
-    await ensureContentDirectories();
-
-    const filePath = path.join(
-      CONTENT_DIR,
-      article.categorySlug,
-      `${article.slug}.json`,
-    );
-    await fs.writeFile(filePath, JSON.stringify(article, null, 2), "utf-8");
-    return true;
-  } catch (error) {
-    console.error(`Error saving article ${article.slug}:`, error);
-    return false;
-  }
+  console.warn("saveArticle is not supported with static imports");
+  return false;
 }
 
 /**
- * Delete an article
+ * Delete an article - NOT SUPPORTED with static imports
  */
 export async function deleteArticle(
   categorySlug: string,
   slug: string,
 ): Promise<boolean> {
-  const filePath = path.join(CONTENT_DIR, categorySlug, `${slug}.json`);
-
-  try {
-    await fs.unlink(filePath);
-    return true;
-  } catch {
-    return false;
-  }
+  console.warn("deleteArticle is not supported with static imports");
+  return false;
 }
 
 /**
