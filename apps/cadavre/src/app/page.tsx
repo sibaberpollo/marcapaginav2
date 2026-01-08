@@ -224,6 +224,7 @@ export default function CadavreLanding() {
               onClick={scrollToForm}
               className="inline-flex items-center gap-3 bg-brand-yellow text-brand-black-static px-8 py-4 font-bold text-lg hover:scale-105 active:scale-100 transition-transform shadow-lg shadow-brand-yellow/20"
               aria-label="Ir al formulario para crear tu historia"
+              suppressHydrationWarning
             >
               Crear tu historia
               <svg
@@ -232,6 +233,7 @@ export default function CadavreLanding() {
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
+                suppressHydrationWarning
               >
                 <path
                   strokeLinecap="round"
@@ -445,6 +447,7 @@ export default function CadavreLanding() {
                       fill="none"
                       viewBox="0 0 24 24"
                       aria-hidden="true"
+                      suppressHydrationWarning
                     >
                       <circle
                         className="opacity-25"
@@ -479,6 +482,7 @@ export default function CadavreLanding() {
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 aria-hidden="true"
+                suppressHydrationWarning
               >
                 <path
                   strokeLinecap="round"
