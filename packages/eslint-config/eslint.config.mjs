@@ -16,6 +16,7 @@ export default [
       sourceType: 'module',
       globals: {
         ...globals.browser,
+        ...globals.node,
         ...globals.vitest,
         process: 'readonly',
         React: 'readonly',
@@ -40,7 +41,13 @@ export default [
       ...react.configs['jsx-runtime'].rules,
       ...reactHooks.configs.recommended.rules,
       'react/jsx-no-target-blank': 'off',
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'react-refresh/only-export-components': [
+        'warn',
+        {
+          allowConstantExport: true,
+          allowExportNames: ['generateMetadata', 'generateStaticParams', 'metadata'],
+        },
+      ],
     },
   },
 ];

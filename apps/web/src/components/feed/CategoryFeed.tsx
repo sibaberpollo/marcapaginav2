@@ -1,8 +1,6 @@
-import Link from 'next/link';
-import { ArticleSummary } from '@/lib/types/article';
-import Avatar from './Avatar';
-import FeaturedMapPost from './FeaturedMapPost';
-import FeaturedRecipePost from './FeaturedRecipePost';
+import Link from "next/link";
+import { ArticleSummary } from "@/lib/types/article";
+import Avatar from "./Avatar";
 
 interface CategoryFeedProps {
   articles: ArticleSummary[];
@@ -16,10 +14,10 @@ function formatTimeAgo(isoDate: string): string {
   const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
   const diffDays = Math.floor(diffHours / 24);
 
-  if (diffHours < 1) return 'hace unos minutos';
+  if (diffHours < 1) return "hace unos minutos";
   if (diffHours < 24) return `hace ${diffHours}h`;
   if (diffDays < 7) return `hace ${diffDays}d`;
-  return date.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+  return date.toLocaleDateString("es-ES", { day: "numeric", month: "short" });
 }
 
 function ArticleCard({ article }: { article: ArticleSummary }) {
@@ -30,7 +28,9 @@ function ArticleCard({ article }: { article: ArticleSummary }) {
           <div className="flex items-center gap-2 mb-2">
             <Avatar name={article.author.name} size="xs" />
             <span className="text-sm font-medium">{article.author.name}</span>
-            <span className="text-xs text-text-secondary">{formatTimeAgo(article.publishedAt)}</span>
+            <span className="text-xs text-text-secondary">
+              {formatTimeAgo(article.publishedAt)}
+            </span>
           </div>
           <h3 className="text-lg font-bold leading-snug mb-2">
             <Link
@@ -96,12 +96,17 @@ function ArticleCard({ article }: { article: ArticleSummary }) {
   );
 }
 
-export default function CategoryFeed({ articles, categoryName }: CategoryFeedProps) {
+export default function CategoryFeed({
+  articles,
+  categoryName,
+}: CategoryFeedProps) {
   if (articles.length === 0) {
     return (
       <div className="space-y-4">
         <div className="bg-bg-primary rounded-lg p-8 border border-surface-2 text-center">
-          <p className="text-text-secondary">No hay artículos en esta categoría todavía.</p>
+          <p className="text-text-secondary">
+            No hay artículos en esta categoría todavía.
+          </p>
         </div>
       </div>
     );
@@ -113,7 +118,7 @@ export default function CategoryFeed({ articles, categoryName }: CategoryFeedPro
       <div className="bg-bg-primary rounded-lg p-4 border border-surface-2">
         <h1 className="text-xl font-bold">{categoryName}</h1>
         <p className="text-sm text-text-secondary mt-1">
-          {articles.length} {articles.length === 1 ? 'artículo' : 'artículos'}
+          {articles.length} {articles.length === 1 ? "artículo" : "artículos"}
         </p>
       </div>
 

@@ -45,11 +45,11 @@ function MapUpdater({ center, zoom }: MapUpdaterProps) {
 
     const lat = center[0];
     const lng = center[1];
-    
+
     // Validación exhaustiva
     if (
-      typeof lat !== 'number' ||
-      typeof lng !== 'number' ||
+      typeof lat !== "number" ||
+      typeof lng !== "number" ||
       isNaN(lat) ||
       isNaN(lng) ||
       !isFinite(lat) ||
@@ -59,18 +59,18 @@ function MapUpdater({ center, zoom }: MapUpdaterProps) {
       lng < -180 ||
       lng > 180
     ) {
-      console.warn('MapUpdater: Invalid coordinates', { lat, lng, center });
+      console.warn("MapUpdater: Invalid coordinates", { lat, lng, center });
       return;
     }
 
     try {
       // Verificar que el mapa esté inicializado
-      if (map && typeof map.flyTo === 'function') {
+      if (map && typeof map.flyTo === "function") {
         map.flyTo(center as [number, number], zoom, { duration: 0.5 });
       }
     } catch (error) {
       // Silenciar errores de Leaflet si el mapa no está listo
-      console.warn('Error updating map center:', error);
+      console.warn("Error updating map center:", error);
     }
   }, [center, zoom, map]);
   return null;
@@ -92,33 +92,65 @@ function MapInteractionDisabler({
   const map = useMap();
 
   useEffect(() => {
-    // Deshabilitar interacciones según las props
-    if (!dragging) {
-      map.dragging.disable();
-    } else {
-      map.dragging.enable();
-    }
+    // Ensure map is fully initialized before accessing interaction controls
+    if (!map) return;
 
-    if (!touchZoom) {
-      map.touchZoom.disable();
-    } else {
-      map.touchZoom.enable();
-    }
+    // Safely handle map interactions with try-catch for React 19 compatibility
+    try {
+      // Deshabilitar interacciones según las props
+      if (map.dragging && typeof map.dragging.disable === "function") {
+        if (!dragging) {
+          map.dragging.disable();
+        } else {
+          map.dragging.enable();
+        }
+      }
 
-    if (!doubleClickZoom) {
-      map.doubleClickZoom.disable();
-    } else {
-      map.doubleClickZoom.enable();
-    }
+      if (map.touchZoom && typeof map.touchZoom.disable === "function") {
+        if (!touchZoom) {
+          map.touchZoom.disable();
+        } else {
+          map.touchZoom.enable();
+        }
+      }
 
-    if (!scrollWheelZoom) {
-      map.scrollWheelZoom.disable();
-    } else {
-      map.scrollWheelZoom.enable();
+      if (
+        map.doubleClickZoom &&
+        typeof map.doubleClickZoom.disable === "function"
+      ) {
+        if (!doubleClickZoom) {
+          map.doubleClickZoom.disable();
+        } else {
+          map.doubleClickZoom.enable();
+        }
+      }
+
+      if (
+        map.scrollWheelZoom &&
+        typeof map.scrollWheelZoom.disable === "function"
+      ) {
+        if (!scrollWheelZoom) {
+          map.scrollWheelZoom.disable();
+        } else {
+          map.scrollWheelZoom.enable();
+        }
+      }
+    } catch (error) {
+      // Silently handle any Leaflet interaction errors for React 19 compatibility
+      console.warn("Map interaction setup failed:", error);
     }
 
     // Prevenir que el scroll se quede en el mapa - propagar a la página
-    const mapContainer = map.getContainer();
+    let mapContainer = null;
+    try {
+      mapContainer =
+        map && typeof map.getContainer === "function"
+          ? map.getContainer()
+          : null;
+    } catch (error) {
+      // Silently handle getContainer errors for React 19 compatibility
+      console.warn("Map container access failed:", error);
+    }
     if (mapContainer) {
       // Interceptar eventos de scroll y propagarlos al contenedor padre
       const handleWheel = (e: WheelEvent) => {
@@ -129,7 +161,7 @@ function MapInteractionDisabler({
           if (parent) {
             parent.scrollBy({
               top: e.deltaY,
-              behavior: 'auto'
+              behavior: "auto",
             });
           }
         }
@@ -139,21 +171,26 @@ function MapInteractionDisabler({
         if (!dragging && !touchZoom) {
           // Permitir que el scroll se propague
           const target = e.target as HTMLElement;
-          if (target.closest('.leaflet-container')) {
+          if (target.closest(".leaflet-container")) {
             // Solo prevenir si no es un marcador o popup
-            if (!target.closest('.leaflet-marker-icon') && !target.closest('.leaflet-popup')) {
+            if (
+              !target.closest(".leaflet-marker-icon") &&
+              !target.closest(".leaflet-popup")
+            ) {
               // No hacer nada, dejar que el scroll se propague naturalmente
             }
           }
         }
       };
 
-      mapContainer.addEventListener('wheel', handleWheel, { passive: false });
-      mapContainer.addEventListener('touchmove', handleTouchMove, { passive: true });
+      mapContainer.addEventListener("wheel", handleWheel, { passive: false });
+      mapContainer.addEventListener("touchmove", handleTouchMove, {
+        passive: true,
+      });
 
       return () => {
-        mapContainer.removeEventListener('wheel', handleWheel);
-        mapContainer.removeEventListener('touchmove', handleTouchMove);
+        mapContainer.removeEventListener("wheel", handleWheel);
+        mapContainer.removeEventListener("touchmove", handleTouchMove);
       };
     }
   }, [map, dragging, touchZoom, doubleClickZoom, scrollWheelZoom]);
@@ -208,8 +245,8 @@ export default function TravelMap({
     if (center && Array.isArray(center) && center.length === 2) {
       const [lat, lng] = center;
       if (
-        typeof lat === 'number' &&
-        typeof lng === 'number' &&
+        typeof lat === "number" &&
+        typeof lng === "number" &&
         !isNaN(lat) &&
         !isNaN(lng) &&
         isFinite(lat) &&
@@ -231,8 +268,8 @@ export default function TravelMap({
           l.coordinates &&
           Array.isArray(l.coordinates) &&
           l.coordinates.length === 2 &&
-          typeof l.coordinates[0] === 'number' &&
-          typeof l.coordinates[1] === 'number' &&
+          typeof l.coordinates[0] === "number" &&
+          typeof l.coordinates[1] === "number" &&
           !isNaN(l.coordinates[0]) &&
           !isNaN(l.coordinates[1]) &&
           isFinite(l.coordinates[0]) &&
@@ -240,7 +277,7 @@ export default function TravelMap({
           l.coordinates[0] >= -90 &&
           l.coordinates[0] <= 90 &&
           l.coordinates[1] >= -180 &&
-          l.coordinates[1] <= 180
+          l.coordinates[1] <= 180,
       );
 
       if (validLocations.length > 0) {
@@ -248,7 +285,7 @@ export default function TravelMap({
         const lngs = validLocations.map((l) => l.coordinates[1]);
         const calculatedLat = (Math.min(...lats) + Math.max(...lats)) / 2;
         const calculatedLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
-        
+
         // Validar que el cálculo no resulte en NaN
         if (
           !isNaN(calculatedLat) &&
@@ -277,8 +314,8 @@ export default function TravelMap({
       ) {
         const [lat, lng] = activeLocation.coordinates;
         if (
-          typeof lat === 'number' &&
-          typeof lng === 'number' &&
+          typeof lat === "number" &&
+          typeof lng === "number" &&
           !isNaN(lat) &&
           !isNaN(lng) &&
           isFinite(lat) &&
@@ -300,8 +337,8 @@ export default function TravelMap({
     if (!Array.isArray(coord) || coord.length !== 2) return false;
     const [lat, lng] = coord;
     return (
-      typeof lat === 'number' &&
-      typeof lng === 'number' &&
+      typeof lat === "number" &&
+      typeof lng === "number" &&
       !isNaN(lat) &&
       !isNaN(lng) &&
       isFinite(lat) &&
@@ -315,7 +352,9 @@ export default function TravelMap({
 
   // Filter locations with valid coordinates
   const validLocations = useMemo(() => {
-    return locations.filter((l) => l && l.coordinates && isValidCoord(l.coordinates));
+    return locations.filter(
+      (l) => l && l.coordinates && isValidCoord(l.coordinates),
+    );
   }, [locations]);
 
   // Create route polyline coordinates
@@ -324,7 +363,9 @@ export default function TravelMap({
         .map((id) => validLocations.find((l) => l.id === id))
         .filter((l): l is Location => l !== undefined)
         .map((l) => l.coordinates)
-    : validLocations.sort((a, b) => a.order - b.order).map((l) => l.coordinates);
+    : validLocations
+        .sort((a, b) => a.order - b.order)
+        .map((l) => l.coordinates);
 
   // Early return después de todos los hooks
   if (!isMounted) {
@@ -341,8 +382,8 @@ export default function TravelMap({
     if (!Array.isArray(coord) || coord.length !== 2) return false;
     const [lat, lng] = coord;
     return (
-      typeof lat === 'number' &&
-      typeof lng === 'number' &&
+      typeof lat === "number" &&
+      typeof lng === "number" &&
       !isNaN(lat) &&
       !isNaN(lng) &&
       isFinite(lat) &&
@@ -357,8 +398,8 @@ export default function TravelMap({
   const defaultCenter: [number, number] = [40.4168, -3.7038];
 
   // Validación final antes de renderizar - asegurar que mapCenter sea válido
-  const safeMapCenter: [number, number] = isValidCoordinate(mapCenter) 
-    ? mapCenter 
+  const safeMapCenter: [number, number] = isValidCoordinate(mapCenter)
+    ? mapCenter
     : defaultCenter;
 
   // Validación final para activeCenter
@@ -425,6 +466,7 @@ export default function TravelMap({
           eventHandlers={{
             click: () => onLocationClick?.(location),
           }}
+          data-testid="marker"
         >
           <Popup>
             <div className="p-2 min-w-[200px]">

@@ -1,16 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { GET } from "@/app/api/articles/route";
-import {
-  getAllArticles,
-  getFeaturedArticles,
-  getArticlesByCategory,
-} from "@/lib/articles";
+import { getAllArticles, getFeaturedArticles } from "@/lib/articles";
 
 vi.mock("@/lib/articles");
 
 const mockedGetAllArticles = vi.mocked(getAllArticles);
 const mockedGetFeaturedArticles = vi.mocked(getFeaturedArticles);
-const mockedGetArticlesByCategory = vi.mocked(getArticlesByCategory);
 
 function createMockRequest(url: string): Request {
   return new Request(`http://localhost:3000${url}`);
@@ -73,7 +68,7 @@ describe("GET /api/articles", () => {
     expect(response.ok).toBe(true);
   });
 
-  it("?category=el-placer-de-leer calls getArticlesByCategory", async () => {
+  it("?category=el-placer-de-leer filters articles by category", async () => {
     const mockArticles = [
       {
         slug: "category-article",
@@ -87,18 +82,31 @@ describe("GET /api/articles", () => {
         publishedAt: "2024-01-01T00:00:00Z",
         readTime: "5 min",
       },
+      {
+        slug: "other-article",
+        title: "Other Article",
+        excerpt: "Other excerpt",
+        author: { name: "Author", handle: "@author", avatar: "avatar" },
+        category: "Other Category",
+        categorySlug: "other-category",
+        tags: [],
+        featured: false,
+        publishedAt: "2024-01-01T00:00:00Z",
+        readTime: "5 min",
+      },
     ];
-    mockedGetArticlesByCategory.mockResolvedValue(mockArticles);
+    mockedGetAllArticles.mockResolvedValue(mockArticles);
 
     const request = createMockRequest(
       "/api/articles?category=el-placer-de-leer",
     );
     const response = await GET(request);
+    const body = await response.json();
 
-    expect(mockedGetArticlesByCategory).toHaveBeenCalledWith(
-      "el-placer-de-leer",
-    );
+    expect(mockedGetAllArticles).toHaveBeenCalled();
     expect(response.ok).toBe(true);
+    expect(body.data.length).toBe(1);
+    expect(body.data[0].categorySlug).toBe("el-placer-de-leer");
   });
 
   it("?limit=10 passes 10 to getFeaturedArticles", async () => {
@@ -165,8 +173,20 @@ describe("GET /api/articles", () => {
         publishedAt: "2024-01-02T00:00:00Z",
         readTime: "5 min",
       },
+      {
+        slug: "other-article",
+        title: "Other Article",
+        excerpt: "Other excerpt",
+        author: { name: "Author", handle: "@author", avatar: "avatar" },
+        category: "Other Category",
+        categorySlug: "other-category",
+        tags: [],
+        featured: false,
+        publishedAt: "2024-01-01T00:00:00Z",
+        readTime: "5 min",
+      },
     ];
-    mockedGetArticlesByCategory.mockResolvedValue(mockArticles);
+    mockedGetAllArticles.mockResolvedValue(mockArticles);
 
     const request = createMockRequest(
       "/api/articles?category=el-placer-de-leer&limit=1",
@@ -174,11 +194,10 @@ describe("GET /api/articles", () => {
     const response = await GET(request);
     const body = await response.json();
 
-    expect(mockedGetArticlesByCategory).toHaveBeenCalledWith(
-      "el-placer-de-leer",
-    );
+    expect(mockedGetAllArticles).toHaveBeenCalled();
     expect(body.data.length).toBe(1);
     expect(body.count).toBe(1);
+    expect(body.data[0].categorySlug).toBe("el-placer-de-leer");
   });
 
   it("returns empty data array when getAllArticles returns []", async () => {
