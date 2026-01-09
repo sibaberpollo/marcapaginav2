@@ -9,6 +9,35 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/cronologico",
+        destination: "/transtextos",
+        permanent: true,
+      },
+      {
+        source: "/playlist",
+        destination: "/",
+        permanent: true,
+      },
+      {
+        source: "/contacto",
+        destination: "/publica",
+        permanent: true,
+      },
+      {
+        source: "/autores",
+        destination: "/transtextos/autores",
+        permanent: true,
+      },
+      {
+        source: "/series",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
