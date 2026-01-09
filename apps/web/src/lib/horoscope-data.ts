@@ -322,6 +322,45 @@ export const literaryHoroscopesSagitario: LiteraryTexts = {
   },
 };
 
+export const literaryHoroscopesCapricornio: LiteraryTexts = {
+  aries: {
+    text: 'Arrancas enero con la energía de un personaje de Jack London: salvaje, decidido, hambriento. Pero cuidado: no todo se conquista a dentelladas. Esta semana, antes de morder, pregúntate si el hueso vale la pena.',
+  },
+  tauro: {
+    text: 'Tu paciencia es digna de un narrador de Thomas Mann: lenta, detallada, con vocación de monumento. Pero hasta "La montaña mágica" tiene un final. Esta semana, decide si estás construyendo o simplemente postergando.',
+  },
+  geminis: {
+    text: 'Hablas en dos idiomas simultáneos como un personaje de Nabokov: uno para el mundo, otro para ti. Esta semana, alguien descubrirá tu segundo idioma. No te asustes: la traducción puede ser un alivio.',
+  },
+  cancer: {
+    text: 'Tu memoria es un museo curado por Marguerite Duras: cada objeto duele, cada sombra significa. Esta semana, cierra una sala. No todo lo que guardas merece iluminación permanente.',
+  },
+  leo: {
+    text: 'Quieres protagonizar tu propia épica como un héroe de Tolkien, pero el anillo pesa y el camino es largo. Esta semana, acepta compañía. Hasta Frodo necesitó a Sam para llegar a Mordor.',
+  },
+  virgo: {
+    text: 'Editas la realidad con la obsesión de un corrector de Flaubert buscando "le mot juste". Admirable, pero paralizante. Esta semana, publica el borrador. La perfección es enemiga de existir.',
+  },
+  libra: {
+    text: 'Buscas el equilibrio perfecto como si fueras un ensayo de Montaigne: ponderado, elegante, lleno de "por otra parte". Esta semana, toma partido. Incluso los escépticos deben elegir un café.',
+  },
+  escorpio: {
+    text: 'Tu intensidad podría protagonizar una novela de Dostoievski: confesiones a medianoche, culpas heredadas, redenciones imposibles. Esta semana, perdónate algo pequeño. No todo requiere castigo eterno.',
+  },
+  sagitario: {
+    text: 'Planeas escapadas como un personaje de Julio Verne: con mapas, brújulas y optimismo científico. Pero el mundo ya no tiene tantos blancos en el mapa. Esta semana, explora un territorio interior. Sorpresas garantizadas.',
+  },
+  capricornio: {
+    text: 'Este es tu mes, arquitecto de sueños con planos detallados. Como Poe construyendo sus catedrales de terror, sabes que el diablo está en los detalles. Esta semana, permite una grieta: por ahí entrará la luz.',
+  },
+  acuario: {
+    text: 'Tus ideas suenan a ciencia ficción de Ursula K. Le Guin: utopías posibles, futuros alternativos, preguntas incómodas. Esta semana, baja una idea del cielo y plántala en tierra. Necesita raíces para crecer.',
+  },
+  piscis: {
+    text: 'Flotas entre realidades como un cuento de Murakami: gatos que hablan, pozos que conectan mundos, melodías que abren puertas. Esta semana, elige una realidad y quédate un rato. El misterio puede esperar.',
+  },
+};
+
 // Datos específicos para cada horóscopo implementado
 export const horoscopoData: Record<ImplementedSignSlug, HoroscopoData> = {
   cancer: {
@@ -733,6 +772,90 @@ export const horoscopoData: Record<ImplementedSignSlug, HoroscopoData> = {
       'Edmond Rostand',
     ],
   },
+  capricornio: {
+    author: 'Edgar Allan Poe',
+    authorImage:
+      'https://res.cloudinary.com/dx98vnos1/image/upload/v1767953685/Poe_bejcvr.png',
+    authorCredit: 'Adriana García S.',
+    authorSlug: 'eapoe',
+    description:
+      'Capricornio en su forma más oscura y disciplinada: Edgar Allan Poe construyó catedrales de terror con la precisión de un arquitecto obsesivo. Inventó el cuento policial, perfeccionó el relato gótico y convirtió sus demonios en literatura universal. "Los que sueñan de día conocen muchas cosas que escapan a los que sueñan solo de noche", escribió, y vivió entre ambos mundos. Murió misteriosamente a los 40, pero dejó un legado que sigue latiendo bajo las tablas del piso de la literatura mundial. Capricornio no teme a la oscuridad: la cartografía.',
+    efemerides: [
+      {
+        date: '19 de enero de 1809',
+        title: 'Nace Edgar Allan Poe',
+        description: 'Boston recibe al arquitecto del terror moderno.',
+        color: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
+        borderColor: 'border-purple-100 dark:border-purple-800/30',
+        textColor: 'text-purple-600 dark:text-purple-400',
+      },
+      {
+        date: '3 de enero de 1892',
+        title: 'Nace J.R.R. Tolkien',
+        description: 'El constructor de mundos que hizo de la fantasía una arquitectura.',
+        color: 'from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20',
+        borderColor: 'border-green-100 dark:border-green-800/30',
+        textColor: 'text-green-600 dark:text-green-400',
+      },
+      {
+        date: '2 de enero de 1920',
+        title: 'Nace Isaac Asimov',
+        description: 'Las leyes de la robótica nacieron de un Capricornio metódico.',
+        color: 'from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20',
+        borderColor: 'border-blue-100 dark:border-blue-800/30',
+        textColor: 'text-blue-600 dark:text-blue-400',
+      },
+      {
+        date: '9 de enero de 1908',
+        title: 'Nace Simone de Beauvoir',
+        description: 'El feminismo encontró su voz filosófica más rigurosa.',
+        color: 'from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20',
+        borderColor: 'border-rose-100 dark:border-rose-800/30',
+        textColor: 'text-rose-600 dark:text-rose-400',
+      },
+      {
+        date: '5 de enero de 1932',
+        title: 'Nace Umberto Eco',
+        description: 'Semiótica, erudición y novelas que son laberintos de espejos.',
+        color: 'from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20',
+        borderColor: 'border-amber-100 dark:border-amber-800/30',
+        textColor: 'text-amber-600 dark:text-amber-400',
+      },
+      {
+        date: '12 de enero de 1876',
+        title: 'Nace Jack London',
+        description: 'La llamada de lo salvaje: aventura con colmillos y conciencia social.',
+        color: 'from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20',
+        borderColor: 'border-teal-100 dark:border-teal-800/30',
+        textColor: 'text-teal-600 dark:text-cyan-400',
+      },
+      {
+        date: '18 de enero de 1867',
+        title: 'Nace Rubén Darío',
+        description: 'El príncipe del modernismo latinoamericano nació en invierno.',
+        color: 'from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20',
+        borderColor: 'border-indigo-100 dark:border-indigo-800/30',
+        textColor: 'text-indigo-600 dark:text-indigo-400',
+      },
+    ],
+    writers: [
+      'Edgar Allan Poe',
+      'J.R.R. Tolkien',
+      'Isaac Asimov',
+      'Simone de Beauvoir',
+      'Umberto Eco',
+      'Jack London',
+      'Rubén Darío',
+      'Molière',
+      'Haruki Murakami',
+      'Susan Sontag',
+      'E.L. Doctorow',
+      'Juan Rulfo',
+      'Yukio Mishima',
+      'Carlos Castaneda',
+      'Stanisław Lem',
+    ],
+  },
 };
 
 // Función helper para obtener los textos literarios según el signo
@@ -750,12 +873,15 @@ export function getLiteraryTexts(signo: ImplementedSignSlug): LiteraryTexts {
       return literaryHoroscopesEscorpio;
     case 'sagitario':
       return literaryHoroscopesSagitario;
+    case 'capricornio':
+      return literaryHoroscopesCapricornio;
   }
 }
 
 // Función para obtener el link del signo
 export function getSignLink(signSlug: string): string {
-  if (signSlug === 'sagitario') return '/horoscopo'; // Signo actual (Diciembre 2025)
+  if (signSlug === 'capricornio') return '/horoscopo'; // Signo actual (Enero 2026)
+  if (signSlug === 'sagitario') return '/horoscopo/sagitario'; // Archivo disponible (Diciembre 2025)
   if (signSlug === 'escorpio') return '/horoscopo/escorpio'; // Archivo disponible (Noviembre 2025)
   if (signSlug === 'libra') return '/horoscopo/libra'; // Archivo disponible (Octubre 2025)
   if (signSlug === 'virgo') return '/horoscopo/virgo'; // Archivo disponible (Septiembre 2025)
@@ -765,7 +891,7 @@ export function getSignLink(signSlug: string): string {
 }
 
 // Signos implementados (para validación)
-export const implementedSigns: ImplementedSignSlug[] = ['cancer', 'leo', 'virgo', 'libra', 'escorpio', 'sagitario'];
+export const implementedSigns: ImplementedSignSlug[] = ['cancer', 'leo', 'virgo', 'libra', 'escorpio', 'sagitario', 'capricornio'];
 
 // Nombres de signos para mostrar
 export const signDisplayNames: Record<ImplementedSignSlug, string> = {
@@ -775,4 +901,5 @@ export const signDisplayNames: Record<ImplementedSignSlug, string> = {
   libra: 'Libra',
   escorpio: 'Escorpio',
   sagitario: 'Sagitario',
+  capricornio: 'Capricornio',
 };

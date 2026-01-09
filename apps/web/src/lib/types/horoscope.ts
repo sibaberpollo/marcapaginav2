@@ -33,6 +33,6 @@ export interface LiteraryText {
 
 export type SignSlug = 'aries' | 'tauro' | 'geminis' | 'cancer' | 'leo' | 'virgo' | 'libra' | 'escorpio' | 'sagitario' | 'capricornio' | 'acuario' | 'piscis';
 
-export type ImplementedSignSlug = 'cancer' | 'leo' | 'virgo' | 'libra' | 'escorpio' | 'sagitario';
+export type ImplementedSignSlug = 'cancer' | 'leo' | 'virgo' | 'libra' | 'escorpio' | 'sagitario' | 'capricornio';
 
 export type LiteraryTexts = Record<SignSlug, LiteraryText>;

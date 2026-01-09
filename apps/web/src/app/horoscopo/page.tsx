@@ -2,35 +2,35 @@ import type { Metadata } from 'next';
 import HoroscopoClient from '@/components/horoscope/HoroscopoClient';
 
 export const metadata: Metadata = {
-  title: 'Horóscopo Sagitario - Jane Austen: Diciembre 2025 | Marcapágina',
+  title: 'Horóscopo Capricornio - Edgar Allan Poe: Enero 2026 | Marcapágina',
   description:
-    'Horóscopo literario de Sagitario: Jane Austen es nuestra guía. Descubre qué dicen los astros sobre tu lectura, escritura y vida literaria este mes.',
+    'Horóscopo literario de Capricornio: Edgar Allan Poe es nuestra guía. Descubre qué dicen los astros sobre tu lectura, escritura y vida literaria este mes.',
   openGraph: {
-    title: 'Horóscopo Sagitario - Jane Austen: Diciembre 2025',
+    title: 'Horóscopo Capricornio - Edgar Allan Poe: Enero 2026',
     description:
-      'Horóscopo literario de Sagitario: Jane Austen es nuestra guía. Descubre qué dicen los astros sobre tu lectura, escritura y vida literaria este mes.',
+      'Horóscopo literario de Capricornio: Edgar Allan Poe es nuestra guía. Descubre qué dicen los astros sobre tu lectura, escritura y vida literaria este mes.',
     images: [
       {
-        url: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1764592800/jane_austen_sagitario_q5ssic.png',
+        url: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1767953685/Poe_bejcvr.png',
         width: 1200,
         height: 630,
-        alt: 'Horóscopo Sagitario - Jane Austen',
+        alt: 'Horóscopo Capricornio - Edgar Allan Poe',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Horóscopo Sagitario - Jane Austen: Diciembre 2025',
+    title: 'Horóscopo Capricornio - Edgar Allan Poe: Enero 2026',
     description:
-      'Horóscopo literario de Sagitario: Jane Austen es nuestra guía.',
-    images: ['https://res.cloudinary.com/dx98vnos1/image/upload/v1764592800/jane_austen_sagitario_q5ssic.png'],
+      'Horóscopo literario de Capricornio: Edgar Allan Poe es nuestra guía.',
+    images: ['https://res.cloudinary.com/dx98vnos1/image/upload/v1767953685/Poe_bejcvr.png'],
   },
 };
 
 export default function HoroscopoPage() {
   return (
     <main className="min-h-screen">
-      <HoroscopoClient signo="sagitario" />
+      <HoroscopoClient signo="capricornio" />
     </main>
   );
 }
