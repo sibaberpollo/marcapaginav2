@@ -1,4 +1,5 @@
 import FeedTabs from './FeedTabs';
+import FeaturedHoroscopePost from './FeaturedHoroscopePost';
 import FeaturedMapPost from './FeaturedMapPost';
 import FeaturedRecipePost from './FeaturedRecipePost';
 import LatestNarrativaPost from './LatestNarrativaPost';
@@ -10,6 +11,16 @@ export default function Feed() {
   return (
     <div className="space-y-4">
       <FeedTabs />
+
+      {/* Horóscopo Literario - Enero 2026 */}
+      <FeaturedHoroscopePost
+        signName="Capricornio"
+        signSymbol="♑"
+        author="Edgar Allan Poe"
+        authorImage="https://res.cloudinary.com/dx98vnos1/image/upload/v1767953685/Poe_bejcvr.png"
+        month="Enero 2026"
+        excerpt="Capricornio en su forma más oscura y disciplinada: Poe construyó catedrales de terror con la precisión de un arquitecto obsesivo."
+      />
 
       {/* Featured Recipe - El viejo y el ron */}
       <FeaturedRecipePost

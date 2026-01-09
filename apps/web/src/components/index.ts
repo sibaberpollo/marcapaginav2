@@ -10,6 +10,7 @@ export { default as RightSidebar } from './sidebar/RightSidebar';
 export { default as Feed } from './feed/Feed';
 export { default as FeedTabs } from './feed/FeedTabs';
 export { default as FeaturedPost } from './feed/FeaturedPost';
+export { default as FeaturedHoroscopePost } from './feed/FeaturedHoroscopePost';
 export { default as PostCard } from './feed/PostCard';
 export { default as NewsCard } from './feed/NewsCard';
 export { default as ListCard } from './feed/ListCard';
