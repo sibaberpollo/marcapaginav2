@@ -58,10 +58,7 @@ export default function FeaturedHoroscopePost({
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="badge bg-purple-600 text-white border-none text-xs font-semibold">
-                    HORÓSCOPO LITERARIO
-                  </span>
-                  <span className="badge bg-purple-100 text-purple-800 dark:bg-purple-800/30 dark:text-purple-300 border-none text-xs">
-                    {month}
+                    HORÓSCOPO
                   </span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold leading-tight mb-2 flex items-center gap-2">
