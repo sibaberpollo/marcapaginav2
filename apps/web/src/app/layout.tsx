@@ -6,7 +6,7 @@ import OrganizationSchema from '@/components/seo/OrganizationSchema';
 import NavigationSchema from '@/components/seo/NavigationSchema';
 import GoogleAnalytics from '@/components/analytics/GoogleAnalytics';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.page';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.marcapagina.page';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

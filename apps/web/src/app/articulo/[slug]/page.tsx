@@ -12,7 +12,7 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.page';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.marcapagina.page';
 
 // Generate static paths at build time
 export async function generateStaticParams() {

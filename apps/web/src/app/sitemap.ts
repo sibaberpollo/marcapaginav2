@@ -3,7 +3,7 @@ import { getAllArticles } from '@/lib/articles';
 import { fetchSanity } from '@/lib/sanity';
 import { implementedSigns } from '@/lib/horoscope-data';
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.page';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.marcapagina.page';
 
 type SitemapEntry = {
   url: string;
