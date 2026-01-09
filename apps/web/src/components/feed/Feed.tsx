@@ -17,8 +17,6 @@ export default function Feed() {
         excerpt="Ernest Hemingway y el mojito cubano: una receta literaria donde el ron, la menta y la genialidad se mezclan en cada sorbo."
         author="Mirco Ferri"
         date="11 Jun"
-        likes={0}
-        comments={0}
         readTime="6 min"
         slug="el-viejo-y-el-ron"
         badge="A pie de página"
@@ -31,8 +29,6 @@ export default function Feed() {
         excerpt="Una guía literaria para caminar, beber y leer. París fue para Ernest Hemingway algo más que una ciudad: fue su escuela, su refugio y su escenario."
         author="Redacción Marcapágina"
         date="5 Ene"
-        likes={0}
-        comments={0}
         readTime="8 min"
         slug="la-paris-de-hemingway"
         badge="A pie de página"
@@ -45,8 +41,6 @@ export default function Feed() {
         author="Redacción Marcapágina"
         timeAgo="hace 1h"
         tags={['humor', 'listas', 'lectura']}
-        likes={0}
-        comments={0}
         readTime="2 min"
         slug="10-propositos-literarios-de-ano-nuevo"
         itemCount={10}
@@ -59,8 +53,6 @@ export default function Feed() {
         author="Hazael Valecillos"
         timeAgo="hace 3h"
         tags={['ensayo', 'humor', 'lectura']}
-        likes={124}
-        comments={18}
         readTime="6 min"
         slug="manual-de-usuario-para-comenzar-a-leer"
       />
@@ -72,8 +64,6 @@ export default function Feed() {
         author="Redacción Marcapágina"
         timeAgo="hace 2h"
         tags={['humor', 'listas', 'sátira']}
-        likes={0}
-        comments={0}
         readTime="2 min"
         slug="como-identificar-a-un-lector-toxico"
         itemCount={10}
@@ -96,8 +86,6 @@ export default function Feed() {
         author="Redacción Marcapágina"
         timeAgo="hace 4h"
         tags={['humor', 'géneros-literarios']}
-        likes={0}
-        comments={0}
         readTime="1 min"
         slug="si-los-generos-literarios-fueran-personas-en-una-fiesta"
         itemCount={5}
@@ -109,8 +97,6 @@ export default function Feed() {
         author="Redacción Marcapágina"
         timeAgo="hace 5h"
         tags={['humor', 'listas', 'sátira']}
-        likes={0}
-        comments={0}
         readTime="3 min"
         slug="trastornos-literarios-no-reconocidos-por-la-oms"
         itemCount={5}

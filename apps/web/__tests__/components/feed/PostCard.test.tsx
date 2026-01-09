@@ -7,8 +7,6 @@ const defaultProps = {
   author: "Juan Pérez",
   timeAgo: "hace 2h",
   tags: ["Literatura", "Cultura"],
-  likes: 42,
-  comments: 15,
   readTime: "5 min",
 };
 
@@ -52,16 +50,8 @@ describe("PostCard", () => {
     expect(screen.getByRole("link", { name: "#Cultura" })).toBeInTheDocument();
   });
 
-  it("Renders 3 action buttons (likes, comments, save)", () => {
+  it("Renders readTime text", () => {
     render(<PostCard {...defaultProps} />);
-    const buttons = screen.getAllByRole("button");
-    expect(buttons).toHaveLength(3);
-  });
-
-  it("Renders like count, comment count, readTime text", () => {
-    render(<PostCard {...defaultProps} />);
-    expect(screen.getByText("42")).toBeInTheDocument();
-    expect(screen.getByText("15")).toBeInTheDocument();
     expect(screen.getByText("5 min")).toBeInTheDocument();
   });
 

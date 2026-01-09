@@ -6,8 +6,6 @@ const defaultProps = {
   excerpt: "This is a featured article excerpt",
   author: "María García",
   date: "15 mar 2024",
-  likes: 128,
-  comments: 32,
   readTime: "5 min",
   slug: "featured-article",
 };
@@ -43,12 +41,10 @@ describe("FeaturedPost", () => {
     expect(link).toHaveAttribute("href", "#");
   });
 
-  it("Renders author info, date, likes, comments, readTime", () => {
+  it("Renders author info, date, and readTime", () => {
     render(<FeaturedPost {...defaultProps} />);
     expect(screen.getByText("María García")).toBeInTheDocument();
     expect(screen.getByText("15 mar 2024")).toBeInTheDocument();
-    expect(screen.getByText("128")).toBeInTheDocument();
-    expect(screen.getByText("32")).toBeInTheDocument();
     expect(screen.getByText("5 min")).toBeInTheDocument();
   });
 });
