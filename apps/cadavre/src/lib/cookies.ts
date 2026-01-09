@@ -55,12 +55,22 @@ function isBrowser(): boolean {
 function getCookie(name: string): string | null {
   if (!isBrowser()) return null;
 
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length !== 2) return null;
+  const cookieString = document.cookie;
+  if (!cookieString) return null;
 
-  const cookieValue = parts.pop()?.split(";").shift() ?? null;
-  return cookieValue;
+  // Parse cookies - format is "key1=value1; key2=value2; ..."
+  const cookies = cookieString.split(";");
+  const nameEQ = `${name}=`;
+
+  for (const cookie of cookies) {
+    const trimmed = cookie.trim();
+    if (trimmed.startsWith(nameEQ)) {
+      // Found the cookie - return value (everything after the =)
+      return trimmed.substring(nameEQ.length);
+    }
+  }
+
+  return null;
 }
 
 /**
@@ -219,7 +229,11 @@ function getMaxAgeSeconds(): number {
 export function generateUuid(): string {
   // Use crypto.randomUUID() when available (Node.js 19+, modern browsers)
   if (typeof crypto !== "undefined" && crypto.randomUUID) {
-    return crypto.randomUUID();
+    const result = crypto.randomUUID();
+    if (result) {
+      return result;
+    }
+    // Fallthrough: randomUUID exists but returned undefined/falsy
   }
 
   // Fallback for older environments

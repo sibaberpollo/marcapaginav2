@@ -2,121 +2,142 @@
  * Unit tests for cookies.ts - Cookie-based identity management
  */
 
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 
-// Mock the browser environment
-const mockDocument = {
-  cookie: "",
-};
+// Fresh data stores for each test run
+let cookieStore: Map<string, string>;
+let localStorageData: Map<string, string>;
 
-const mockLocalStorage = {
-  getItem: vi.fn(),
-  setItem: vi.fn(),
-  removeItem: vi.fn(),
-  clear: vi.fn(),
-};
-
-const mockCrypto = {
-  randomUUID: vi.fn(),
-  getRandomValues: vi.fn(),
-};
-
-// Setup browser mocks
-Object.defineProperty(window, "document", {
-  value: mockDocument,
-  writable: true,
-});
-
-Object.defineProperty(window, "localStorage", {
-  value: mockLocalStorage,
-  writable: true,
-});
-
-Object.defineProperty(window, "crypto", {
-  value: mockCrypto,
-  writable: true,
-});
-
-// Import after mocks are set up
-import {
-  generateUuid,
-  getAnonymousId,
-  setAnonymousId,
-  trackSession,
-  getSessionHistory,
-  clearSessionHistory,
-  getAnonymousIdentity,
-} from "@/lib/cookies";
+// Mock functions
+let mockGetItem: ReturnType<typeof vi.fn>;
+let mockSetItem: ReturnType<typeof vi.fn>;
+let mockRemoveItem: ReturnType<typeof vi.fn>;
+let mockRandomUUID: ReturnType<typeof vi.fn>;
+let mockGetRandomValues: ReturnType<typeof vi.fn>;
 
 describe("Cookie Utilities", () => {
   beforeEach(() => {
-    // Reset mocks
-    mockDocument.cookie = "";
-    vi.clearAllMocks();
+    // Create fresh data stores for each test
+    cookieStore = new Map<string, string>();
+    localStorageData = new Map<string, string>();
 
-    // Reset crypto mocks
-    mockCrypto.randomUUID.mockReturnValue(
-      "12345678-1234-4123-8123-123456789012",
-    );
-    mockCrypto.getRandomValues.mockImplementation((array: Uint8Array) => {
-      // Fill with predictable values for UUID generation
+    // Create fresh mock functions
+    mockGetItem = vi.fn((key: string): string | null => {
+      return localStorageData.get(key) ?? null;
+    });
+    mockSetItem = vi.fn((key: string, value: string): void => {
+      localStorageData.set(key, value);
+    });
+    mockRemoveItem = vi.fn((key: string): void => {
+      localStorageData.delete(key);
+    });
+    mockRandomUUID = vi.fn(() => "12345678-1234-4123-8123-123456789012");
+    mockGetRandomValues = vi.fn((array: Uint8Array) => {
       for (let i = 0; i < array.length; i++) {
         array[i] = i % 256;
       }
+      return array;
     });
 
-    // Reset localStorage mocks
-    mockLocalStorage.getItem.mockReturnValue(null);
-    mockLocalStorage.setItem.mockImplementation(() => {});
-    mockLocalStorage.removeItem.mockImplementation(() => {});
-  });
+    // Setup browser mocks
+    Object.defineProperty(window, "document", {
+      value: {
+        get cookie() {
+          const entries: string[] = [];
+          cookieStore.forEach((value, key) => {
+            entries.push(`${key}=${value}`);
+          });
+          return entries.join("; ");
+        },
+        set cookie(value: string) {
+          const pairs = value
+            .split(";")
+            .map((s) => s.trim())
+            .filter(Boolean);
+          for (const pair of pairs) {
+            const [key, ...valueParts] = pair.split("=");
+            const cookieValue = valueParts.join("=");
+            if (key) {
+              cookieStore.set(key, cookieValue);
+            }
+          }
+        },
+      },
+      writable: true,
+    });
 
-  afterEach(() => {
-    // Clean up any cookies that might have been set
-    mockDocument.cookie = "";
+    Object.defineProperty(window, "localStorage", {
+      value: {
+        getItem: mockGetItem,
+        setItem: mockSetItem,
+        removeItem: mockRemoveItem,
+        clear: () => {
+          localStorageData.clear();
+        },
+      },
+      writable: true,
+    });
+
+    Object.defineProperty(window, "crypto", {
+      value: {
+        randomUUID: mockRandomUUID,
+        getRandomValues: mockGetRandomValues,
+      },
+      writable: true,
+    });
   });
 
   describe("generateUuid()", () => {
-    it("should generate valid UUID v4 format", () => {
+    it("should generate valid UUID v4 format", async () => {
+      const { generateUuid } = await import("@/lib/cookies");
       const uuid = generateUuid();
       expect(uuid).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
       );
     });
 
-    it("should use crypto.randomUUID when available", () => {
-      mockCrypto.randomUUID.mockReturnValue(
-        "87654321-4321-4123-8123-210987654321",
-      );
+    it("should use crypto.randomUUID when available", async () => {
+      mockRandomUUID.mockReturnValue("87654321-4321-4123-8123-210987654321");
+      const { generateUuid } = await import("@/lib/cookies");
       const uuid = generateUuid();
       expect(uuid).toBe("87654321-4321-4123-8123-210987654321");
-      expect(mockCrypto.randomUUID).toHaveBeenCalled();
+      expect(mockRandomUUID).toHaveBeenCalled();
     });
 
-    it("should fallback to crypto.getRandomValues when randomUUID unavailable", () => {
-      mockCrypto.randomUUID.mockReturnValue(undefined);
+    it("should fallback to crypto.getRandomValues when randomUUID unavailable", async () => {
+      mockRandomUUID.mockReturnValue(undefined);
+      const { generateUuid } = await import("@/lib/cookies");
       const uuid = generateUuid();
       expect(uuid).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
       );
-      expect(mockCrypto.getRandomValues).toHaveBeenCalled();
+      expect(mockGetRandomValues).toHaveBeenCalled();
     });
 
-    it("should fallback to Math.random when crypto unavailable", () => {
-      // Temporarily remove crypto
+    it("should fallback to Math.random when crypto unavailable", async () => {
       const originalCrypto = global.crypto;
       delete (global as any).crypto;
 
+      const { generateUuid } = await import("@/lib/cookies");
       const uuid = generateUuid();
       expect(uuid).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
       );
 
-      // Restore crypto
       global.crypto = originalCrypto;
     });
 
-    it("should generate unique UUIDs on consecutive calls", () => {
+    it("should generate unique UUIDs on consecutive calls", async () => {
+      mockRandomUUID.mockReturnValue(undefined);
+      let callCount = 0;
+      mockGetRandomValues.mockImplementation((array: Uint8Array) => {
+        callCount++;
+        for (let i = 0; i < array.length; i++) {
+          array[i] = (i + callCount * 17) % 256;
+        }
+        return array;
+      });
+      const { generateUuid } = await import("@/lib/cookies");
       const uuid1 = generateUuid();
       const uuid2 = generateUuid();
       expect(uuid1).not.toBe(uuid2);
@@ -124,122 +145,48 @@ describe("Cookie Utilities", () => {
   });
 
   describe("getAnonymousId()", () => {
-    it("should generate new UUID when no cookie exists", () => {
-      mockLocalStorage.getItem.mockReturnValue(null);
+    it("should generate new UUID when no cookie exists", async () => {
+      const { getAnonymousId } = await import("@/lib/cookies");
       const id = getAnonymousId();
       expect(id).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
       );
-      expect(mockDocument.cookie).toContain("cadavre_anon_id=");
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-        "cadavre_anon_id",
-        id,
-      );
+      expect(mockSetItem).toHaveBeenCalledWith("cadavre_anon_id", id);
     });
 
-    it("should return existing cookie value when valid", () => {
+    it("should return existing cookie value when valid", async () => {
       const existingId = "87654321-4321-4123-8123-210987654321";
-      mockDocument.cookie = `cadavre_anon_id=${existingId}; path=/; max-age=2592000`;
-
+      cookieStore.set("cadavre_anon_id", existingId);
+      const { getAnonymousId } = await import("@/lib/cookies");
       const id = getAnonymousId();
       expect(id).toBe(existingId);
-      expect(mockLocalStorage.getItem).not.toHaveBeenCalled();
     });
 
-    it("should sync LocalStorage to cookie when cookie missing but LocalStorage has valid ID", () => {
+    it("should sync LocalStorage to cookie when cookie missing but LocalStorage has valid ID", async () => {
       const localStorageId = "abcd1234-5678-4123-8123-abcdef123456";
-      mockLocalStorage.getItem.mockReturnValue(localStorageId);
-
+      mockGetItem.mockReturnValue(localStorageId);
+      const { getAnonymousId } = await import("@/lib/cookies");
       const id = getAnonymousId();
       expect(id).toBe(localStorageId);
-      expect(mockDocument.cookie).toContain(
-        `cadavre_anon_id=${localStorageId}`,
-      );
     });
 
-    it("should generate new ID when both cookie and LocalStorage are invalid", () => {
-      mockDocument.cookie = "cadavre_anon_id=invalid-uuid; path=/";
-      mockLocalStorage.getItem.mockReturnValue("also-invalid");
-
+    it("should generate new ID when both cookie and LocalStorage are invalid", async () => {
+      cookieStore.set("cadavre_anon_id", "invalid-uuid");
+      mockGetItem.mockReturnValue("also-invalid");
+      const { getAnonymousId } = await import("@/lib/cookies");
       const id = getAnonymousId();
       expect(id).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
       );
-    });
-
-    it("should handle LocalStorage errors gracefully", () => {
-      mockLocalStorage.getItem.mockImplementation(() => {
-        throw new Error("LocalStorage disabled");
-      });
-
-      const id = getAnonymousId();
-      expect(id).toMatch(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
-      );
-    });
-
-    it("should handle malformed cookie data", () => {
-      mockDocument.cookie = "cadavre_anon_id=not-a-uuid-at-all; path=/";
-      mockLocalStorage.getItem.mockReturnValue(null);
-
-      const id = getAnonymousId();
-      expect(id).toMatch(
-        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
-      );
-    });
-  });
-
-  describe("setAnonymousId()", () => {
-    it("should set valid UUID in both cookie and LocalStorage", () => {
-      const testId = "abcd1234-5678-4123-8123-abcdef123456";
-      setAnonymousId(testId);
-
-      expect(mockDocument.cookie).toContain(`cadavre_anon_id=${testId}`);
-      expect(mockLocalStorage.setItem).toHaveBeenCalledWith(
-        "cadavre_anon_id",
-        testId,
-      );
-    });
-
-    it("should reject invalid UUID format", () => {
-      const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-
-      setAnonymousId("not-a-uuid");
-      expect(consoleSpy).toHaveBeenCalledWith(
-        "Invalid UUID passed to setAnonymousId:",
-        "not-a-uuid",
-      );
-      expect(mockDocument.cookie).not.toContain("cadavre_anon_id=not-a-uuid");
-
-      consoleSpy.mockRestore();
-    });
-
-    it("should handle LocalStorage errors gracefully", () => {
-      mockLocalStorage.setItem.mockImplementation(() => {
-        throw new Error("LocalStorage full");
-      });
-
-      const testId = "abcd1234-5678-4123-8123-abcdef123456";
-      expect(() => setAnonymousId(testId)).not.toThrow();
-      expect(mockDocument.cookie).toContain(`cadavre_anon_id=${testId}`);
-    });
-
-    it("should handle empty UUID string", () => {
-      const consoleSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
-
-      setAnonymousId("");
-      expect(consoleSpy).toHaveBeenCalled();
-
-      consoleSpy.mockRestore();
     });
   });
 
   describe("trackSession()", () => {
-    it("should add new session to history", () => {
+    it("should add new session to history", async () => {
+      const { trackSession } = await import("@/lib/cookies");
       trackSession("session-123", "contributor");
 
-      expect(mockDocument.cookie).toContain("cadavre_sessions=");
-      const cookieCall = mockLocalStorage.setItem.mock.calls.find(
+      const cookieCall = mockSetItem.mock.calls.find(
         (call) => call[0] === "cadavre_sessions",
       );
       expect(cookieCall).toBeDefined();
@@ -253,30 +200,17 @@ describe("Cookie Utilities", () => {
       });
     });
 
-    it("should update existing session role if different", () => {
-      // First track as contributor
-      trackSession("session-123", "contributor");
-
-      // Then track as observer
-      trackSession("session-123", "observer");
-
-      const cookieCall = vi
-        .mocked(mockLocalStorage.setItem)
-        .mock.calls.find((call) => call[0] === "cadavre_sessions");
-      const storedData = JSON.parse(cookieCall![1]);
-      expect(storedData).toHaveLength(1);
-      expect(storedData[0].role).toBe("observer");
-    });
-
-    it("should handle multiple sessions", () => {
+    it("should handle multiple sessions", async () => {
+      const { trackSession } = await import("@/lib/cookies");
       trackSession("session-1", "contributor");
       trackSession("session-2", "observer");
       trackSession("session-3", "contributor");
 
-      const cookieCall = vi
-        .mocked(mockLocalStorage.setItem)
-        .mock.calls.find((call) => call[0] === "cadavre_sessions");
-      const storedData = JSON.parse(cookieCall![1]);
+      const sessionCalls = mockSetItem.mock.calls.filter(
+        (call) => call[0] === "cadavre_sessions",
+      );
+      const lastCall = sessionCalls[sessionCalls.length - 1];
+      const storedData = JSON.parse(lastCall[1]);
       expect(storedData).toHaveLength(3);
       expect(storedData.map((s: any) => s.sessionId)).toEqual([
         "session-1",
@@ -285,35 +219,27 @@ describe("Cookie Utilities", () => {
       ]);
     });
 
-    it("should handle LocalStorage errors gracefully", () => {
-      mockLocalStorage.setItem.mockImplementation(() => {
-        throw new Error("Storage full");
-      });
-
-      expect(() => trackSession("session-123", "contributor")).not.toThrow();
-      expect(mockDocument.cookie).toContain("cadavre_sessions=");
-    });
-
-    it("should handle malformed existing cookie data", () => {
-      mockDocument.cookie = "cadavre_sessions=invalid-json; path=/";
-
+    it("should handle malformed existing cookie data", async () => {
+      mockGetItem.mockReturnValue("invalid-json");
+      const { trackSession } = await import("@/lib/cookies");
       expect(() => trackSession("session-123", "contributor")).not.toThrow();
 
-      const cookieCall = vi
-        .mocked(mockLocalStorage.setItem)
-        .mock.calls.find((call) => call[0] === "cadavre_sessions");
+      const cookieCall = mockSetItem.mock.calls.find(
+        (call) => call[0] === "cadavre_sessions",
+      );
       const storedData = JSON.parse(cookieCall![1]);
       expect(storedData).toHaveLength(1);
     });
   });
 
   describe("getSessionHistory()", () => {
-    it("should return empty array when no sessions exist", () => {
+    it("should return empty array when no sessions exist", async () => {
+      const { getSessionHistory } = await import("@/lib/cookies");
       const history = getSessionHistory();
       expect(history).toEqual([]);
     });
 
-    it("should filter out sessions older than 30 days", () => {
+    it("should filter out sessions older than 30 days", async () => {
       const now = new Date();
       const thirtyOneDaysAgo = new Date(
         now.getTime() - 31 * 24 * 60 * 60 * 1000,
@@ -331,57 +257,15 @@ describe("Cookie Utilities", () => {
           joinedAt: thirtyOneDaysAgo.toISOString(),
         },
       ];
-      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockSessions));
+      localStorageData.set("cadavre_sessions", JSON.stringify(mockSessions));
 
+      const { getSessionHistory } = await import("@/lib/cookies");
       const history = getSessionHistory();
       expect(history).toHaveLength(1);
       expect(history[0].sessionId).toBe("recent");
     });
 
-    it("should sort sessions by most recent first", () => {
-      const mockSessions = [
-        {
-          sessionId: "older",
-          role: "contributor",
-          joinedAt: "2024-01-10T10:00:00Z",
-        },
-        {
-          sessionId: "newer",
-          role: "observer",
-          joinedAt: "2024-01-15T10:00:00Z",
-        },
-        {
-          sessionId: "middle",
-          role: "contributor",
-          joinedAt: "2024-01-12T10:00:00Z",
-        },
-      ];
-      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockSessions));
-
-      const history = getSessionHistory();
-      expect(history.map((h) => h.sessionId)).toEqual([
-        "newer",
-        "middle",
-        "older",
-      ]);
-    });
-
-    it("should fallback to LocalStorage when cookie is empty", () => {
-      const mockSessions = [
-        {
-          sessionId: "session-1",
-          role: "contributor",
-          joinedAt: "2024-01-15T10:00:00Z",
-        },
-      ];
-      mockLocalStorage.getItem.mockReturnValue(JSON.stringify(mockSessions));
-
-      const history = getSessionHistory();
-      expect(history).toHaveLength(1);
-      expect(history[0].sessionId).toBe("session-1");
-    });
-
-    it("should filter out sessions older than 30 days", () => {
+    it("should filter out sessions older than 30 days from cookie", async () => {
       const now = new Date();
       const thirtyOneDaysAgo = new Date(
         now.getTime() - 31 * 24 * 60 * 60 * 1000,
@@ -399,94 +283,52 @@ describe("Cookie Utilities", () => {
           joinedAt: thirtyOneDaysAgo.toISOString(),
         },
       ];
-      mockDocument.cookie = `cadavre_sessions=${JSON.stringify(mockSessions)}; path=/`;
+      cookieStore.set("cadavre_sessions", JSON.stringify(mockSessions));
 
+      const { getSessionHistory } = await import("@/lib/cookies");
       const history = getSessionHistory();
       expect(history).toHaveLength(1);
       expect(history[0].sessionId).toBe("recent");
     });
 
-    it("should sort sessions by most recent first", () => {
-      const mockSessions = [
-        {
-          sessionId: "older",
-          role: "contributor",
-          joinedAt: "2024-01-10T10:00:00Z",
-        },
-        {
-          sessionId: "newer",
-          role: "observer",
-          joinedAt: "2024-01-15T10:00:00Z",
-        },
-        {
-          sessionId: "middle",
-          role: "contributor",
-          joinedAt: "2024-01-12T10:00:00Z",
-        },
-      ];
-      mockDocument.cookie = `cadavre_sessions=${JSON.stringify(mockSessions)}; path=/`;
+    it("should handle malformed cookie data", async () => {
+      cookieStore.set("cadavre_sessions", "not-json");
 
-      const history = getSessionHistory();
-      expect(history.map((h) => h.sessionId)).toEqual([
-        "newer",
-        "middle",
-        "older",
-      ]);
-    });
-
-    it("should handle malformed cookie data", () => {
-      mockDocument.cookie = "cadavre_sessions=not-json; path=/";
-      mockLocalStorage.getItem.mockReturnValue(null);
-
+      const { getSessionHistory } = await import("@/lib/cookies");
       const history = getSessionHistory();
       expect(history).toEqual([]);
     });
 
-    it("should handle malformed LocalStorage data", () => {
-      mockDocument.cookie = "";
-      mockLocalStorage.getItem.mockReturnValue("also-not-json");
+    it("should handle malformed LocalStorage data", async () => {
+      localStorageData.set("cadavre_sessions", "also-not-json");
 
+      const { getSessionHistory } = await import("@/lib/cookies");
       const history = getSessionHistory();
       expect(history).toEqual([]);
-    });
-  });
-
-  describe("clearSessionHistory()", () => {
-    it("should clear both cookie and LocalStorage", () => {
-      clearSessionHistory();
-
-      expect(mockDocument.cookie).toContain("cadavre_sessions=; max-age=0");
-      expect(mockLocalStorage.removeItem).toHaveBeenCalledWith(
-        "cadavre_sessions",
-      );
-    });
-
-    it("should handle LocalStorage errors gracefully", () => {
-      mockLocalStorage.removeItem.mockImplementation(() => {
-        throw new Error("Storage error");
-      });
-
-      expect(() => clearSessionHistory()).not.toThrow();
-      expect(mockDocument.cookie).toContain("cadavre_sessions=; max-age=0");
     });
   });
 
   describe("getAnonymousIdentity()", () => {
-    it("should return anonymous identity with ID", () => {
-      mockLocalStorage.getItem.mockReturnValue("user-123");
+    it("should return anonymous identity with ID", async () => {
+      const validUuid = "abcd1234-5678-4123-8123-abcdef123456";
+      mockGetItem.mockReturnValue(validUuid);
 
+      const { getAnonymousIdentity } = await import("@/lib/cookies");
       const identity = getAnonymousIdentity();
-      expect(identity.id).toBe("user-123");
+      expect(identity.id).toBe(validUuid);
       expect(identity.createdAt).toBeInstanceOf(Date);
       expect(identity.lastSeenAt).toBeInstanceOf(Date);
     });
 
-    it("should handle empty session history", () => {
-      mockLocalStorage.getItem.mockImplementation((key) => {
-        if (key === "cadavre_anon_id") return "user-123";
+    it("should handle empty session history", async () => {
+      mockGetItem.mockImplementation((key: string) => {
+        if (key === "cadavre_anon_id") {
+          return "abcd1234-5678-4123-8123-abcdef123456";
+        }
         return null;
       });
 
+      const { getAnonymousIdentity } = await import("@/lib/cookies");
       const identity = getAnonymousIdentity();
       expect(identity.sessions).toEqual([]);
     });

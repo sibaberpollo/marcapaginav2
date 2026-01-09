@@ -15,7 +15,6 @@ import {
   buildSessionLinks,
   parseSessionUrl,
   isLinkType,
-  type LinkType,
 } from "@/lib/links";
 
 // Mock NextRequest

@@ -15,8 +15,6 @@ import type {
 } from "@/lib/types";
 import {
   mockSession,
-  mockContributors,
-  mockSegments,
   mockVoteStatus,
   mockAnonymousIdentity,
 } from "./session-state";
