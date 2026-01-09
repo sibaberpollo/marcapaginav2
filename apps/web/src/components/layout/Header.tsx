@@ -82,14 +82,16 @@ export default function Header() {
               </svg>
             </a>
             <ThemeToggle />
-            {/* Write button
+            {/* Publica button */}
             <Link
-              href="#"
-              className="btn btn-sm bg-brand-black-static text-brand-yellow border-none hover:bg-brand-gray"
+              href="/publica"
+              className="flex items-center gap-1.5 px-4 py-1.5 bg-brand-black-static text-brand-yellow rounded-full text-sm font-medium hover:bg-brand-black-static/80 transition-all hover:scale-105"
             >
-              Escribir
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+              <span className="hidden sm:inline">Publica</span>
             </Link>
-            */}
             {/* User avatar
             <div className="w-8 h-8 bg-brand-black-static rounded-full cursor-pointer hover:ring-2 hover:ring-brand-black-static/50 transition-all"></div>
             */}
