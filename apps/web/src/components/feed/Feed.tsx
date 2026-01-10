@@ -12,6 +12,18 @@ export default function Feed() {
     <div className="space-y-4">
       <FeedTabs />
 
+      {/* Lista destacada - 5 arranques */}
+      <ListCard
+        title="5 arranques que te obligan a seguir leyendo"
+        excerpt="A diferencia de la novela, el cuento no tiene tiempo para calentar motores. Cada palabra cuenta."
+        author="Redacción Marcapágina"
+        timeAgo="hace 1h"
+        tags={['cuentos', 'listas', 'inicios']}
+        readTime="3 min"
+        slug="5-arranques-que-te-obligan-a-seguir-leyendo"
+        itemCount={5}
+      />
+
       {/* Horóscopo Literario - Enero 2026 */}
       <FeaturedHoroscopePost
         signName="Capricornio"

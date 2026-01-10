@@ -4,7 +4,7 @@ import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug, getAllArticles, getAllTranstextosSlugs } from '@/lib/articles';
 import { isTravelGuide, isRecipe } from '@/lib/types/article';
 import RelatoHeader from '@/components/layout/RelatoHeader';
-import { Avatar } from '@/components';
+import { Avatar, ShareButton } from '@/components';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -140,9 +140,45 @@ export default async function RelatoPage({ params }: PageProps) {
           </div>
         </div>
 
+        {/* Botones de interacción */}
+        <div className="flex items-center justify-between py-4 border-t border-b border-surface-2">
+          <div className="flex items-center gap-6">
+            <button className="flex items-center gap-2 text-brand-gray hover:text-red-500 transition-colors">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+              <span className="font-medium">{article.likes || 0}</span>
+            </button>
+          </div>
+          <div className="flex items-center gap-4">
+            <button
+              className="p-2 text-brand-gray hover:text-text-primary transition-colors"
+              title="Guardar"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
+                />
+              </svg>
+            </button>
+            <ShareButton
+              title={article.title}
+              url={`${siteUrl}/relato/${article.slug}`}
+            />
+          </div>
+        </div>
+
         {/* Tags y navegación mínima */}
         {(article.tags.length > 0 || article.category) && (
-          <div className="flex items-center flex-wrap gap-2 pt-6 border-t border-surface-2">
+          <div className="flex items-center flex-wrap gap-2 pt-6">
             {article.category && (
               <Link
                 href={`/categoria/${article.categorySlug}`}

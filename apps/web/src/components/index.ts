@@ -23,6 +23,7 @@ export { default as CategoryFeed } from './feed/CategoryFeed';
 // UI
 export { default as ThemeToggle } from './ui/ThemeToggle';
 export { default as Avatar } from './ui/Avatar';
+export { default as ShareButton } from './ui/ShareButton';
 //forzar deploy
 
 // Layout helpers
