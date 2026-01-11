@@ -69,7 +69,10 @@ export default function RootLayout({
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="antialiased bg-bg-page text-text-primary transition-colors duration-200">
+      <body
+        className="antialiased bg-bg-page text-text-primary transition-colors duration-200"
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>
