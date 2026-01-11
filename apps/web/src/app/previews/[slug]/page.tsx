@@ -47,11 +47,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       authors: [preview.author.name],
       tags: preview.genre,
       locale: 'es_ES',
+      images: preview.coverImage ? [{ url: preview.coverImage, alt: preview.title }] : [],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${preview.title} - Preview`,
       description: plainSynopsis,
+      images: preview.coverImage ? [preview.coverImage] : [],
     },
     alternates: {
       canonical: previewUrl,
