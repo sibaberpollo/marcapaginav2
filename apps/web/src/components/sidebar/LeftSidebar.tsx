@@ -39,11 +39,6 @@ const navItems = [
     ),
   },
   {
-    href: '/transtextos',
-    label: 'Narrativa',
-    customIcon: true,
-  },
-  {
     href: '/horoscopo',
     label: 'Horóscopo',
     icon: (
@@ -57,6 +52,11 @@ const navItems = [
         />
       </>
     ),
+  },
+  {
+    href: '/transtextos',
+    label: 'Narrativa',
+    customIcon: true,
   },
   {
     href: '/previews',

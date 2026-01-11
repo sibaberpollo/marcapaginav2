@@ -43,14 +43,6 @@ export default function MobileNav() {
           <span className="text-xs">Viajes</span>
         </Link>
 
-        {/* Narrativa */}
-        <Link href="/transtextos" className="flex flex-col items-center gap-1 p-2 text-brand-gray">
-          <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-xs" style={{ fontFamily: '"Times New Roman", Times, serif' }}>T.</span>
-          </div>
-          <span className="text-xs">Narrativa</span>
-        </Link>
-
         {/* Horóscopo */}
         <Link href="/horoscopo" className="flex flex-col items-center gap-1 p-2 text-brand-gray">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,6 +55,14 @@ export default function MobileNav() {
             />
           </svg>
           <span className="text-xs">Horóscopo</span>
+        </Link>
+
+        {/* Narrativa */}
+        <Link href="/transtextos" className="flex flex-col items-center gap-1 p-2 text-brand-gray">
+          <div className="w-6 h-6 bg-black rounded-full flex items-center justify-center">
+            <span className="text-white font-bold text-xs" style={{ fontFamily: '"Times New Roman", Times, serif' }}>T.</span>
+          </div>
+          <span className="text-xs">Narrativa</span>
         </Link>
 
         {/* Previews */}

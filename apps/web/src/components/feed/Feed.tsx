@@ -1,6 +1,7 @@
 import FeedTabs from './FeedTabs';
 import FeaturedHoroscopePost from './FeaturedHoroscopePost';
 import FeaturedMapPost from './FeaturedMapPost';
+import FeaturedPreviewPost from './FeaturedPreviewPost';
 import FeaturedRecipePost from './FeaturedRecipePost';
 import LatestNarrativaPost from './LatestNarrativaPost';
 import PostCard from './PostCard';
@@ -11,6 +12,17 @@ export default function Feed() {
   return (
     <div className="space-y-4">
       <FeedTabs />
+
+      {/* Featured Preview - Alta Pureza */}
+      <FeaturedPreviewPost
+        title="Alta Pureza"
+        author="Marianne Díaz Hernández"
+        genre="Thriller"
+        excerpt="Una novela que comienza con el hallazgo de un cadáver en una hacienda del páramo andino y sigue la investigación de Ana, una abogada venezolana que enfrenta más de un misterio."
+        coverImage="https://public-files.gumroad.com/xgdjeqtl5792s8io16abkoshyx1u"
+        slug="alta-pureza"
+        chaptersCount={3}
+      />
 
       {/* Lista destacada - 5 arranques */}
       <ListCard
