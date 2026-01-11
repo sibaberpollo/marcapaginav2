@@ -16,7 +16,12 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
   const isLastChapter = activeChapter === chapters.length - 1;
 
   const scrollToTop = () => {
-    document.getElementById('capitulos')?.scrollIntoView({ behavior: 'smooth' });
+    const element = document.getElementById('capitulos');
+    if (element) {
+      const offset = 80; // Account for fixed header
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
+    }
   };
 
   const goToChapter = (index: number) => {
