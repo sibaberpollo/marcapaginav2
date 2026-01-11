@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Chapter } from '@/lib/previews';
 
 interface ChapterReaderProps {
@@ -11,28 +11,23 @@ interface ChapterReaderProps {
 
 export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: ChapterReaderProps) {
   const [activeChapter, setActiveChapter] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const chapter = chapters[activeChapter];
   const isLastChapter = activeChapter === chapters.length - 1;
 
-  const scrollToTop = () => {
-    const element = document.getElementById('capitulos');
-    if (element) {
-      const offset = 80; // Account for fixed header
-      const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: elementPosition - offset, behavior: 'smooth' });
-    }
-  };
-
   const goToChapter = (index: number) => {
+    // Scroll to section first, then change content
+    if (sectionRef.current) {
+      const offset = 80;
+      const elementPosition = sectionRef.current.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: elementPosition - offset, behavior: 'instant' });
+    }
     setActiveChapter(index);
-    setTimeout(() => {
-      scrollToTop();
-    }, 50);
   };
 
   return (
-    <section id="capitulos" className="py-8">
+    <section ref={sectionRef} id="capitulos" className="py-8">
       {/* Chapter navigation tabs */}
       <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
         {chapters.map((ch, idx) => (
