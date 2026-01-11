@@ -25,8 +25,8 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
             onClick={() => setActiveChapter(idx)}
             className={`flex-shrink-0 px-4 py-2 rounded-lg font-medium transition-colors ${
               activeChapter === idx
-                ? 'bg-blue-600 text-white'
-                : 'bg-surface text-text-secondary hover:bg-surface-2'
+                ? 'bg-brand-black-static text-brand-yellow'
+                : 'bg-brand-black-static/60 text-brand-yellow/70 hover:bg-brand-black-static hover:text-brand-yellow'
             }`}
           >
             Capítulo {ch.number}
@@ -37,7 +37,7 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
       {/* Chapter header */}
       <header className="mb-8 pb-4 border-b border-surface-2">
         <div className="flex items-center gap-3 text-sm text-text-secondary mb-3">
-          <span className="px-3 py-1 bg-blue-600 text-white rounded-full font-semibold text-xs tracking-wide uppercase">
+          <span className="px-3 py-1 bg-brand-yellow text-brand-black-static rounded-full font-semibold text-xs tracking-wide uppercase">
             Capítulo {chapter.number}
           </span>
           {chapter.subtitle && <span>{chapter.subtitle}</span>}
@@ -65,7 +65,7 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
           <button
             onClick={() => setActiveChapter((prev) => Math.max(0, prev - 1))}
             disabled={activeChapter === 0}
-            className="flex items-center gap-2 px-4 py-2 text-text-secondary hover:text-text-primary disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-brand-black-static text-brand-yellow rounded-lg font-medium disabled:opacity-30 disabled:cursor-not-allowed hover:bg-brand-black-static/80 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
@@ -89,7 +89,7 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
           ) : (
             <button
               onClick={() => setActiveChapter((prev) => Math.min(chapters.length - 1, prev + 1))}
-              className="flex items-center gap-2 px-4 py-2 text-brand-yellow hover:underline transition-colors font-medium"
+              className="flex items-center gap-2 px-4 py-2 bg-brand-black-static text-brand-yellow rounded-lg font-medium hover:bg-brand-black-static/80 transition-colors"
             >
               Siguiente capítulo
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
