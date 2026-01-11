@@ -1143,6 +1143,22 @@ export class SessionStore {
 // =============================================================================
 
 /**
+ * Global singleton pattern for Next.js compatibility.
+ *
+ * In development mode with Turbopack/HMR, module instances can be recreated,
+ * causing in-memory data loss. Using globalThis ensures the store persists
+ * across module reloads.
+ */
+const globalForStore = globalThis as unknown as {
+  sessionStore: SessionStore | undefined;
+};
+
+/**
  * Singleton instance of the session store for use throughout the application.
  */
-export const sessionStore = new SessionStore();
+export const sessionStore = globalForStore.sessionStore ?? new SessionStore();
+
+// Preserve store across HMR in development
+if (process.env.NODE_ENV !== "production") {
+  globalForStore.sessionStore = sessionStore;
+}
