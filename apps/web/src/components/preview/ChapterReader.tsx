@@ -26,7 +26,9 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
 
   const goToChapter = (index: number) => {
     setActiveChapter(index);
-    scrollToTop();
+    setTimeout(() => {
+      scrollToTop();
+    }, 50);
   };
 
   return (
