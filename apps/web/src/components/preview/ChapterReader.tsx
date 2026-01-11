@@ -15,6 +15,15 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
   const chapter = chapters[activeChapter];
   const isLastChapter = activeChapter === chapters.length - 1;
 
+  const scrollToTop = () => {
+    document.getElementById('capitulos')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const goToChapter = (index: number) => {
+    setActiveChapter(index);
+    scrollToTop();
+  };
+
   return (
     <section id="capitulos" className="py-8">
       {/* Chapter navigation tabs */}
@@ -22,7 +31,7 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
         {chapters.map((ch, idx) => (
           <button
             key={ch.number}
-            onClick={() => setActiveChapter(idx)}
+            onClick={() => goToChapter(idx)}
             className={`flex-shrink-0 px-4 py-2 rounded-lg font-medium transition-colors ${
               activeChapter === idx
                 ? 'bg-brand-black-static text-brand-yellow'
@@ -63,7 +72,7 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Previous chapter */}
           <button
-            onClick={() => setActiveChapter((prev) => Math.max(0, prev - 1))}
+            onClick={() => goToChapter(Math.max(0, activeChapter - 1))}
             disabled={activeChapter === 0}
             className="flex items-center gap-2 px-4 py-2 bg-brand-black-static text-brand-yellow rounded-lg font-medium disabled:opacity-30 disabled:cursor-not-allowed hover:bg-brand-black-static/80 transition-colors"
           >
@@ -88,7 +97,7 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
             </a>
           ) : (
             <button
-              onClick={() => setActiveChapter((prev) => Math.min(chapters.length - 1, prev + 1))}
+              onClick={() => goToChapter(Math.min(chapters.length - 1, activeChapter + 1))}
               className="flex items-center gap-2 px-4 py-2 bg-brand-black-static text-brand-yellow rounded-lg font-medium hover:bg-brand-black-static/80 transition-colors"
             >
               Siguiente capítulo
