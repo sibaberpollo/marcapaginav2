@@ -1,7 +1,5 @@
 "use client";
 
-"use client";
-
 import { useState, useCallback, useId } from "react";
 import { useRouter } from "next/navigation";
 import { Header } from "@/components";
@@ -168,16 +166,16 @@ export default function CadavreLanding() {
 
   const statusColors: Record<WordCountStatus, string> = {
     neutral: "text-text-secondary",
-    warning: "text-amber-500",
-    error: "text-red-500",
-    success: "text-emerald-500",
+    warning: "text-warning",
+    error: "text-error",
+    success: "text-success",
   };
 
   const progressColors: Record<WordCountStatus, string> = {
-    neutral: "bg-surface-2",
-    warning: "bg-amber-500",
-    error: "bg-red-500",
-    success: "bg-emerald-500",
+    neutral: "progress-primary",
+    warning: "progress-warning",
+    error: "progress-error",
+    success: "progress-success",
   };
 
   return (
@@ -199,7 +197,7 @@ export default function CadavreLanding() {
           />
 
           <div className="relative z-10 max-w-3xl mx-auto text-center">
-            <span className="inline-block px-4 py-1.5 text-xs font-semibold tracking-widest uppercase bg-brand-yellow/10 text-brand-yellow rounded-full mb-8">
+            <span className="badge badge-lg bg-brand-yellow/10 text-brand-yellow border-0 font-semibold tracking-widest uppercase mb-8">
               Escritura Colaborativa
             </span>
 
@@ -222,7 +220,7 @@ export default function CadavreLanding() {
 
             <button
               onClick={scrollToForm}
-              className="inline-flex items-center gap-3 bg-brand-yellow text-brand-black-static px-8 py-4 font-bold text-lg hover:scale-105 active:scale-100 transition-transform shadow-lg shadow-brand-yellow/20"
+              className="btn btn-lg bg-brand-yellow text-brand-black-static border-0 hover:bg-brand-yellow/90 hover:scale-105 active:scale-100 transition-transform shadow-lg shadow-brand-yellow/20 gap-3"
               aria-label="Ir al formulario para crear tu historia"
               suppressHydrationWarning
             >
@@ -280,16 +278,18 @@ export default function CadavreLanding() {
                 },
               ].map((step) => (
                 <div key={step.num} className="relative group">
-                  <div className="absolute -top-3 -left-3 w-10 h-10 bg-brand-yellow text-brand-black-static font-black text-lg flex items-center justify-center">
+                  <div className="badge badge-lg absolute -top-3 -left-3 w-10 h-10 bg-brand-yellow text-brand-black-static border-0 font-black text-lg">
                     {step.num}
                   </div>
-                  <div className="bg-bg-primary p-8 pt-10 border border-surface-2 h-full transition-all duration-200 group-hover:-translate-y-1 group-hover:shadow-xl group-hover:shadow-brand-yellow/5">
-                    <h3 className="text-xl font-bold text-text-primary mb-3">
-                      {step.title}
-                    </h3>
-                    <p className="text-text-secondary leading-relaxed">
-                      {step.desc}
-                    </p>
+                  <div className="card bg-base-100 border border-surface-2 h-full transition-all duration-200 group-hover:-translate-y-1 group-hover:shadow-xl group-hover:shadow-brand-yellow/5">
+                    <div className="card-body pt-10">
+                      <h3 className="card-title text-xl font-bold text-text-primary">
+                        {step.title}
+                      </h3>
+                      <p className="text-text-secondary leading-relaxed">
+                        {step.desc}
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -309,21 +309,20 @@ export default function CadavreLanding() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label
-                  htmlFor={`${formId}-theme`}
-                  className="block text-sm font-medium text-text-primary mb-2"
-                >
-                  Tema{" "}
-                  <span className="text-text-secondary font-normal">
-                    (opcional)
+              <div className="form-control w-full">
+                <label className="label" htmlFor={`${formId}-theme`}>
+                  <span className="label-text text-text-primary font-medium">
+                    Tema{" "}
+                    <span className="text-text-secondary font-normal">
+                      (opcional)
+                    </span>
                   </span>
                 </label>
                 <select
                   id={`${formId}-theme`}
                   value={formState.theme}
                   onChange={handleThemeChange}
-                  className="w-full px-4 py-3 bg-bg-primary border border-surface-2 text-text-primary focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow outline-none transition-colors"
+                  className="select select-bordered w-full bg-bg-primary border-surface-2 text-text-primary focus:border-brand-yellow focus:outline-brand-yellow"
                 >
                   {THEMES.map((theme) => (
                     <option key={theme.value} value={theme.value}>
@@ -331,17 +330,18 @@ export default function CadavreLanding() {
                     </option>
                   ))}
                 </select>
-                <p className="mt-1.5 text-sm text-text-secondary">
-                  Un tema puede guiar a los escritores.
-                </p>
+                <label className="label">
+                  <span className="label-text-alt text-text-secondary">
+                    Un tema puede guiar a los escritores.
+                  </span>
+                </label>
               </div>
 
-              <div>
-                <label
-                  htmlFor={`${formId}-opening`}
-                  className="block text-sm font-medium text-text-primary mb-2"
-                >
-                  Primer fragmento <span className="text-red-500">*</span>
+              <div className="form-control w-full">
+                <label className="label" htmlFor={`${formId}-opening`}>
+                  <span className="label-text text-text-primary font-medium">
+                    Primer fragmento <span className="text-error">*</span>
+                  </span>
                 </label>
                 <textarea
                   id={`${formId}-opening`}
@@ -349,12 +349,12 @@ export default function CadavreLanding() {
                   onChange={handleOpeningSegmentChange}
                   placeholder="Era una vez..."
                   rows={6}
-                  className={`w-full px-4 py-3 bg-bg-primary border text-text-primary placeholder:text-text-secondary/40 focus:ring-1 outline-none transition-colors resize-none text-base leading-relaxed ${
+                  className={`textarea textarea-bordered w-full bg-bg-primary text-text-primary placeholder:text-text-secondary/40 resize-none text-base leading-relaxed ${
                     errors.openingSegment
-                      ? "border-red-500 focus:border-red-500 focus:ring-red-500"
+                      ? "textarea-error"
                       : wordCountStatus === "success"
-                        ? "border-emerald-500 focus:border-emerald-500 focus:ring-emerald-500"
-                        : "border-surface-2 focus:border-brand-yellow focus:ring-brand-yellow"
+                        ? "textarea-success"
+                        : "border-surface-2 focus:border-brand-yellow focus:outline-brand-yellow"
                   }`}
                   aria-describedby={`${formId}-word-count`}
                   aria-invalid={!!errors.openingSegment}
@@ -377,42 +377,42 @@ export default function CadavreLanding() {
                   </span>
                 </div>
 
-                <div className="w-full h-1 bg-surface-2 mt-2 overflow-hidden">
-                  <div
-                    className={`h-full transition-all duration-300 ${progressColors[wordCountStatus]}`}
-                    style={{
-                      width: `${Math.min(100, (wordCount / WORD_COUNT_RANGE.max) * 100)}%`,
-                    }}
-                    role="progressbar"
-                    aria-valuenow={wordCount}
-                    aria-valuemin={0}
-                    aria-valuemax={WORD_COUNT_RANGE.max}
-                  />
-                </div>
+                <progress
+                  className={`progress w-full h-1 mt-2 ${progressColors[wordCountStatus]}`}
+                  value={Math.min(
+                    100,
+                    (wordCount / WORD_COUNT_RANGE.max) * 100,
+                  )}
+                  max="100"
+                  aria-valuenow={wordCount}
+                  aria-valuemin={0}
+                  aria-valuemax={WORD_COUNT_RANGE.max}
+                />
 
                 {errors.openingSegment && (
-                  <p
-                    className="mt-2 text-sm text-red-500"
-                    role="alert"
-                    aria-live="assertive"
-                  >
-                    {errors.openingSegment}
-                  </p>
+                  <label className="label">
+                    <span
+                      className="label-text-alt text-error"
+                      role="alert"
+                      aria-live="assertive"
+                    >
+                      {errors.openingSegment}
+                    </span>
+                  </label>
                 )}
               </div>
 
-              <div>
-                <label
-                  htmlFor={`${formId}-contributors`}
-                  className="block text-sm font-medium text-text-primary mb-2"
-                >
-                  Participantes
+              <div className="form-control w-full">
+                <label className="label" htmlFor={`${formId}-contributors`}>
+                  <span className="label-text text-text-primary font-medium">
+                    Participantes
+                  </span>
                 </label>
                 <select
                   id={`${formId}-contributors`}
                   value={formState.maxContributors}
                   onChange={handleMaxContributorsChange}
-                  className="w-full px-4 py-3 bg-bg-primary border border-surface-2 text-text-primary focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow outline-none transition-colors"
+                  className="select select-bordered w-full bg-bg-primary border-surface-2 text-text-primary focus:border-brand-yellow focus:outline-brand-yellow"
                 >
                   {MAX_CONTRIBUTORS_OPTIONS.map((num) => (
                     <option key={num} value={num}>
@@ -420,49 +420,45 @@ export default function CadavreLanding() {
                     </option>
                   ))}
                 </select>
-                <p className="mt-1.5 text-sm text-text-secondary">
-                  Incluye al creador. Más participantes = historia más larga.
-                </p>
+                <label className="label">
+                  <span className="label-text-alt text-text-secondary">
+                    Incluye al creador. Más participantes = historia más larga.
+                  </span>
+                </label>
               </div>
 
               {errors.submit && (
                 <div
-                  className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-sm"
+                  className="alert alert-error text-sm"
                   role="alert"
                   aria-live="assertive"
                 >
-                  {errors.submit}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="stroke-current shrink-0 h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span>{errors.submit}</span>
                 </div>
               )}
 
               <button
                 type="submit"
                 disabled={!isFormValid || isSubmitting}
-                className="w-full py-4 bg-brand-yellow text-brand-black-static font-bold text-lg hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity flex items-center justify-center gap-2"
+                className="btn btn-lg w-full bg-brand-yellow text-brand-black-static border-0 hover:bg-brand-yellow/90 disabled:bg-brand-yellow/40 disabled:text-brand-black-static/60"
               >
                 {isSubmitting ? (
                   <>
-                    <svg
-                      className="w-5 h-5 animate-spin"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      suppressHydrationWarning
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
+                    <span className="loading loading-spinner loading-md" />
                     Creando sesión...
                   </>
                 ) : (
@@ -475,7 +471,7 @@ export default function CadavreLanding() {
 
         <section className="py-24 px-4 bg-surface border-t border-surface-2">
           <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-flex items-center gap-2 bg-brand-yellow/10 text-brand-yellow px-4 py-2 rounded-full text-sm font-medium mb-6">
+            <span className="badge badge-lg bg-brand-yellow/10 text-brand-yellow border-0 gap-2 px-4 py-3">
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -505,13 +501,15 @@ export default function CadavreLanding() {
               {[1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className="bg-bg-primary p-6 border border-dashed border-surface-2"
+                  className="card bg-base-100 border border-dashed border-surface-2"
                   aria-hidden="true"
                 >
-                  <div className="h-4 bg-surface-2 w-3/4 mb-4" />
-                  <div className="h-3 bg-surface-2 w-full mb-2" />
-                  <div className="h-3 bg-surface-2 w-5/6 mb-2" />
-                  <div className="h-3 bg-surface-2 w-4/6" />
+                  <div className="card-body">
+                    <div className="skeleton h-4 w-3/4 mb-4" />
+                    <div className="skeleton h-3 w-full mb-2" />
+                    <div className="skeleton h-3 w-5/6 mb-2" />
+                    <div className="skeleton h-3 w-4/6" />
+                  </div>
                 </div>
               ))}
             </div>

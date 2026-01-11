@@ -13,28 +13,27 @@ export function SessionStoryDisplay({
 }: SessionStoryDisplayProps) {
   return (
     <article
-      className="bg-bg-primary border border-surface-2 p-6"
+      className="card bg-base-100 shadow-sm"
       aria-label={label || "Segmento de la historia"}
     >
-      {label && (
-        <p className="text-xs uppercase tracking-wider text-text-secondary mb-3">
-          {label}
-        </p>
-      )}
-      <div className="flex items-start gap-3">
-        <div className="text-2xl flex-shrink-0" aria-hidden="true">
-          💬
-        </div>
-        <div className="flex-1 space-y-2">
-          <p className="text-text-primary italic leading-relaxed">
-            &ldquo;{segment.content}&rdquo;
+      <div className="card-body p-6">
+        {label && (
+          <p className="text-xs uppercase tracking-wider text-base-content/60 mb-1">
+            {label}
           </p>
-          {!segment.isAnonymous && (
-            <p className="text-sm text-text-secondary">
-              — {segment.authorName}
+        )}
+        <div className="chat chat-start">
+          <div className="chat-bubble chat-bubble-neutral">
+            <p className="italic leading-relaxed">
+              &ldquo;{segment.content}&rdquo;
             </p>
-          )}
+          </div>
         </div>
+        {!segment.isAnonymous && (
+          <p className="text-sm text-base-content/60 text-right mt-2">
+            — {segment.authorName}
+          </p>
+        )}
       </div>
     </article>
   );

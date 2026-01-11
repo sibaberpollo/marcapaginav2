@@ -39,13 +39,6 @@ const statusColors: Record<WordCountStatus, string> = {
   success: "text-emerald-500",
 };
 
-const progressColors: Record<WordCountStatus, string> = {
-  neutral: "bg-surface-2",
-  warning: "bg-amber-500",
-  error: "bg-red-500",
-  success: "bg-emerald-500",
-};
-
 export function SessionActiveContributor({
   sessionState,
   isMyTurn,
@@ -201,7 +194,6 @@ export function SessionActiveContributor({
     })();
   }, [session.id, voteStatus, isVoting, router, refreshState]);
 
-  const progress = (segments.length / session.maxContributors) * 100;
   const remainingContributors = session.maxContributors - segments.length;
 
   return (
@@ -220,50 +212,50 @@ export function SessionActiveContributor({
             )}
           </header>
 
-          <div className="bg-bg-primary border border-surface-2 p-4">
-            <div className="flex justify-between text-sm mb-2">
-              <span className="text-text-secondary">
-                Progreso: {segments.length}/{session.maxContributors} segmentos
-              </span>
-              <span className="font-medium text-text-primary">
-                {remainingContributors} restantes
-              </span>
-            </div>
-            <div className="w-full h-2 bg-surface-2 overflow-hidden">
-              <div
-                className="h-full bg-brand-yellow transition-all duration-300"
-                style={{ width: `${progress}%` }}
-                role="progressbar"
-                aria-valuenow={segments.length}
-                aria-valuemin={0}
-                aria-valuemax={session.maxContributors}
+          <div className="card bg-base-100 shadow-sm">
+            <div className="card-body p-4">
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-text-secondary">
+                  Progreso: {segments.length}/{session.maxContributors}{" "}
+                  segmentos
+                </span>
+                <span className="font-medium text-text-primary">
+                  {remainingContributors} restantes
+                </span>
+              </div>
+              <progress
+                className="progress progress-warning w-full"
+                value={segments.length}
+                max={session.maxContributors}
                 aria-label={`Progreso: ${segments.length} de ${session.maxContributors} segmentos`}
               />
             </div>
           </div>
 
           {isMyTurn && (
-            <div className="bg-amber-500/10 border border-amber-500/30 p-4 text-center">
-              <span className="text-amber-500 font-medium text-sm">
-                Tiempo restante
-              </span>
-              <div
-                className="text-4xl font-bold tabular-nums text-text-primary mt-1"
-                aria-live="polite"
-                aria-atomic="true"
-              >
-                {formatTime(countdown)}
+            <div className="alert alert-warning shadow-sm">
+              <div className="flex flex-col items-center w-full">
+                <span className="font-medium text-sm">Tiempo restante</span>
+                <div
+                  className="text-4xl font-bold tabular-nums mt-1"
+                  aria-live="polite"
+                  aria-atomic="true"
+                >
+                  {formatTime(countdown)}
+                </div>
               </div>
             </div>
           )}
 
           {!isMyTurn && currentContributor && currentSegment && (
-            <div className="bg-bg-primary border border-surface-2 p-4">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-brand-yellow text-brand-black-static flex items-center justify-center">
-                  <span className="text-lg" aria-hidden="true">
-                    ✍️
-                  </span>
+            <div className="card bg-base-100 shadow-sm">
+              <div className="card-body p-4 flex-row items-center gap-4">
+                <div className="avatar placeholder">
+                  <div className="bg-brand-yellow text-brand-black-static w-12 h-12">
+                    <span className="text-lg" aria-hidden="true">
+                      ✍️
+                    </span>
+                  </div>
                 </div>
                 <p className="text-sm text-text-secondary">
                   {currentSegment.isAnonymous
@@ -282,46 +274,128 @@ export function SessionActiveContributor({
             />
           )}
 
-          <div className="bg-bg-primary border border-surface-2 p-4 flex justify-between items-center">
-            <span className="text-text-secondary">Tu posición</span>
-            <span className="font-medium text-text-primary">
-              #{myPosition + 1}
-            </span>
+          <div className="stats bg-base-100 shadow-sm w-full">
+            <div className="stat py-3 px-4">
+              <div className="stat-title text-text-secondary">Tu posición</div>
+              <div className="stat-value text-lg text-text-primary">
+                #{myPosition + 1}
+              </div>
+            </div>
           </div>
 
           {isMyTurn && (
-            <div className="bg-bg-primary border border-surface-2 p-6 space-y-4">
-              <h2 className="text-lg font-bold text-text-primary">
-                Tu contribución
-              </h2>
+            <div className="card bg-base-100 shadow-sm">
+              <div className="card-body p-6 space-y-4">
+                <h2 className="card-title text-lg font-bold text-text-primary">
+                  Tu contribución
+                </h2>
 
-              <textarea
-                className="w-full h-32 px-4 py-3 bg-bg-page border border-surface-2 text-text-primary placeholder:text-text-secondary/40 focus:border-brand-yellow focus:ring-1 focus:ring-brand-yellow outline-none transition-colors resize-none"
-                placeholder="Escribe aquí tu segmento (50-100 palabras)..."
-                maxLength={500}
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                disabled={isSubmitting}
-                aria-describedby="word-count-status"
-              />
+                <textarea
+                  className="textarea textarea-bordered w-full h-32 bg-bg-page text-text-primary placeholder:text-text-secondary/40 focus:textarea-warning resize-none"
+                  placeholder="Escribe aquí tu segmento (50-100 palabras)..."
+                  maxLength={500}
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  disabled={isSubmitting}
+                  aria-describedby="word-count-status"
+                />
 
-              <div className="flex justify-between items-center">
-                <span
-                  id="word-count-status"
-                  className={`text-sm font-mono ${statusColors[wordCountStatus]}`}
-                  role="status"
-                  aria-live="polite"
-                >
-                  {wordCount} / {WORD_COUNT_RANGE.min}-{WORD_COUNT_RANGE.max}{" "}
-                  palabras
-                  {wordCountStatus === "success" && " ✓"}
-                </span>
+                <div className="flex justify-between items-center">
+                  <span
+                    id="word-count-status"
+                    className={`text-sm font-mono ${statusColors[wordCountStatus]}`}
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {wordCount} / {WORD_COUNT_RANGE.min}-{WORD_COUNT_RANGE.max}{" "}
+                    palabras
+                    {wordCountStatus === "success" && " ✓"}
+                  </span>
+                  <button
+                    className="btn bg-brand-yellow text-brand-black-static hover:opacity-90 border-none"
+                    disabled={!isWordCountValid || isSubmitting}
+                    onClick={handleSubmit}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg
+                          className="w-4 h-4 animate-spin"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          />
+                        </svg>
+                        Enviando...
+                      </>
+                    ) : (
+                      "Enviar"
+                    )}
+                  </button>
+                </div>
+
+                <progress
+                  className={`progress w-full ${
+                    wordCountStatus === "success"
+                      ? "progress-success"
+                      : wordCountStatus === "error"
+                        ? "progress-error"
+                        : wordCountStatus === "warning"
+                          ? "progress-warning"
+                          : ""
+                  }`}
+                  value={Math.min(
+                    100,
+                    (wordCount / WORD_COUNT_RANGE.max) * 100,
+                  )}
+                  max={100}
+                />
+
+                {error && (
+                  <div className="alert alert-error" role="alert">
+                    <span className="text-sm">{error}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {isMyTurn && (
+            <div className="text-center">
+              <button
+                className="btn btn-ghost btn-sm text-text-secondary hover:text-text-primary"
+                onClick={handlePass}
+                disabled={isPassing}
+              >
+                {isPassing ? "Pasando..." : "Pasar mi turno"}
+              </button>
+            </div>
+          )}
+
+          {voteStatus?.canProposeEnd && !isMyTurn && (
+            <div className="card bg-base-100 shadow-sm">
+              <div className="card-body p-4 items-center text-center">
+                <p className="text-sm text-text-secondary mb-3">
+                  ¿Ya tiene suficiente historia?
+                </p>
                 <button
-                  className="px-6 py-2 bg-brand-yellow text-brand-black-static font-bold hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity flex items-center gap-2"
-                  disabled={!isWordCountValid || isSubmitting}
-                  onClick={handleSubmit}
+                  className="btn btn-outline"
+                  onClick={handleVoteEnd}
+                  disabled={isVoting || voteStatus.hasVoted}
                 >
-                  {isSubmitting ? (
+                  {isVoting ? (
                     <>
                       <svg
                         className="w-4 h-4 animate-spin"
@@ -343,91 +417,20 @@ export function SessionActiveContributor({
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         />
                       </svg>
-                      Enviando...
+                      Votando...
                     </>
+                  ) : voteStatus.hasVoted ? (
+                    "Voto registrado"
                   ) : (
-                    "Enviar"
+                    "Proponer terminar"
                   )}
                 </button>
-              </div>
-
-              <div className="w-full h-1 bg-surface-2 overflow-hidden">
-                <div
-                  className={`h-full transition-all duration-300 ${progressColors[wordCountStatus]}`}
-                  style={{
-                    width: `${Math.min(100, (wordCount / WORD_COUNT_RANGE.max) * 100)}%`,
-                  }}
-                />
-              </div>
-
-              {error && (
-                <div
-                  className="p-4 bg-red-500/10 border border-red-500/20 text-red-500 text-sm"
-                  role="alert"
-                >
-                  {error}
-                </div>
-              )}
-            </div>
-          )}
-
-          {isMyTurn && (
-            <div className="text-center">
-              <button
-                className="text-sm text-text-secondary hover:text-text-primary transition-colors"
-                onClick={handlePass}
-                disabled={isPassing}
-              >
-                {isPassing ? "Pasando..." : "Pasar mi turno"}
-              </button>
-            </div>
-          )}
-
-          {voteStatus?.canProposeEnd && !isMyTurn && (
-            <div className="bg-bg-primary border border-surface-2 p-4 text-center">
-              <p className="text-sm text-text-secondary mb-3">
-                ¿Ya tiene suficiente historia?
-              </p>
-              <button
-                className="px-6 py-2 border border-surface-2 text-text-primary font-medium hover:bg-surface transition-colors disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 mx-auto"
-                onClick={handleVoteEnd}
-                disabled={isVoting || voteStatus.hasVoted}
-              >
-                {isVoting ? (
-                  <>
-                    <svg
-                      className="w-4 h-4 animate-spin"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                    >
-                      <circle
-                        className="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        strokeWidth="4"
-                      />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
-                    Votando...
-                  </>
-                ) : voteStatus.hasVoted ? (
-                  "Voto registrado"
-                ) : (
-                  "Proponer terminar"
+                {voteStatus.inProgress && (
+                  <p className="text-xs text-text-secondary mt-2">
+                    {voteStatus.votesForEnd}/{voteStatus.totalVotes} votos
+                  </p>
                 )}
-              </button>
-              {voteStatus.inProgress && (
-                <p className="text-xs text-text-secondary mt-2">
-                  {voteStatus.votesForEnd}/{voteStatus.totalVotes} votos
-                </p>
-              )}
+              </div>
             </div>
           )}
         </main>

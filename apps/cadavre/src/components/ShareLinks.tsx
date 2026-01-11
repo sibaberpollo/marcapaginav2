@@ -181,12 +181,12 @@ function QRCodePlaceholder({ label }: QRCodePlaceholderProps) {
   return (
     <div className="flex flex-col items-center gap-2">
       <div
-        className="w-24 h-24 bg-surface flex items-center justify-center border-2 border-dashed border-surface-2"
+        className="w-24 h-24 bg-base-200 flex items-center justify-center border-2 border-dashed border-base-300"
         aria-hidden="true"
       >
-        <QRCodeIcon className="w-10 h-10 text-text-secondary/40" />
+        <QRCodeIcon className="w-10 h-10 text-base-content/40" />
       </div>
-      <span className="text-xs text-text-secondary text-center">{label}</span>
+      <span className="text-xs text-base-content/70 text-center">{label}</span>
     </div>
   );
 }
@@ -211,21 +211,19 @@ function LinkCard({ type, link, sessionTitle, copied, onCopy }: LinkCardProps) {
         icon: PenIcon,
         headerBg: "bg-brand-yellow",
         headerText: "text-brand-black-static",
-        bgAccent: "bg-brand-yellow/10",
-        borderAccent: "border-brand-yellow/30",
-        hoverBorder: "hover:border-brand-yellow/60",
-        buttonBg: "bg-brand-yellow text-brand-black-static",
+        cardBorder: "border-brand-yellow/30 hover:border-brand-yellow/60",
+        inputBg: "bg-brand-yellow/10",
+        buttonClass: "btn-warning",
       }
     : {
         title: "Enlace para observar",
         subtitle: "Solo lectura, sin participación",
         icon: EyeIcon,
-        headerBg: "bg-text-primary",
-        headerText: "text-bg-page",
-        bgAccent: "bg-surface",
-        borderAccent: "border-surface-2",
-        hoverBorder: "hover:border-text-secondary",
-        buttonBg: "bg-text-primary text-bg-page",
+        headerBg: "bg-neutral",
+        headerText: "text-neutral-content",
+        cardBorder: "border-base-300 hover:border-base-content/30",
+        inputBg: "bg-base-200",
+        buttonClass: "btn-neutral",
       };
 
   const Icon = config.icon;
@@ -255,16 +253,13 @@ function LinkCard({ type, link, sessionTitle, copied, onCopy }: LinkCardProps) {
 
   return (
     <div
-      className={`
-        relative overflow-hidden border 
-        ${config.borderAccent} ${config.hoverBorder}
-        bg-bg-primary transition-all duration-200
-        hover:shadow-lg hover:shadow-brand-yellow/5
-      `}
+      className={`card bg-base-100 border ${config.cardBorder} transition-all duration-200 hover:shadow-lg`}
     >
-      <div className={`${config.headerBg} ${config.headerText} p-4`}>
+      <div
+        className={`${config.headerBg} ${config.headerText} p-4 rounded-t-xl`}
+      >
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-bg-page/20 backdrop-blur-sm">
+          <div className="p-2 bg-base-100/20 backdrop-blur-sm rounded-lg">
             <Icon className="w-6 h-6" />
           </div>
           <div>
@@ -274,25 +269,18 @@ function LinkCard({ type, link, sessionTitle, copied, onCopy }: LinkCardProps) {
         </div>
       </div>
 
-      <div className="p-4 space-y-4">
-        <div className="flex gap-2">
+      <div className="card-body gap-4 p-4">
+        <div className="join w-full">
           <div
-            className={`flex-1 ${config.bgAccent} p-3 border ${config.borderAccent} overflow-hidden`}
+            className={`join-item flex-1 ${config.inputBg} px-3 py-2 flex items-center overflow-hidden border border-base-300`}
           >
-            <code className="text-sm break-all text-text-secondary font-mono block truncate">
+            <code className="text-sm break-all text-base-content/70 font-mono block truncate">
               {link}
             </code>
           </div>
           <button
             onClick={() => onCopy(type)}
-            className={`
-              p-3 transition-all duration-200 flex items-center justify-center
-              ${
-                isCopied
-                  ? "bg-emerald-500 text-white"
-                  : `${config.buttonBg} hover:opacity-90`
-              }
-            `}
+            className={`btn join-item ${isCopied ? "btn-success" : config.buttonClass}`}
             aria-label={
               isCopied ? "Copiado" : `Copiar enlace de ${config.title}`
             }
@@ -306,7 +294,7 @@ function LinkCard({ type, link, sessionTitle, copied, onCopy }: LinkCardProps) {
         </div>
 
         {isCopied && (
-          <div className="flex items-center gap-2 text-emerald-500 text-sm font-medium">
+          <div className="flex items-center gap-2 text-success text-sm font-medium">
             <CheckIcon className="w-4 h-4" />
             <span>¡Copiado!</span>
           </div>
@@ -316,28 +304,28 @@ function LinkCard({ type, link, sessionTitle, copied, onCopy }: LinkCardProps) {
           <QRCodePlaceholder link={link} label="Escanea para acceder" />
         </div>
 
-        <div className="pt-2 border-t border-surface-2">
-          <p className="text-xs text-text-secondary mb-3 text-center font-medium uppercase tracking-wide">
+        <div className="pt-2 border-t border-base-300">
+          <p className="text-xs text-base-content/70 mb-3 text-center font-medium uppercase tracking-wide">
             Compartir en redes
           </p>
-          <div className="flex justify-center gap-2">
+          <div className="join join-horizontal flex justify-center">
             <button
               onClick={handleWhatsAppShare}
-              className="w-9 h-9 flex items-center justify-center bg-[#25D366] hover:bg-[#128C7E] text-white transition-colors"
+              className="btn btn-sm join-item bg-[#25D366] hover:bg-[#128C7E] text-white border-none"
               aria-label="Compartir en WhatsApp"
             >
               <WhatsAppIcon className="w-4 h-4" />
             </button>
             <button
               onClick={handleTwitterShare}
-              className="w-9 h-9 flex items-center justify-center bg-text-primary text-bg-page hover:opacity-80 transition-opacity"
+              className="btn btn-sm join-item btn-neutral"
               aria-label="Compartir en X (Twitter)"
             >
               <TwitterIcon className="w-4 h-4" />
             </button>
             <button
               onClick={handleFacebookShare}
-              className="w-9 h-9 flex items-center justify-center bg-[#1877F2] hover:bg-[#166FE5] text-white transition-colors"
+              className="btn btn-sm join-item bg-[#1877F2] hover:bg-[#166FE5] text-white border-none"
               aria-label="Compartir en Facebook"
             >
               <FacebookIcon className="w-4 h-4" />
@@ -391,16 +379,16 @@ export default function ShareLinks({
       <header className="text-center space-y-2">
         <h2
           id="share-links-heading"
-          className="text-2xl md:text-3xl font-bold text-text-primary"
+          className="text-2xl md:text-3xl font-bold text-base-content"
         >
           Comparte tu historia
         </h2>
         {sessionTitle && (
-          <p className="text-lg text-text-secondary italic">
+          <p className="text-lg text-base-content/70 italic">
             &ldquo;{sessionTitle}&rdquo;
           </p>
         )}
-        <p className="text-text-secondary">
+        <p className="text-base-content/70">
           Invita a otros a escribir o seguir la creación
         </p>
       </header>
@@ -425,14 +413,7 @@ export default function ShareLinks({
       <div className="flex justify-center pt-2">
         <button
           onClick={handleCopyAll}
-          className={`
-            px-8 py-3 flex items-center gap-2 font-medium transition-all duration-200
-            ${
-              isAllCopied
-                ? "bg-emerald-500 text-white"
-                : "border border-surface-2 text-text-primary hover:bg-surface"
-            }
-          `}
+          className={`btn btn-lg gap-2 ${isAllCopied ? "btn-success" : "btn-outline"}`}
         >
           {isAllCopied ? (
             <>
