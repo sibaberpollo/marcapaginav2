@@ -20,6 +20,10 @@ async function getLatestTranstexto(): Promise<LatestTranstexto | null> {
       "author": author->name
     }`;
 
+    // Use unstable_noStore to ensure fresh data on each request
+    const { unstable_noStore } = await import('next/cache');
+    unstable_noStore();
+
     const result = await fetchSanity<LatestTranstexto | null>(query);
     return result;
   } catch (error) {
