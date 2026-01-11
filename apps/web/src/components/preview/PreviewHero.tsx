@@ -8,7 +8,7 @@ interface PreviewHeroProps {
 
 export default function PreviewHero({ preview }: PreviewHeroProps) {
   return (
-    <section className="max-w-4xl mx-auto px-4 pt-2 pb-8">
+    <section className="pt-2 pb-8">
         <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
           {/* Cover image */}
           {preview.coverImage && (

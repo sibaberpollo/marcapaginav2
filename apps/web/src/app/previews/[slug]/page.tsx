@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { Header } from '@/components';
+import { Header, LeftSidebar } from '@/components';
 import PreviewHero from '@/components/preview/PreviewHero';
 import ChapterReader from '@/components/preview/ChapterReader';
 import AuthorCard from '@/components/preview/AuthorCard';
@@ -72,40 +72,48 @@ export default async function PreviewPage({ params }: PageProps) {
   return (
     <>
       <Header />
-      <main className="min-h-screen">
-        <PreviewHero preview={preview} />
+      <main className="min-h-screen pb-20 lg:pb-0">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="grid lg:grid-cols-[240px_1fr] gap-6">
+            <LeftSidebar />
 
-        <ChapterReader
-          chapters={preview.chapters}
-          purchaseUrl={preview.purchaseUrl}
-          purchaseLabel={preview.purchaseLabel}
-        />
+            <div className="max-w-4xl w-full">
+              <PreviewHero preview={preview} />
 
-        <AuthorCard author={preview.author} />
+              <ChapterReader
+                chapters={preview.chapters}
+                purchaseUrl={preview.purchaseUrl}
+                purchaseLabel={preview.purchaseLabel}
+              />
 
-        {/* Final CTA */}
-        <section className="max-w-4xl mx-auto px-4 py-8 text-center">
-          <div className="p-8 bg-gradient-to-r from-amber-950/20 via-surface to-blue-950/20 border border-surface-2 rounded-xl">
-            <h2 className="text-2xl font-bold text-text-primary mb-4">
-              ¿Te atrapó la historia?
-            </h2>
-            <p className="text-text-secondary mb-6 max-w-xl mx-auto">
-              Este es solo el comienzo. Descubre cómo se desarrolla la trama,
-              quién es realmente la asesina, y qué secretos guarda el Estado.
-            </p>
-            <a
-              href={preview.purchaseUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-brand-yellow text-brand-black-static font-bold rounded-lg hover:bg-yellow-400 transition-colors"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-              {preview.purchaseLabel || 'Comprar novela completa'}
-            </a>
+              <AuthorCard author={preview.author} />
+
+              {/* Final CTA */}
+              <section className="px-4 py-8 text-center">
+                <div className="p-8 bg-gradient-to-r from-amber-950/20 via-surface to-blue-950/20 border border-surface-2 rounded-xl">
+                  <h2 className="text-2xl font-bold text-text-primary mb-4">
+                    ¿Te atrapó la historia?
+                  </h2>
+                  <p className="text-text-secondary mb-6 max-w-xl mx-auto">
+                    Este es solo el comienzo. Descubre cómo se desarrolla la trama,
+                    quién es realmente la asesina, y qué secretos guarda el Estado.
+                  </p>
+                  <a
+                    href={preview.purchaseUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-8 py-4 bg-brand-yellow text-brand-black-static font-bold rounded-lg hover:bg-yellow-400 transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    {preview.purchaseLabel || 'Comprar novela completa'}
+                  </a>
+                </div>
+              </section>
+            </div>
           </div>
-        </section>
+        </div>
       </main>
     </>
   );

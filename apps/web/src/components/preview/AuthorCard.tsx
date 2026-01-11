@@ -7,7 +7,7 @@ interface AuthorCardProps {
 
 export default function AuthorCard({ author }: AuthorCardProps) {
   return (
-    <section className="max-w-4xl mx-auto px-4 py-12">
+    <section className="py-8">
       <div className="p-6 bg-bg-primary rounded-xl border border-surface-2">
         <div className="flex flex-col sm:flex-row items-start gap-6">
           <Avatar name={author.name} size="xl" />

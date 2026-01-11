@@ -16,7 +16,7 @@ export default function ChapterReader({ chapters, purchaseUrl, purchaseLabel }: 
   const isLastChapter = activeChapter === chapters.length - 1;
 
   return (
-    <section id="capitulos" className="max-w-4xl mx-auto px-4 py-8">
+    <section id="capitulos" className="py-8">
       {/* Chapter navigation tabs */}
       <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2">
         {chapters.map((ch, idx) => (
