@@ -15,7 +15,7 @@ const THEMES = [
   { value: "El tiempo se detiene", label: "El tiempo se detiene" },
 ] as const;
 
-const MAX_CONTRIBUTORS_OPTIONS = [7, 8, 9, 10] as const;
+const CONTRIBUTORS_RANGE = { min: 2, max: 5 };
 const WORD_COUNT_RANGE = { min: 50, max: 100 };
 
 function countWords(text: string): number {
@@ -52,7 +52,7 @@ export default function CadavreLanding() {
   const [formState, setFormState] = useState<FormState>({
     theme: "",
     openingSegment: "",
-    maxContributors: 7,
+    maxContributors: 2,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -83,12 +83,16 @@ export default function CadavreLanding() {
   };
 
   const handleMaxContributorsChange = (
-    e: React.ChangeEvent<HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setFormState((prev) => ({
-      ...prev,
-      maxContributors: parseInt(e.target.value, 10),
-    }));
+    const value = parseInt(e.target.value, 10);
+    if (!isNaN(value)) {
+      const clamped = Math.min(
+        CONTRIBUTORS_RANGE.max,
+        Math.max(CONTRIBUTORS_RANGE.min, value),
+      );
+      setFormState((prev) => ({ ...prev, maxContributors: clamped }));
+    }
   };
 
   const handleSubmit = useCallback(
@@ -408,21 +412,19 @@ export default function CadavreLanding() {
                     Participantes
                   </span>
                 </label>
-                <select
+                <input
+                  type="number"
                   id={`${formId}-contributors`}
                   value={formState.maxContributors}
                   onChange={handleMaxContributorsChange}
-                  className="select select-bordered w-full bg-bg-primary border-surface-2 text-text-primary focus:border-brand-yellow focus:outline-brand-yellow"
-                >
-                  {MAX_CONTRIBUTORS_OPTIONS.map((num) => (
-                    <option key={num} value={num}>
-                      {num} participantes
-                    </option>
-                  ))}
-                </select>
+                  min={CONTRIBUTORS_RANGE.min}
+                  max={CONTRIBUTORS_RANGE.max}
+                  className="input input-bordered w-full bg-bg-primary border-surface-2 text-text-primary focus:border-brand-yellow focus:outline-brand-yellow"
+                />
                 <label className="label">
                   <span className="label-text-alt text-text-secondary">
-                    Incluye al creador. Más participantes = historia más larga.
+                    Entre {CONTRIBUTORS_RANGE.min} y {CONTRIBUTORS_RANGE.max}.
+                    Incluye al creador.
                   </span>
                 </label>
               </div>

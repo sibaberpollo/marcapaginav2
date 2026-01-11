@@ -366,25 +366,13 @@ export const DEFAULT_WORD_COUNT_RANGE: WordCountRange = {
   max: 100,
 } as const;
 
-/**
- * Default maximum number of contributors.
- */
-export const DEFAULT_MAX_CONTRIBUTORS = 7;
+export const DEFAULT_MAX_CONTRIBUTORS = 2;
 
-/**
- * Minimum contributors required before voting can begin.
- */
-export const MIN_CONTRIBUTORS_FOR_VOTE = 5;
+export const MIN_CONTRIBUTORS_FOR_VOTE = 2;
 
-/**
- * Threshold percentage (60%) of eligible voters required to end session.
- */
 export const VOTE_THRESHOLD_PERCENTAGE = 0.6 as const;
 
-/**
- * Valid range for max contributors configuration.
- */
 export const VALID_MAX_CONTRIBUTORS_RANGE: WordCountRange = {
-  min: 7,
-  max: 10,
+  min: 2,
+  max: 5,
 } as const;
