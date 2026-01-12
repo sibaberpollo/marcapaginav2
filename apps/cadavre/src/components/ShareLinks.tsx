@@ -196,7 +196,6 @@ interface LinkCardProps {
   link: string;
   sessionTitle?: string;
   copied: CopiedState;
-  // eslint-disable-next-line no-unused-vars
   onCopy: (linkType: LinkType) => void;
 }
 

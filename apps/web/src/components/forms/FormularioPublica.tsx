@@ -1,31 +1,29 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { FormData, FormStatus } from '@/lib/hooks/useFormState'
-import { useTurnstile } from '@/lib/hooks/useTurnstile'
-import { useFileUpload } from '@/lib/hooks/useFileUpload'
+import { useEffect, useState } from "react";
+import { FormData, FormStatus } from "@/lib/hooks/useFormState";
+import { useTurnstile } from "@/lib/hooks/useTurnstile";
+import { useFileUpload } from "@/lib/hooks/useFileUpload";
 
 interface FormularioPublicaProps {
-  formData: FormData
-  setFormData: (data: FormData) => void
-  isSubmitting: boolean
-  setIsSubmitting: (value: boolean) => void
-  status: FormStatus | null
-  setStatus: (status: FormStatus | null) => void
-  dotCount: number
-  handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => void
-  onSubmit: (e: React.FormEvent) => Promise<void>
+  formData: FormData;
+  setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+  isSubmitting: boolean;
+  status: FormStatus | null;
+  setStatus: React.Dispatch<React.SetStateAction<FormStatus | null>>;
+  dotCount: number;
+  handleChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+  >;
+  onSubmit: React.FormEventHandler;
 }
 
-const TURNSTILE_SITEKEY = process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY!
+const TURNSTILE_SITEKEY = process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY!;
 
 export default function FormularioPublica({
   formData,
   setFormData,
   isSubmitting,
-  setIsSubmitting,
   status,
   setStatus,
   dotCount,
@@ -33,52 +31,57 @@ export default function FormularioPublica({
   onSubmit,
 }: FormularioPublicaProps) {
   const { captchaRef, token, setToken, initTurnstile, getTokenManual } =
-    useTurnstile(TURNSTILE_SITEKEY)
+    useTurnstile(TURNSTILE_SITEKEY);
 
-  const [captchaVerified, setCaptchaVerified] = useState<boolean>(false)
-  const [checkingCaptcha, setCheckingCaptcha] = useState<boolean>(false)
-  const [dragActive, setDragActive] = useState(false)
+  const [captchaVerified, setCaptchaVerified] = useState<boolean>(false);
+  const [checkingCaptcha, setCheckingCaptcha] = useState<boolean>(false);
+  const [dragActive, setDragActive] = useState(false);
 
-  const { handleDrop: originalHandleDrop, handleDragOver, handleFileInput, removeFile } = useFileUpload({
+  const {
+    handleDrop: originalHandleDrop,
+    handleDragOver,
+    handleFileInput,
+    removeFile,
+  } = useFileUpload({
     formData,
     setFormData,
-  })
+  });
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    setDragActive(false)
-    originalHandleDrop(e)
-  }
+    setDragActive(false);
+    originalHandleDrop(e);
+  };
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setDragActive(true)
-  }
+    e.preventDefault();
+    setDragActive(true);
+  };
 
   const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setDragActive(false)
-  }
+    e.preventDefault();
+    setDragActive(false);
+  };
 
   useEffect(() => {
     if (window.turnstile) {
-      initTurnstile()
+      initTurnstile();
     } else {
       const interval = setInterval(() => {
         if (window.turnstile) {
-          initTurnstile()
-          clearInterval(interval)
+          initTurnstile();
+          clearInterval(interval);
         }
-      }, 300)
-      return () => clearInterval(interval)
+      }, 300);
+      return () => clearInterval(interval);
     }
-  }, [])
+  }, [initTurnstile]);
 
   useEffect(() => {
-    setCaptchaVerified(!!token)
-  }, [token])
+    setCaptchaVerified(!!token);
+  }, [token]);
 
   const handleSubmitWithCaptchaCheck = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (
       !formData.email ||
@@ -88,43 +91,43 @@ export default function FormularioPublica({
     ) {
       setStatus({
         success: false,
-        message: 'Por favor completa todos los campos del formulario.',
-      })
-      return
+        message: "Por favor completa todos los campos del formulario.",
+      });
+      return;
     }
 
-    setCheckingCaptcha(true)
-    let currentToken = token
+    setCheckingCaptcha(true);
+    let currentToken = token;
 
     if (!currentToken) {
-      currentToken = getTokenManual()
+      currentToken = getTokenManual();
     }
 
     if (!currentToken) {
       try {
-        const storedToken = sessionStorage.getItem('turnstileToken')
+        const storedToken = sessionStorage.getItem("turnstileToken");
         if (storedToken) {
-          currentToken = storedToken
-          setToken(storedToken)
-          setCaptchaVerified(true)
+          currentToken = storedToken;
+          setToken(storedToken);
+          setCaptchaVerified(true);
         }
       } catch (err) {
-        console.error('Error al acceder a sessionStorage:', err)
+        console.error("Error al acceder a sessionStorage:", err);
       }
     }
 
-    setCheckingCaptcha(false)
+    setCheckingCaptcha(false);
 
     if (!currentToken) {
       setStatus({
         success: false,
-        message: 'Por favor verifica que eres humano marcando el captcha.',
-      })
-      return
+        message: "Por favor verifica que eres humano marcando el captcha.",
+      });
+      return;
     }
 
-    onSubmit(e)
-  }
+    onSubmit(e);
+  };
 
   return (
     <div className="w-full">
@@ -132,18 +135,38 @@ export default function FormularioPublica({
         <div
           className={`mb-6 rounded-2xl p-4 ${
             status.success
-              ? 'bg-green-50 text-green-800 border border-green-200 dark:bg-green-900/20 dark:text-green-200 dark:border-green-800'
-              : 'bg-red-50 text-red-700 border border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800'
+              ? "bg-green-50 text-green-800 border border-green-200 dark:bg-green-900/20 dark:text-green-200 dark:border-green-800"
+              : "bg-red-50 text-red-700 border border-red-200 dark:bg-red-900/20 dark:text-red-300 dark:border-red-800"
           }`}
         >
           <div className="flex items-center gap-2">
             {status.success ? (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             ) : (
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             )}
             {status.message}
@@ -158,41 +181,52 @@ export default function FormularioPublica({
       >
         {/* Tipo de contenido */}
         <div>
-          <label htmlFor="contentType" className="block text-sm font-medium text-text-primary mb-2">
+          <label
+            htmlFor="contentType"
+            className="block text-sm font-medium text-text-primary mb-2"
+          >
             ¿Qué quieres publicar?
           </label>
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
-              onClick={() => setFormData({ ...formData, contentType: 'relato' })}
+              onClick={() =>
+                setFormData({ ...formData, contentType: "relato" })
+              }
               className={`p-4 rounded-2xl border-2 transition-all text-left ${
-                formData.contentType === 'relato'
-                  ? 'border-brand-yellow bg-brand-yellow/10'
-                  : 'border-surface-2 hover:border-brand-gray'
+                formData.contentType === "relato"
+                  ? "border-brand-yellow bg-brand-yellow/10"
+                  : "border-surface-2 hover:border-brand-gray"
               }`}
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">📖</span>
                 <div>
                   <p className="font-medium text-text-primary">Relato</p>
-                  <p className="text-xs text-text-secondary">Narrativa, cuento, ficción</p>
+                  <p className="text-xs text-text-secondary">
+                    Narrativa, cuento, ficción
+                  </p>
                 </div>
               </div>
             </button>
             <button
               type="button"
-              onClick={() => setFormData({ ...formData, contentType: 'articulo' })}
+              onClick={() =>
+                setFormData({ ...formData, contentType: "articulo" })
+              }
               className={`p-4 rounded-2xl border-2 transition-all text-left ${
-                formData.contentType === 'articulo'
-                  ? 'border-brand-yellow bg-brand-yellow/10'
-                  : 'border-surface-2 hover:border-brand-gray'
+                formData.contentType === "articulo"
+                  ? "border-brand-yellow bg-brand-yellow/10"
+                  : "border-surface-2 hover:border-brand-gray"
               }`}
             >
               <div className="flex items-center gap-3">
                 <span className="text-2xl">📝</span>
                 <div>
                   <p className="font-medium text-text-primary">Artículo</p>
-                  <p className="text-xs text-text-secondary">Ensayo, opinión, reseña</p>
+                  <p className="text-xs text-text-secondary">
+                    Ensayo, opinión, reseña
+                  </p>
                 </div>
               </div>
             </button>
@@ -201,7 +235,10 @@ export default function FormularioPublica({
 
         {/* Email */}
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-text-primary mb-2">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-text-primary mb-2"
+          >
             Correo electrónico
           </label>
           <input
@@ -218,7 +255,10 @@ export default function FormularioPublica({
 
         {/* Descripción */}
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-text-primary mb-2">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-text-primary mb-2"
+          >
             Cuéntanos sobre tu texto
           </label>
           <textarea
@@ -245,14 +285,24 @@ export default function FormularioPublica({
             onDragLeave={handleDragLeave}
             className={`relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 transition-all cursor-pointer ${
               dragActive
-                ? 'border-brand-yellow bg-brand-yellow/5'
-                : 'border-surface-2 hover:border-brand-gray bg-bg-primary'
+                ? "border-brand-yellow bg-brand-yellow/5"
+                : "border-surface-2 hover:border-brand-gray bg-bg-primary"
             }`}
           >
             <div className="flex flex-col items-center text-center">
               <div className="w-12 h-12 rounded-full bg-brand-yellow/10 flex items-center justify-center mb-3">
-                <svg className="w-6 h-6 text-brand-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                <svg
+                  className="w-6 h-6 text-brand-yellow"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                  />
                 </svg>
               </div>
               <p className="text-sm font-medium text-text-primary">
@@ -281,8 +331,18 @@ export default function FormularioPublica({
                   className="flex items-center justify-between rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 px-4 py-3"
                 >
                   <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-5 h-5 text-green-600 dark:text-green-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
                     <span className="text-sm text-green-700 dark:text-green-300 truncate">
                       {f.name}
@@ -296,8 +356,18 @@ export default function FormularioPublica({
                     onClick={() => removeFile(i)}
                     className="p-1 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
                   >
-                    <svg className="w-4 h-4 text-green-700 dark:text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      className="w-4 h-4 text-green-700 dark:text-green-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </div>
@@ -323,7 +393,8 @@ export default function FormularioPublica({
             onChange={handleChange}
           />
           <label htmlFor="agree" className="text-sm text-text-secondary">
-            Acepto que este texto es original y cedo derechos de publicación a MarcaPágina.
+            Acepto que este texto es original y cedo derechos de publicación a
+            MarcaPágina.
           </label>
         </div>
 
@@ -331,38 +402,65 @@ export default function FormularioPublica({
         <div className="pt-2">
           {!captchaVerified && !checkingCaptcha && (
             <p className="mb-3 text-sm text-amber-600 dark:text-amber-400 flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
               </svg>
               Completa el captcha antes de enviar
             </p>
           )}
           {checkingCaptcha && (
-            <p className="mb-3 text-sm text-blue-600 dark:text-blue-400">Verificando...</p>
+            <p className="mb-3 text-sm text-blue-600 dark:text-blue-400">
+              Verificando...
+            </p>
           )}
           <button
             type="submit"
             disabled={isSubmitting}
             className={`w-full rounded-xl px-6 py-4 font-medium text-base transition-all ${
               isSubmitting
-                ? 'bg-brand-gray/50 text-text-secondary cursor-not-allowed'
-                : 'bg-brand-yellow text-brand-black hover:bg-brand-yellow/90 hover:shadow-lg hover:shadow-brand-yellow/20'
+                ? "bg-brand-gray/50 text-text-secondary cursor-not-allowed"
+                : "bg-brand-yellow text-brand-black hover:bg-brand-yellow/90 hover:shadow-lg hover:shadow-brand-yellow/20"
             }`}
           >
             {isSubmitting ? (
               <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                <svg
+                  className="animate-spin h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  />
                 </svg>
-                Enviando{'.'.repeat(dotCount)}
+                Enviando{".".repeat(dotCount)}
               </span>
             ) : (
-              `Enviar ${formData.contentType === 'relato' ? 'relato' : 'artículo'}`
+              `Enviar ${formData.contentType === "relato" ? "relato" : "artículo"}`
             )}
           </button>
         </div>
       </form>
     </div>
-  )
+  );
 }

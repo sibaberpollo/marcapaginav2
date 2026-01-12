@@ -13,6 +13,7 @@ import {
   literaryHoroscopesLibra,
   literaryHoroscopesEscorpio,
   literaryHoroscopesSagitario,
+  literaryHoroscopesCapricornio,
   getLiteraryTexts,
   getSignLink,
   implementedSigns,
@@ -52,9 +53,10 @@ describe("lib/types/horoscope.ts", () => {
         "libra",
         "escorpio",
         "sagitario",
+        "capricornio",
       ];
 
-      expect(implementedSigns).toHaveLength(6);
+      expect(implementedSigns).toHaveLength(7);
       for (const sign of expectedSigns) {
         expect(implementedSigns).toContain(sign);
       }
@@ -130,10 +132,12 @@ describe("lib/horoscope-data.ts", () => {
   });
 
   describe("implementedSigns array", () => {
-    it("contains exactly 6 signs with valid slugs", () => {
-      expect(implementedSigns).toHaveLength(6);
+    it("contains exactly 7 signs with valid slugs", () => {
+      expect(implementedSigns).toHaveLength(7);
       for (const sign of implementedSigns) {
-        expect(sign).toMatch(/^(cancer|leo|virgo|libra|escorpio|sagitario)$/);
+        expect(sign).toMatch(
+          /^(cancer|leo|virgo|libra|escorpio|sagitario|capricornio)$/,
+        );
       }
     });
   });
@@ -147,6 +151,7 @@ describe("lib/horoscope-data.ts", () => {
         libra: "Libra",
         escorpio: "Escorpio",
         sagitario: "Sagitario",
+        capricornio: "Capricornio",
       };
 
       for (const [slug, name] of Object.entries(expectedDisplayNames)) {
@@ -191,8 +196,8 @@ describe("lib/horoscope-data.ts", () => {
   });
 
   describe("getSignLink", () => {
-    it("returns /horoscopo for sagitario", () => {
-      expect(getSignLink("sagitario")).toBe("/horoscopo");
+    it("returns /horoscopo for capricornio", () => {
+      expect(getSignLink("capricornio")).toBe("/horoscopo");
     });
 
     it("returns /horoscopo/{sign} for implemented signs", () => {
@@ -201,7 +206,7 @@ describe("lib/horoscope-data.ts", () => {
       expect(getSignLink("virgo")).toBe("/horoscopo/virgo");
       expect(getSignLink("libra")).toBe("/horoscopo/libra");
       expect(getSignLink("escorpio")).toBe("/horoscopo/escorpio");
-      expect(getSignLink("sagitario")).toBe("/horoscopo");
+      expect(getSignLink("sagitario")).toBe("/horoscopo/sagitario");
     });
 
     it("returns # for future signs", () => {
@@ -209,7 +214,6 @@ describe("lib/horoscope-data.ts", () => {
         "aries",
         "tauro",
         "geminis",
-        "capricornio",
         "acuario",
         "piscis",
       ];
@@ -228,6 +232,7 @@ describe("lib/horoscope-data.ts", () => {
         literaryHoroscopesLibra,
         literaryHoroscopesEscorpio,
         literaryHoroscopesSagitario,
+        literaryHoroscopesCapricornio,
       ];
 
       for (const literaryTexts of allLiteraryTexts) {

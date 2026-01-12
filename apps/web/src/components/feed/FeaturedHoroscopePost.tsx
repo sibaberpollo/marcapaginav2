@@ -1,12 +1,11 @@
-import Link from 'next/link';
-import Image from 'next/image';
+import Link from "next/link";
+import Image from "next/image";
 
 interface FeaturedHoroscopePostProps {
   signName: string;
   signSymbol: string;
   author: string;
   authorImage: string;
-  month: string;
   excerpt: string;
 }
 
@@ -15,7 +14,6 @@ export default function FeaturedHoroscopePost({
   signSymbol,
   author,
   authorImage,
-  month,
   excerpt,
 }: FeaturedHoroscopePostProps) {
   return (
@@ -29,7 +27,14 @@ export default function FeaturedHoroscopePost({
             preserveAspectRatio="xMidYMid slice"
           >
             <defs>
-              <pattern id="starsPattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+              <pattern
+                id="starsPattern"
+                x="0"
+                y="0"
+                width="100"
+                height="100"
+                patternUnits="userSpaceOnUse"
+              >
                 {/* Stars */}
                 <circle cx="10" cy="10" r="1" fill="currentColor" />
                 <circle cx="50" cy="20" r="1.5" fill="currentColor" />
@@ -44,9 +49,27 @@ export default function FeaturedHoroscopePost({
                 <circle cx="35" cy="30" r="0.8" fill="currentColor" />
                 <circle cx="95" cy="65" r="1" fill="currentColor" />
                 {/* Constellation lines */}
-                <path d="M10 10 L25 45 L45 80" stroke="currentColor" strokeWidth="0.3" fill="none" opacity="0.5" />
-                <path d="M50 20 L70 50 L85 85" stroke="currentColor" strokeWidth="0.3" fill="none" opacity="0.5" />
-                <path d="M80 15 L90 40 L60 70" stroke="currentColor" strokeWidth="0.3" fill="none" opacity="0.5" />
+                <path
+                  d="M10 10 L25 45 L45 80"
+                  stroke="currentColor"
+                  strokeWidth="0.3"
+                  fill="none"
+                  opacity="0.5"
+                />
+                <path
+                  d="M50 20 L70 50 L85 85"
+                  stroke="currentColor"
+                  strokeWidth="0.3"
+                  fill="none"
+                  opacity="0.5"
+                />
+                <path
+                  d="M80 15 L90 40 L60 70"
+                  stroke="currentColor"
+                  strokeWidth="0.3"
+                  fill="none"
+                  opacity="0.5"
+                />
               </pattern>
             </defs>
             <rect width="100%" height="100%" fill="url(#starsPattern)" />
@@ -63,9 +86,13 @@ export default function FeaturedHoroscopePost({
                 </div>
                 <h2 className="text-xl sm:text-2xl font-bold leading-tight mb-2 flex items-center gap-2">
                   <span className="text-2xl sm:text-3xl">{signSymbol}</span>
-                  <span className="hover:text-purple-600 transition-colors">{signName}</span>
+                  <span className="hover:text-purple-600 transition-colors">
+                    {signName}
+                  </span>
                 </h2>
-                <p className="text-text-secondary text-sm line-clamp-2 mb-3">{excerpt}</p>
+                <p className="text-text-secondary text-sm line-clamp-2 mb-3">
+                  {excerpt}
+                </p>
                 <p className="text-xs text-purple-600 dark:text-purple-400 font-medium">
                   Guía: {author}
                 </p>
@@ -88,7 +115,9 @@ export default function FeaturedHoroscopePost({
           <span className="text-sm text-purple-600 dark:text-purple-400 font-medium">
             Descubre tu predicción literaria →
           </span>
-          <span className="text-xs text-text-secondary font-mono">12 signos</span>
+          <span className="text-xs text-text-secondary font-mono">
+            12 signos
+          </span>
         </div>
       </article>
     </Link>
