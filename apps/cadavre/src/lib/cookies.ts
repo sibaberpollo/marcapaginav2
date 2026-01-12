@@ -5,13 +5,16 @@
  * Provides session continuity without requiring user registration.
  */
 
+import type { NextRequest } from "next/server";
+
 import type { AnonymousIdentity } from "@/lib/types";
 
 // =============================================================================
 // Cookie Configuration
 // =============================================================================
 
-const ANON_COOKIE = "cadavre_anon_id";
+/** Cookie name for anonymous user ID */
+export const ANON_COOKIE = "cadavre_anon_id";
 const SESSIONS_COOKIE = "cadavre_sessions";
 const IDENTITY_LIFESPAN_DAYS = 30;
 
@@ -290,20 +293,25 @@ export function getAnonymousId(): string {
   return newId;
 }
 
-/**
- * Validate UUID v4 format.
- */
+const UUID_V4_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 function isValidUuid(value: string): boolean {
-  const uuidRegex =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  return uuidRegex.test(value);
+  return UUID_V4_REGEX.test(value);
 }
 
-/**
- * Set the anonymous ID cookie with 30-day expiration.
- *
- * @param id - The anonymous UUID to set
- */
+// =============================================================================
+// Server-Side Cookie Access (for API Routes)
+// =============================================================================
+
+export function getAnonymousIdFromRequest(request: NextRequest): string | null {
+  const cookieValue = request.cookies.get(ANON_COOKIE)?.value;
+  if (cookieValue && isValidUuid(cookieValue)) {
+    return cookieValue;
+  }
+  return null;
+}
+
 export function setAnonymousId(id: string): void {
   if (!isValidUuid(id)) {
     console.warn("Invalid UUID passed to setAnonymousId:", id);

@@ -13,7 +13,7 @@ import {
   type SessionStatus,
 } from "@/lib/types";
 import { sessionStore } from "@/lib/store";
-import { getAnonymousId } from "@/lib/cookies";
+import { getAnonymousIdFromRequest } from "@/lib/cookies";
 import { buildObserverLink } from "@/lib/links";
 
 // =============================================================================
@@ -153,8 +153,14 @@ export async function POST(
       );
     }
 
-    // Get anonymous ID for the user
-    const anonymousId = getAnonymousId();
+    // Get anonymous ID for the user from request cookies
+    const anonymousId = getAnonymousIdFromRequest(request);
+    if (!anonymousId) {
+      return NextResponse.json(
+        { success: false, error: "Anonymous identity required" },
+        { status: 401 },
+      );
+    }
 
     // Check if user already joined (by user ID)
     const existingContributorByUserId = sessionStore.getContributor(
@@ -165,33 +171,6 @@ export async function POST(
       const position = getQueuePosition(
         sessionId,
         existingContributorByUserId.id,
-      );
-      const sessionState = sessionStore.getSessionState(sessionId, anonymousId);
-
-      if (!sessionState) {
-        return NextResponse.json(
-          { success: false, error: "Session not found" },
-          { status: 404 },
-        );
-      }
-
-      return NextResponse.json({
-        success: true,
-        queuePosition: position,
-        estimatedWaitMinutes: calculateEstimatedWait(position),
-        sessionState,
-      });
-    }
-
-    // Check if user already joined (by link token - for the same link)
-    const existingContributorByToken = sessionStore.getContributorByToken(
-      sessionId,
-      linkToken,
-    );
-    if (existingContributorByToken) {
-      const position = getQueuePosition(
-        sessionId,
-        existingContributorByToken.id,
       );
       const sessionState = sessionStore.getSessionState(sessionId, anonymousId);
 

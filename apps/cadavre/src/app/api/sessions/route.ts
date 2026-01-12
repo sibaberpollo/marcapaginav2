@@ -14,7 +14,7 @@ import {
   VALID_MAX_CONTRIBUTORS_RANGE,
 } from "@/lib/types";
 import { sessionStore } from "@/lib/store";
-import { getAnonymousId, trackSession } from "@/lib/cookies";
+import { getAnonymousIdFromRequest, trackSession } from "@/lib/cookies";
 
 // =============================================================================
 // Validation Functions
@@ -209,8 +209,17 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Get anonymous identity for the creator
-    const anonymousId = getAnonymousId();
+    // Get anonymous identity for the creator from request cookies
+    const anonymousId = getAnonymousIdFromRequest(request);
+    if (!anonymousId) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Anonymous identity required",
+        },
+        { status: 401 },
+      );
+    }
 
     // Create the session
     const result = sessionStore.createSession({
