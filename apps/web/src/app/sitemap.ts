@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { getAllArticles } from '@/lib/articles';
+import { getAllPreviews } from '@/lib/previews';
 import { fetchSanity } from '@/lib/sanity';
 import { implementedSigns } from '@/lib/horoscope-data';
 
@@ -79,6 +80,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.6,
       });
     }
+  }
+
+  // ===== PREVIEWS DE NOVELAS =====
+
+  // Página principal de previews
+  entries.push({
+    url: `${BASE_URL}/previews`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  });
+
+  // Previews individuales
+  try {
+    const previews = await getAllPreviews();
+
+    for (const preview of previews) {
+      entries.push({
+        url: `${BASE_URL}/previews/${preview.slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.7,
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching previews for sitemap:', error);
   }
 
   // ===== ARTÍCULOS LOCALES =====

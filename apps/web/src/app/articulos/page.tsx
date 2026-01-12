@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArticlesFeed, LeftSidebar, RightSidebar } from '@/components';
+import { ArticlesFeed, FeaturedPreviewPost, LeftSidebar, RightSidebar } from '@/components';
 import { getAllArticles } from '@/lib/articles';
 
 export const metadata: Metadata = {
@@ -36,6 +36,17 @@ export default async function ArticulosPage() {
             </header>
 
             <ArticlesFeed articles={articles} />
+
+            {/* Featured Preview CTA */}
+            <FeaturedPreviewPost
+              title="Alta Pureza"
+              author="Marianne Díaz Hernández"
+              genre="Thriller"
+              excerpt="Una novela que comienza con el hallazgo de un cadáver en una hacienda del páramo andino y sigue la investigación de Ana, una abogada venezolana que enfrenta más de un misterio."
+              coverImage="https://public-files.gumroad.com/xgdjeqtl5792s8io16abkoshyx1u"
+              slug="alta-pureza"
+              chaptersCount={3}
+            />
 
             <div className="flex items-center justify-between pt-4 border-t border-surface-2">
               <div className="text-sm text-text-secondary">{articles.length} artículos</div>
