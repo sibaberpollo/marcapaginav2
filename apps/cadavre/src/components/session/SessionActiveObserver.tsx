@@ -55,8 +55,14 @@ export function SessionActiveObserver({
           <header className="text-center space-y-2">
             <div className="text-6xl">👀</div>
             <h1 className="text-2xl font-bold text-text-primary">
-              Observando: {session.theme || "Historia colaborativa"}
+              Observando:{" "}
+              {session.title || session.theme || "Historia colaborativa"}
             </h1>
+            {session.title && session.theme && (
+              <p className="text-base text-text-secondary italic">
+                {session.theme}
+              </p>
+            )}
             <p className="text-sm text-text-secondary">
               Última actualización: {lastUpdate.toLocaleTimeString()}
             </p>

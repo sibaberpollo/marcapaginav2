@@ -2,7 +2,6 @@
 
 import { useState, useCallback } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 
 import { type LinkType } from "@/lib/links";
 import type { SessionState } from "@/lib/types";
@@ -11,18 +10,17 @@ import { Header } from "../layout/Header";
 interface SessionWaitingProps {
   sessionState: SessionState;
   linkType: LinkType;
+  token: string;
 }
 
 export function SessionWaiting({
   sessionState,
   linkType,
+  token,
 }: SessionWaitingProps) {
   const { session, contributors, myPosition } = sessionState;
-  const searchParams = useSearchParams();
   const [isJoining, setIsJoining] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const token = searchParams.get("token") || "";
 
   const handleJoinQueue = useCallback(async () => {
     if (!token || isJoining) return;
@@ -65,7 +63,7 @@ export function SessionWaiting({
               ⏳
             </div>
             <h1 className="text-3xl font-bold text-text-primary">
-              Esperando para comenzar
+              {session.title || "Esperando para comenzar"}
             </h1>
             {session.theme && (
               <p className="text-xl text-text-secondary italic">

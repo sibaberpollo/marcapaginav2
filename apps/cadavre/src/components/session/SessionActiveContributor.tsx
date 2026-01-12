@@ -202,11 +202,16 @@ export function SessionActiveContributor({
       <div className="min-h-screen bg-bg-page pt-16">
         <main className="max-w-xl mx-auto px-4 py-8 space-y-6">
           <header className="text-center space-y-2">
-            <h1 className="text-2xl font-bold text-text-primary">
+            {session.title && (
+              <h1 className="text-2xl font-bold text-text-primary">
+                {session.title}
+              </h1>
+            )}
+            <p className="text-lg text-text-primary font-medium">
               {isMyTurn ? "¡Es tu turno!" : "Esperando tu turno"}
-            </h1>
+            </p>
             {session.theme && (
-              <p className="text-lg text-text-secondary italic">
+              <p className="text-base text-text-secondary italic">
                 {session.theme}
               </p>
             )}

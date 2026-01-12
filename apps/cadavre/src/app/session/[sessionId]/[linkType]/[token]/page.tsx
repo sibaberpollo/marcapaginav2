@@ -155,6 +155,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
         <SessionWaiting
           sessionState={sessionState}
           linkType={validation.linkType!}
+          token={token}
         />
       );
 

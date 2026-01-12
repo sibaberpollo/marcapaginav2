@@ -32,6 +32,8 @@ export interface Session {
   id: string;
   /** URL-friendly slug for session identification */
   slug: string;
+  /** Optional title for the story */
+  title: string | null;
   /** Optional thematic prompt to guide writers */
   theme: string | null;
   /** Opening segment from the creator (50-100 words) */
@@ -228,6 +230,8 @@ export interface AnonymousIdentity {
  * Request body for creating a new session.
  */
 export interface CreateSessionRequest {
+  /** Optional title for the story */
+  title?: string;
   /** Optional thematic prompt for the story */
   theme?: string;
   /** Opening segment content (50-100 words) */

@@ -42,7 +42,7 @@ export function SessionCompleted({ sessionState }: SessionCompletedProps) {
               🎉
             </div>
             <h1 className="text-4xl font-bold text-text-primary">
-              ¡Historia completada!
+              {session.title || "¡Historia completada!"}
             </h1>
             {session.theme && (
               <p className="text-xl text-text-secondary italic">
@@ -106,7 +106,7 @@ export function SessionCompleted({ sessionState }: SessionCompletedProps) {
               <ShareLinks
                 contributorLink={shareLinks.contributor}
                 observerLink={shareLinks.observer}
-                sessionTitle={session.theme || undefined}
+                sessionTitle={session.title || session.theme || undefined}
               />
             </section>
           )}

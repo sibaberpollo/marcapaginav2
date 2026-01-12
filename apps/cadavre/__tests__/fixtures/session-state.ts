@@ -19,6 +19,7 @@ import type {
 export const mockSession: Session = {
   id: "session-123",
   slug: "test-session",
+  title: "The Lost Map",
   theme: "A Mysterious Journey",
   openingSegment:
     "Once upon a time in a forgotten village, there lived a curious child who discovered an ancient map hidden beneath the floorboards of an abandoned house.",

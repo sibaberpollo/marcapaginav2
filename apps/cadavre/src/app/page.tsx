@@ -35,6 +35,7 @@ function getWordCountStatus(count: number): WordCountStatus {
 }
 
 interface FormState {
+  title: string;
   theme: string;
   openingSegment: string;
   maxContributors: number;
@@ -50,6 +51,7 @@ export default function CadavreLanding() {
   const formId = useId();
 
   const [formState, setFormState] = useState<FormState>({
+    title: "",
     theme: "",
     openingSegment: "",
     maxContributors: 2,
@@ -63,6 +65,10 @@ export default function CadavreLanding() {
     wordCount >= WORD_COUNT_RANGE.min && wordCount <= WORD_COUNT_RANGE.max;
   const isFormValid =
     isWordCountValid && formState.openingSegment.trim().length > 0;
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormState((prev) => ({ ...prev, title: e.target.value }));
+  };
 
   const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFormState((prev) => ({ ...prev, theme: e.target.value }));
@@ -114,6 +120,7 @@ export default function CadavreLanding() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
+            title: formState.title || undefined,
             theme: formState.theme || undefined,
             openingSegment: formState.openingSegment,
             maxContributors: formState.maxContributors,
@@ -313,6 +320,31 @@ export default function CadavreLanding() {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="form-control w-full">
+                <label className="label" htmlFor={`${formId}-title`}>
+                  <span className="label-text text-text-primary font-medium">
+                    Título{" "}
+                    <span className="text-text-secondary font-normal">
+                      (opcional)
+                    </span>
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  id={`${formId}-title`}
+                  value={formState.title}
+                  onChange={handleTitleChange}
+                  placeholder="El viaje inesperado"
+                  maxLength={100}
+                  className="input input-bordered w-full bg-bg-primary border-surface-2 text-text-primary placeholder:text-text-secondary/40 focus:border-brand-yellow focus:outline-brand-yellow"
+                />
+                <label className="label">
+                  <span className="label-text-alt text-text-secondary">
+                    Un título para identificar tu historia.
+                  </span>
+                </label>
+              </div>
+
               <div className="form-control w-full">
                 <label className="label" htmlFor={`${formId}-theme`}>
                   <span className="label-text text-text-primary font-medium">

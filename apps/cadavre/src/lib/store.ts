@@ -32,6 +32,7 @@ const LINK_TOKEN_LENGTH = 16;
  * Input data for creating a session.
  */
 interface CreateSessionData {
+  title: string | null;
   theme: string | null;
   openingSegment: string;
   maxContributors: number;
@@ -98,6 +99,7 @@ export class SessionStore {
     const session: Session = {
       id: sessionId,
       slug,
+      title: data.title,
       theme: data.theme,
       openingSegment: data.openingSegment,
       maxContributors: data.maxContributors,

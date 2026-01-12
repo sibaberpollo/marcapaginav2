@@ -94,6 +94,13 @@ function validateRequest(body: unknown): {
     }
   }
 
+  // Validate title if provided
+  if (Object.hasOwn(typedBody, "title") && typedBody.title !== undefined) {
+    if (typeof typedBody.title !== "string") {
+      (errors as Record<string, string>).title = "Title must be a string";
+    }
+  }
+
   // If there are errors, return early
   if (Object.keys(errors).length > 0) {
     return { isValid: false, errors, data: null };
@@ -107,6 +114,10 @@ function validateRequest(body: unknown): {
         ? typedBody.maxContributors
         : DEFAULT_MAX_CONTRIBUTORS,
   };
+
+  if (typeof typedBody.title === "string") {
+    data.title = typedBody.title;
+  }
 
   if (typeof typedBody.theme === "string") {
     data.theme = typedBody.theme;
@@ -203,6 +214,7 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
     // Create the session
     const result = sessionStore.createSession({
+      title: validation.data.title ?? null,
       theme: validation.data.theme ?? null,
       openingSegment: validation.data.openingSegment,
       maxContributors:
