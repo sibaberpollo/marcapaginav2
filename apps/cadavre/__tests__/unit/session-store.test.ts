@@ -238,13 +238,21 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
+      store.addContributor(result.session.id, {
+        userId: "user2",
+        linkToken: "token2",
+        linkType: "contributor",
+        status: "pending",
+        hasPassed: false,
+      });
+
       const started = store.startSession(result.session.id);
 
       expect(started).toBe(true);
 
       const session = store.getSession(result.session.id);
       expect(session?.status).toBe("active");
-      expect(session?.currentTurnIndex).toBe(0);
+      expect(session?.currentTurnIndex).toBe(1);
     });
 
     it("should not start an already started session", () => {
@@ -256,6 +264,14 @@ describe("SessionStore", () => {
         createdBy: createTestAnonymousId(),
         creatorName: "Creator",
         creatorIsAnonymous: false,
+      });
+
+      store.addContributor(result.session.id, {
+        userId: "user2",
+        linkToken: "token2",
+        linkType: "contributor",
+        status: "pending",
+        hasPassed: false,
       });
 
       store.startSession(result.session.id);
@@ -276,9 +292,7 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      store.startSession(result.session.id);
-
-      // Add another contributor
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
       store.addContributor(result.session.id, {
         userId: "user2",
         linkToken: "token2",
@@ -287,9 +301,10 @@ describe("SessionStore", () => {
         hasPassed: false,
       });
 
-      // Advance turn to contributor 2
-      store.advanceTurn(result.session.id);
+      store.startSession(result.session.id);
 
+      // After startSession, currentTurnIndex is already 1 (second contributor's turn)
+      // because creator's opening segment counts as their contribution
       const session = store.getSession(result.session.id);
       expect(session?.currentTurnIndex).toBe(1);
     });
@@ -303,6 +318,15 @@ describe("SessionStore", () => {
         createdBy: createTestAnonymousId(),
         creatorName: "Creator",
         creatorIsAnonymous: false,
+      });
+
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
+      store.addContributor(result.session.id, {
+        userId: "user2",
+        linkToken: "token2",
+        linkType: "contributor",
+        status: "pending",
+        hasPassed: false,
       });
 
       store.startSession(result.session.id);
@@ -335,15 +359,23 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      store.startSession(result.session.id);
-
-      // Add second contributor
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
       store.addContributor(result.session.id, {
         userId: "user2",
         linkToken: "token2",
         linkType: "contributor",
         status: "pending",
         hasPassed: false,
+      });
+
+      store.startSession(result.session.id);
+
+      // Add segment from second contributor to complete the session
+      store.addSegment(result.session.id, {
+        authorId: "user2",
+        authorName: "User 2",
+        isAnonymous: false,
+        content: "Second segment with enough words for validation test.",
       });
 
       const completed = store.checkCompletion(result.session.id);
@@ -365,7 +397,7 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      store.startSession(result.session.id);
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
       store.addContributor(result.session.id, {
         userId: "user2",
         linkToken: "token2",
@@ -373,6 +405,17 @@ describe("SessionStore", () => {
         status: "pending",
         hasPassed: false,
       });
+
+      store.startSession(result.session.id);
+
+      // Add segment from second contributor to complete the session
+      store.addSegment(result.session.id, {
+        authorId: "user2",
+        authorName: "User 2",
+        isAnonymous: false,
+        content: "Second segment with enough words for moderation test.",
+      });
+
       store.checkCompletion(result.session.id);
 
       const added = store.addToModerationQueue(result.session.id);
@@ -394,7 +437,7 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      store.startSession(result.session.id);
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
       store.addContributor(result.session.id, {
         userId: "user2",
         linkToken: "token2",
@@ -402,6 +445,17 @@ describe("SessionStore", () => {
         status: "pending",
         hasPassed: false,
       });
+
+      store.startSession(result.session.id);
+
+      // Add segment from second contributor to complete the session
+      store.addSegment(result.session.id, {
+        authorId: "user2",
+        authorName: "User 2",
+        isAnonymous: false,
+        content: "Second segment with enough words for approve test.",
+      });
+
       store.checkCompletion(result.session.id);
       store.addToModerationQueue(result.session.id);
 
@@ -424,7 +478,7 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      store.startSession(result.session.id);
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
       store.addContributor(result.session.id, {
         userId: "user2",
         linkToken: "token2",
@@ -432,6 +486,17 @@ describe("SessionStore", () => {
         status: "pending",
         hasPassed: false,
       });
+
+      store.startSession(result.session.id);
+
+      // Add segment from second contributor to complete the session
+      store.addSegment(result.session.id, {
+        authorId: "user2",
+        authorName: "User 2",
+        isAnonymous: false,
+        content: "Second segment with enough words for reject test.",
+      });
+
       store.checkCompletion(result.session.id);
       store.addToModerationQueue(result.session.id);
 
@@ -518,7 +583,16 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      // Start the session first
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
+      store.addContributor(result.session.id, {
+        userId: "user2",
+        linkToken: "token2",
+        linkType: "contributor",
+        status: "pending",
+        hasPassed: false,
+      });
+
+      // Start the session
       store.startSession(result.session.id);
 
       // Add 5 segments to allow voting (4 more after opening)
@@ -536,8 +610,9 @@ describe("SessionStore", () => {
         result.creatorContributor.id,
       );
 
-      // With 1 eligible voter (the creator), 1 vote reaches 60% threshold
-      expect(votePassed).toBe(true);
+      // With 2 eligible voters (creator + user2), 1 vote is 50% which doesn't reach 60% threshold
+      // But the creator's vote should still be recorded
+      expect(votePassed).toBe(false);
 
       // Check vote status with userId to verify hasVoted
       const voteStatus = store.getVoteStatus(
@@ -707,7 +782,7 @@ describe("SessionStore", () => {
       // Create 2 sessions
       for (let i = 0; i < 2; i++) {
         store.createSession({
-        title: null,
+          title: null,
           theme: null,
           openingSegment: `Opening segment ${i}.`,
           maxContributors: 7,

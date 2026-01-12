@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 
 import { sessionStore } from "@/lib/store";
 import type { LinkType } from "@/lib/links";
 import type { SessionState } from "@/lib/types";
+import { ANON_COOKIE } from "@/lib/cookies";
 
 import { SessionLoading } from "@/components/session/SessionLoading";
 import { SessionError } from "@/components/session/SessionError";
@@ -106,19 +108,25 @@ function validateRouteParams(
 // Session Data Fetcher
 // =============================================================================
 
-async function getSessionState(
-  sessionId: string,
-  linkType: LinkType,
-  token: string,
-): Promise<SessionState | null> {
-  // Get contributor by token to identify user
-  const contributor = sessionStore.getContributorByToken(sessionId, token);
+const UUID_V4_REGEX =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-  if (!contributor) {
+async function getAnonymousIdFromCookies(): Promise<string | null> {
+  const cookieStore = await cookies();
+  const anonCookie = cookieStore.get(ANON_COOKIE);
+
+  if (!anonCookie?.value || !UUID_V4_REGEX.test(anonCookie.value)) {
     return null;
   }
 
-  return sessionStore.getSessionState(sessionId, contributor.userId);
+  return anonCookie.value;
+}
+
+async function getSessionState(
+  sessionId: string,
+): Promise<SessionState | null> {
+  const userId = await getAnonymousIdFromCookies();
+  return sessionStore.getSessionState(sessionId, userId ?? undefined);
 }
 
 // =============================================================================
@@ -135,12 +143,7 @@ export default async function SessionPage({ params }: SessionPageProps) {
     return <SessionError error={validation.error || "Invalid session"} />;
   }
 
-  // Get session state for rendering
-  const sessionState = await getSessionState(
-    sessionId,
-    validation.linkType!,
-    token,
-  );
+  const sessionState = await getSessionState(sessionId);
 
   if (!sessionState) {
     return <SessionError error="Unable to load session state" />;

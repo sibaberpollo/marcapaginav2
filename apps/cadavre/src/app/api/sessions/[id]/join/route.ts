@@ -237,10 +237,20 @@ export async function POST(
     // Record link click
     sessionStore.recordLinkClick(linkToken);
 
+    // Check if session should start (all contributor slots filled)
+    const updatedSession = sessionStore.getSession(sessionId);
+    const currentContributorCount = sessionStore.getContributorCount(sessionId);
+    if (
+      updatedSession?.status === "waiting" &&
+      currentContributorCount >= updatedSession.maxContributors
+    ) {
+      sessionStore.startSession(sessionId);
+    }
+
     // Get queue position
     const position = getQueuePosition(sessionId, newContributor.id);
 
-    // Get session state
+    // Get session state (after potential start)
     const sessionState = sessionStore.getSessionState(sessionId, anonymousId);
 
     if (!sessionState) {

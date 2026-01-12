@@ -611,21 +611,23 @@ export class SessionStore {
     const session = this.sessions.get(sessionId);
     const contributors = this.contributors.get(sessionId) ?? [];
 
-    if (!session || session.status !== "waiting" || contributors.length === 0) {
+    if (!session || session.status !== "waiting" || contributors.length < 2) {
       return false;
     }
 
-    // Update session status
     const updatedSession: Session = {
       ...session,
       status: "active",
-      currentTurnIndex: 0,
+      currentTurnIndex: 1,
     };
 
-    // Mark first contributor as active
     const updatedContributors: Contributor[] = contributors.map((c, index) => ({
       ...c,
-      status: (index === 0 ? "active" : "pending") as ContributorStatus,
+      status: (index === 0
+        ? "completed"
+        : index === 1
+          ? "active"
+          : "pending") as ContributorStatus,
     }));
 
     this.sessions.set(sessionId, updatedSession);
