@@ -23,6 +23,7 @@ describe("SessionStore", () => {
   describe("Session Creation", () => {
     it("should create a new session with valid data", () => {
       const result = store.createSession({
+        title: null,
         theme: "Un misterio en la biblioteca",
         openingSegment:
           "Era una vez en una biblioteca antigua donde los libros susurraban secretos.",
@@ -42,6 +43,7 @@ describe("SessionStore", () => {
 
     it("should generate unique contributor and observer links", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment:
           "Test segment content with enough words for validation.",
@@ -59,6 +61,7 @@ describe("SessionStore", () => {
     it("should add creator as first contributor", () => {
       const userId = createTestAnonymousId();
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for testing purposes here.",
         maxContributors: 7,
@@ -75,6 +78,7 @@ describe("SessionStore", () => {
 
     it("should create opening segment with position 0", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "This is the first segment of the story.",
         maxContributors: 7,
@@ -96,6 +100,7 @@ describe("SessionStore", () => {
     it("should add segments to a session", () => {
       const userId = createTestAnonymousId();
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "First segment content for testing.",
         maxContributors: 7,
@@ -132,6 +137,7 @@ describe("SessionStore", () => {
     it("should get the last segment", () => {
       const userId = createTestAnonymousId();
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment one.",
         maxContributors: 7,
@@ -156,6 +162,7 @@ describe("SessionStore", () => {
   describe("Contributor Management", () => {
     it("should add a contributor to a session", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for contributor test.",
         maxContributors: 7,
@@ -181,6 +188,7 @@ describe("SessionStore", () => {
 
     it("should get contributor by token", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for contributor test.",
         maxContributors: 7,
@@ -200,6 +208,7 @@ describe("SessionStore", () => {
 
     it("should return null for invalid token", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for contributor test.",
         maxContributors: 7,
@@ -220,6 +229,7 @@ describe("SessionStore", () => {
   describe("Turn Management", () => {
     it("should start a session", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for turn test.",
         maxContributors: 7,
@@ -228,23 +238,40 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
+      store.addContributor(result.session.id, {
+        userId: "user2",
+        linkToken: "token2",
+        linkType: "contributor",
+        status: "pending",
+        hasPassed: false,
+      });
+
       const started = store.startSession(result.session.id);
 
       expect(started).toBe(true);
 
       const session = store.getSession(result.session.id);
       expect(session?.status).toBe("active");
-      expect(session?.currentTurnIndex).toBe(0);
+      expect(session?.currentTurnIndex).toBe(1);
     });
 
     it("should not start an already started session", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for turn test.",
         maxContributors: 7,
         createdBy: createTestAnonymousId(),
         creatorName: "Creator",
         creatorIsAnonymous: false,
+      });
+
+      store.addContributor(result.session.id, {
+        userId: "user2",
+        linkToken: "token2",
+        linkType: "contributor",
+        status: "pending",
+        hasPassed: false,
       });
 
       store.startSession(result.session.id);
@@ -256,6 +283,7 @@ describe("SessionStore", () => {
     it("should advance turn after submission", () => {
       const userId = createTestAnonymousId();
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for turn advance test.",
         maxContributors: 7,
@@ -264,9 +292,7 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      store.startSession(result.session.id);
-
-      // Add another contributor
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
       store.addContributor(result.session.id, {
         userId: "user2",
         linkToken: "token2",
@@ -275,21 +301,32 @@ describe("SessionStore", () => {
         hasPassed: false,
       });
 
-      // Advance turn to contributor 2
-      store.advanceTurn(result.session.id);
+      store.startSession(result.session.id);
 
+      // After startSession, currentTurnIndex is already 1 (second contributor's turn)
+      // because creator's opening segment counts as their contribution
       const session = store.getSession(result.session.id);
       expect(session?.currentTurnIndex).toBe(1);
     });
 
     it("should pass turn", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for pass test.",
         maxContributors: 7,
         createdBy: createTestAnonymousId(),
         creatorName: "Creator",
         creatorIsAnonymous: false,
+      });
+
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
+      store.addContributor(result.session.id, {
+        userId: "user2",
+        linkToken: "token2",
+        linkType: "contributor",
+        status: "pending",
+        hasPassed: false,
       });
 
       store.startSession(result.session.id);
@@ -313,6 +350,7 @@ describe("SessionStore", () => {
   describe("Session Completion", () => {
     it("should check completion when max contributors reached", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for completion test.",
         maxContributors: 2,
@@ -321,15 +359,23 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      store.startSession(result.session.id);
-
-      // Add second contributor
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
       store.addContributor(result.session.id, {
         userId: "user2",
         linkToken: "token2",
         linkType: "contributor",
         status: "pending",
         hasPassed: false,
+      });
+
+      store.startSession(result.session.id);
+
+      // Add segment from second contributor to complete the session
+      store.addSegment(result.session.id, {
+        authorId: "user2",
+        authorName: "User 2",
+        isAnonymous: false,
+        content: "Second segment with enough words for validation test.",
       });
 
       const completed = store.checkCompletion(result.session.id);
@@ -342,6 +388,7 @@ describe("SessionStore", () => {
 
     it("should add session to moderation queue", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for moderation test.",
         maxContributors: 2,
@@ -350,7 +397,7 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      store.startSession(result.session.id);
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
       store.addContributor(result.session.id, {
         userId: "user2",
         linkToken: "token2",
@@ -358,6 +405,17 @@ describe("SessionStore", () => {
         status: "pending",
         hasPassed: false,
       });
+
+      store.startSession(result.session.id);
+
+      // Add segment from second contributor to complete the session
+      store.addSegment(result.session.id, {
+        authorId: "user2",
+        authorName: "User 2",
+        isAnonymous: false,
+        content: "Second segment with enough words for moderation test.",
+      });
+
       store.checkCompletion(result.session.id);
 
       const added = store.addToModerationQueue(result.session.id);
@@ -370,6 +428,7 @@ describe("SessionStore", () => {
 
     it("should moderate session as approved", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for approve test.",
         maxContributors: 2,
@@ -378,7 +437,7 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      store.startSession(result.session.id);
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
       store.addContributor(result.session.id, {
         userId: "user2",
         linkToken: "token2",
@@ -386,6 +445,17 @@ describe("SessionStore", () => {
         status: "pending",
         hasPassed: false,
       });
+
+      store.startSession(result.session.id);
+
+      // Add segment from second contributor to complete the session
+      store.addSegment(result.session.id, {
+        authorId: "user2",
+        authorName: "User 2",
+        isAnonymous: false,
+        content: "Second segment with enough words for approve test.",
+      });
+
       store.checkCompletion(result.session.id);
       store.addToModerationQueue(result.session.id);
 
@@ -399,6 +469,7 @@ describe("SessionStore", () => {
 
     it("should moderate session as rejected", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for reject test.",
         maxContributors: 2,
@@ -407,7 +478,7 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      store.startSession(result.session.id);
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
       store.addContributor(result.session.id, {
         userId: "user2",
         linkToken: "token2",
@@ -415,6 +486,17 @@ describe("SessionStore", () => {
         status: "pending",
         hasPassed: false,
       });
+
+      store.startSession(result.session.id);
+
+      // Add segment from second contributor to complete the session
+      store.addSegment(result.session.id, {
+        authorId: "user2",
+        authorName: "User 2",
+        isAnonymous: false,
+        content: "Second segment with enough words for reject test.",
+      });
+
       store.checkCompletion(result.session.id);
       store.addToModerationQueue(result.session.id);
 
@@ -430,6 +512,7 @@ describe("SessionStore", () => {
   describe("Voting", () => {
     it("should return vote status with correct data", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment for voting test.",
         maxContributors: 7,
@@ -448,6 +531,7 @@ describe("SessionStore", () => {
 
     it("should not allow vote when minimum contributions not reached", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment.",
         maxContributors: 7,
@@ -464,6 +548,7 @@ describe("SessionStore", () => {
     it("should allow vote after minimum contributions", () => {
       const userId = createTestAnonymousId();
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment.",
         maxContributors: 7,
@@ -489,6 +574,7 @@ describe("SessionStore", () => {
 
     it("should record vote and check threshold", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment.",
         maxContributors: 7,
@@ -497,7 +583,16 @@ describe("SessionStore", () => {
         creatorIsAnonymous: false,
       });
 
-      // Start the session first
+      // Add second contributor BEFORE starting (startSession requires 2 contributors)
+      store.addContributor(result.session.id, {
+        userId: "user2",
+        linkToken: "token2",
+        linkType: "contributor",
+        status: "pending",
+        hasPassed: false,
+      });
+
+      // Start the session
       store.startSession(result.session.id);
 
       // Add 5 segments to allow voting (4 more after opening)
@@ -515,8 +610,9 @@ describe("SessionStore", () => {
         result.creatorContributor.id,
       );
 
-      // With 1 eligible voter (the creator), 1 vote reaches 60% threshold
-      expect(votePassed).toBe(true);
+      // With 2 eligible voters (creator + user2), 1 vote is 50% which doesn't reach 60% threshold
+      // But the creator's vote should still be recorded
+      expect(votePassed).toBe(false);
 
       // Check vote status with userId to verify hasVoted
       const voteStatus = store.getVoteStatus(
@@ -531,6 +627,7 @@ describe("SessionStore", () => {
   describe("Link Management", () => {
     it("should record link click", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment.",
         maxContributors: 7,
@@ -554,6 +651,7 @@ describe("SessionStore", () => {
 
     it("should get link by token", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment.",
         maxContributors: 7,
@@ -571,6 +669,7 @@ describe("SessionStore", () => {
 
     it("should return null for revoked link", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment.",
         maxContributors: 7,
@@ -592,6 +691,7 @@ describe("SessionStore", () => {
     it("should get session state with correct data", () => {
       const userId = createTestAnonymousId();
       const result = store.createSession({
+        title: null,
         theme: "Test Theme",
         openingSegment: "Opening segment for state test.",
         maxContributors: 7,
@@ -616,6 +716,7 @@ describe("SessionStore", () => {
 
     it("should report correct contributor count", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment.",
         maxContributors: 7,
@@ -642,6 +743,7 @@ describe("SessionStore", () => {
 
     it("should report correct available slot status", () => {
       const result = store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment.",
         maxContributors: 3, // Small number for testing
@@ -680,6 +782,7 @@ describe("SessionStore", () => {
       // Create 2 sessions
       for (let i = 0; i < 2; i++) {
         store.createSession({
+          title: null,
           theme: null,
           openingSegment: `Opening segment ${i}.`,
           maxContributors: 7,
@@ -699,6 +802,7 @@ describe("SessionStore", () => {
 
     it("should clear all data", () => {
       store.createSession({
+        title: null,
         theme: null,
         openingSegment: "Opening segment.",
         maxContributors: 7,

@@ -8,7 +8,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { sessionStore } from "@/lib/store";
-import { getAnonymousId } from "@/lib/cookies";
+import { getAnonymousIdFromRequest } from "@/lib/cookies";
 import type { SessionState } from "@/lib/types";
 
 // =============================================================================
@@ -66,8 +66,14 @@ export async function POST(
       );
     }
 
-    // Get user identity
-    const userId = getAnonymousId();
+    // Get user identity from request cookies
+    const userId = getAnonymousIdFromRequest(request);
+    if (!userId) {
+      return NextResponse.json(
+        { success: false, error: "Anonymous identity required" },
+        { status: 403 },
+      );
+    }
 
     // Get contributor record
     const contributor = sessionStore.getContributor(sessionId, userId);

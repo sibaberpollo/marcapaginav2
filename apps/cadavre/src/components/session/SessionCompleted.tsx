@@ -42,7 +42,7 @@ export function SessionCompleted({ sessionState }: SessionCompletedProps) {
               🎉
             </div>
             <h1 className="text-4xl font-bold text-text-primary">
-              ¡Historia completada!
+              {session.title || "¡Historia completada!"}
             </h1>
             {session.theme && (
               <p className="text-xl text-text-secondary italic">
@@ -51,64 +51,62 @@ export function SessionCompleted({ sessionState }: SessionCompletedProps) {
             )}
           </header>
 
-          <article className="bg-bg-primary border border-surface-2 p-6 md:p-8">
-            <h2 className="text-xl font-bold text-text-primary text-center mb-8">
-              La historia completa
-            </h2>
+          <article className="card bg-base-100 shadow-md">
+            <div className="card-body p-6 md:p-8">
+              <h2 className="card-title text-xl font-bold text-text-primary justify-center mb-8">
+                La historia completa
+              </h2>
 
-            <div className="space-y-6">
-              {segments.map((segment, index) => (
-                <div key={segment.id} className="relative">
-                  {index > 0 && (
-                    <div
-                      className="flex items-center gap-2 my-6"
-                      aria-hidden="true"
-                    >
-                      <div className="flex-1 h-px bg-surface-2" />
-                      <span className="text-text-secondary/40 text-sm">↓</span>
-                      <div className="flex-1 h-px bg-surface-2" />
-                    </div>
-                  )}
-                  <p className="text-lg leading-relaxed text-text-primary">
-                    {segment.content}
-                  </p>
-                  {!segment.isAnonymous && (
-                    <p className="text-sm text-text-secondary mt-2 text-right">
-                      — {segment.authorName}
+              <div className="space-y-6">
+                {segments.map((segment, index) => (
+                  <div key={segment.id} className="relative">
+                    {index > 0 && (
+                      <div className="divider my-6" aria-hidden="true">
+                        <span className="text-text-secondary/40 text-sm">
+                          ↓
+                        </span>
+                      </div>
+                    )}
+                    <p className="text-lg leading-relaxed text-text-primary">
+                      {segment.content}
                     </p>
-                  )}
-                </div>
-              ))}
+                    {!segment.isAnonymous && (
+                      <p className="text-sm text-text-secondary mt-2 text-right">
+                        — {segment.authorName}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </article>
 
-          <div className="grid grid-cols-3 gap-4">
-            <div className="bg-bg-primary border border-surface-2 p-4 text-center">
-              <div className="text-3xl font-bold text-text-primary">
+          <div className="stats stats-horizontal bg-base-100 shadow w-full">
+            <div className="stat place-items-center">
+              <div className="stat-value text-text-primary">
                 {segments.length}
               </div>
-              <div className="text-sm text-text-secondary">Segmentos</div>
+              <div className="stat-title text-text-secondary">Segmentos</div>
             </div>
-            <div className="bg-bg-primary border border-surface-2 p-4 text-center">
-              <div className="text-3xl font-bold text-text-primary">
-                {totalWords}
-              </div>
-              <div className="text-sm text-text-secondary">Palabras</div>
+            <div className="stat place-items-center">
+              <div className="stat-value text-text-primary">{totalWords}</div>
+              <div className="stat-title text-text-secondary">Palabras</div>
             </div>
-            <div className="bg-bg-primary border border-surface-2 p-4 text-center">
-              <div className="text-3xl font-bold text-text-primary">
+            <div className="stat place-items-center">
+              <div className="stat-value text-text-primary">
                 {uniqueWriters}
               </div>
-              <div className="text-sm text-text-secondary">Escritores</div>
+              <div className="stat-title text-text-secondary">Escritores</div>
             </div>
           </div>
 
           {shareLinks.contributor && (
-            <section className="pt-8 border-t border-surface-2">
+            <section>
+              <div className="divider" />
               <ShareLinks
                 contributorLink={shareLinks.contributor}
                 observerLink={shareLinks.observer}
-                sessionTitle={session.theme || undefined}
+                sessionTitle={session.title || session.theme || undefined}
               />
             </section>
           )}
@@ -116,7 +114,7 @@ export function SessionCompleted({ sessionState }: SessionCompletedProps) {
           <div className="text-center">
             <Link
               href="/"
-              className="inline-block px-8 py-4 bg-brand-yellow text-brand-black-static font-bold text-lg hover:opacity-90 transition-opacity"
+              className="btn btn-primary btn-lg bg-brand-yellow text-brand-black-static border-none hover:bg-brand-yellow/90"
             >
               Crear otra historia
             </Link>

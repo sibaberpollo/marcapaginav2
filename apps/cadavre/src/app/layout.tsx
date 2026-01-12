@@ -41,10 +41,6 @@ export const metadata: Metadata = {
   },
 };
 
-/**
- * Theme initialization script - runs before React hydration
- * Prevents flash of unstyled content and Dark Reader conflicts
- */
 const themeScript = `
 (function() {
   try {
@@ -59,6 +55,47 @@ const themeScript = `
 })();
 `;
 
+const identityScript = `
+(function() {
+  var COOKIE_NAME = 'cadavre_anon_id';
+  var UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+  
+  function getCookie(name) {
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : null;
+  }
+  
+  function setCookie(name, value) {
+    var maxAge = 30 * 24 * 60 * 60;
+    document.cookie = name + '=' + value + '; path=/; max-age=' + maxAge + '; samesite=lax';
+  }
+  
+  function generateUUID() {
+    if (crypto && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+    var d = Date.now();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (d + Math.random() * 16) % 16 | 0;
+      d = Math.floor(d / 16);
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+  
+  try {
+    var existing = getCookie(COOKIE_NAME);
+    if (!existing || !UUID_REGEX.test(existing)) {
+      var id = localStorage.getItem(COOKIE_NAME);
+      if (!id || !UUID_REGEX.test(id)) {
+        id = generateUUID();
+        localStorage.setItem(COOKIE_NAME, id);
+      }
+      setCookie(COOKIE_NAME, id);
+    }
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -68,8 +105,12 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: identityScript }} />
       </head>
-      <body className="antialiased bg-bg-page text-text-primary transition-colors duration-200">
+      <body
+        className="antialiased bg-bg-page text-text-primary transition-colors duration-200"
+        suppressHydrationWarning
+      >
         {children}
       </body>
     </html>

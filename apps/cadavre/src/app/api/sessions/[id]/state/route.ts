@@ -8,7 +8,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { sessionStore } from "@/lib/store";
-import { getAnonymousId } from "@/lib/cookies";
+import { getAnonymousIdFromRequest } from "@/lib/cookies";
 import type { SessionState } from "@/lib/types";
 
 // =============================================================================
@@ -45,12 +45,11 @@ export async function GET(
       );
     }
 
-    // Get user identity from query parameter or cookie
     const { searchParams } = new URL(request.url);
     const userIdParam = searchParams.get("userId");
-    const userId = userIdParam ?? getAnonymousId();
+    const userId =
+      userIdParam ?? getAnonymousIdFromRequest(request) ?? undefined;
 
-    // Get session state
     const sessionState = sessionStore.getSessionState(sessionId, userId);
 
     if (!sessionState) {

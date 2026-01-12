@@ -37,6 +37,8 @@
   --color-brand-gray: #9ca3af;
   --color-brand-black: #ffffff;
   --color-brand-white: #000000;
+  --color-brand-black-static: #000000;
+  --color-brand-white-static: #ffffff;
 
   /* Surface Colors */
   --color-surface: #1a1a1a;

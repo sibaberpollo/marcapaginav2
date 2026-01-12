@@ -1,12 +1,12 @@
-import FeedTabs from './FeedTabs';
-import FeaturedHoroscopePost from './FeaturedHoroscopePost';
-import FeaturedMapPost from './FeaturedMapPost';
-import FeaturedPreviewPost from './FeaturedPreviewPost';
-import FeaturedRecipePost from './FeaturedRecipePost';
-import LatestNarrativaPost from './LatestNarrativaPost';
-import PostCard from './PostCard';
-import ListCard from './ListCard';
-import MemeCard from './MemeCard';
+import FeedTabs from "./FeedTabs";
+import FeaturedHoroscopePost from "./FeaturedHoroscopePost";
+import FeaturedMapPost from "./FeaturedMapPost";
+import FeaturedPreviewPost from "./FeaturedPreviewPost";
+import FeaturedRecipePost from "./FeaturedRecipePost";
+import LatestNarrativaPost from "./LatestNarrativaPost";
+import PostCard from "./PostCard";
+import ListCard from "./ListCard";
+import MemeCard from "./MemeCard";
 
 export default function Feed() {
   return (
@@ -30,7 +30,7 @@ export default function Feed() {
         excerpt="A diferencia de la novela, el cuento no tiene tiempo para calentar motores. Cada palabra cuenta."
         author="Redacción Marcapágina"
         timeAgo="hace 1h"
-        tags={['cuentos', 'listas', 'inicios']}
+        tags={["cuentos", "listas", "inicios"]}
         readTime="3 min"
         slug="5-arranques-que-te-obligan-a-seguir-leyendo"
         itemCount={5}
@@ -42,7 +42,6 @@ export default function Feed() {
         signSymbol="♑"
         author="Edgar Allan Poe"
         authorImage="https://res.cloudinary.com/dx98vnos1/image/upload/v1767953685/Poe_bejcvr.png"
-        month="Enero 2026"
         excerpt="Capricornio en su forma más oscura y disciplinada: Poe construyó catedrales de terror con la precisión de un arquitecto obsesivo."
       />
 
@@ -75,7 +74,7 @@ export default function Feed() {
         excerpt="Leer por placer, abandonar libros sin culpa, no fingir que entendiste ese libro... Una lista de buenos propósitos lectores."
         author="Redacción Marcapágina"
         timeAgo="hace 1h"
-        tags={['humor', 'listas', 'lectura']}
+        tags={["humor", "listas", "lectura"]}
         readTime="2 min"
         slug="10-propositos-literarios-de-ano-nuevo"
         itemCount={10}
@@ -87,7 +86,7 @@ export default function Feed() {
         excerpt="Pensando siempre en nuestro entusiasta público, ofrecemos a continuación una sencilla guía para entender el funcionamiento de estos aparatos y participar del ritual pagano de la lectura."
         author="Hazael Valecillos"
         timeAgo="hace 3h"
-        tags={['ensayo', 'humor', 'lectura']}
+        tags={["ensayo", "humor", "lectura"]}
         readTime="6 min"
         slug="manual-de-usuario-para-comenzar-a-leer"
       />
@@ -98,7 +97,7 @@ export default function Feed() {
         excerpt="Dice que 'esto ya lo hizo Borges', menciona a Bolaño en cualquier conversación y desprecia los best sellers sin haberlos leído."
         author="Redacción Marcapágina"
         timeAgo="hace 2h"
-        tags={['humor', 'listas', 'sátira']}
+        tags={["humor", "listas", "sátira"]}
         readTime="2 min"
         slug="como-identificar-a-un-lector-toxico"
         itemCount={10}
@@ -120,7 +119,7 @@ export default function Feed() {
         excerpt="La novela policial pregunta dónde estabas anoche. La poesía llega tarde y huele a lluvia."
         author="Redacción Marcapágina"
         timeAgo="hace 4h"
-        tags={['humor', 'géneros-literarios']}
+        tags={["humor", "géneros-literarios"]}
         readTime="1 min"
         slug="si-los-generos-literarios-fueran-personas-en-una-fiesta"
         itemCount={5}
@@ -131,7 +130,7 @@ export default function Feed() {
         excerpt="Del síndrome del subrayador compulsivo a la dependencia emocional de las reseñas de Goodreads."
         author="Redacción Marcapágina"
         timeAgo="hace 5h"
-        tags={['humor', 'listas', 'sátira']}
+        tags={["humor", "listas", "sátira"]}
         readTime="3 min"
         slug="trastornos-literarios-no-reconocidos-por-la-oms"
         itemCount={5}
