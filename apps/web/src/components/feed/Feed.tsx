@@ -13,6 +13,9 @@ export default function Feed() {
     <div className="space-y-4">
       <FeedTabs />
 
+      {/* Latest Narrativa/Transtextos Post */}
+      <LatestNarrativaPost />
+
       {/* Featured Preview - Alta Pureza */}
       <FeaturedPreviewPost
         title="Alta Pureza"
@@ -110,9 +113,6 @@ export default function Feed() {
         alt="Los chapulines salvajes - Parodia de Los detectives salvajes"
         slug="los-chapulines-salvajes"
       />
-
-      {/* Latest Narrativa/Transtextos Post */}
-      <LatestNarrativaPost />
 
       <ListCard
         title="Si los géneros literarios fueran personas en una fiesta"
