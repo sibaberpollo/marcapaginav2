@@ -1,4 +1,5 @@
 import { LeftSidebar, RightSidebar, Feed } from '@/components';
+import LatestNarrativaPost from '@/components/feed/LatestNarrativaPost';
 
 export default function Home() {
   return (
@@ -6,7 +7,7 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 py-6">
         <div className="grid lg:grid-cols-[240px_1fr_320px] gap-6">
           <LeftSidebar />
-          <Feed />
+          <Feed latestNarrativaPost={<LatestNarrativaPost />} />
           <RightSidebar />
         </div>
       </div>
