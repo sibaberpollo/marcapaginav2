@@ -17,16 +17,16 @@ const tabs: { id: FeedFilter; label: string }[] = [
 
 export default function FeedTabs({ activeFilter, onFilterChange }: FeedTabsProps) {
   return (
-    <div className="flex items-center gap-1 bg-white dark:bg-surface rounded-lg p-1 overflow-x-auto">
+    <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-hide mb-2">
       {tabs.map((tab) => (
         <button
           key={tab.id}
           onClick={() => onFilterChange(tab.id)}
           aria-pressed={activeFilter === tab.id}
-          className={`flex-shrink-0 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+          className={`flex-shrink-0 px-3 py-1.5 text-xs font-medium rounded-full transition-colors ${
             activeFilter === tab.id
-              ? "bg-black text-white font-semibold"
-              : "text-brand-gray hover:text-[#333333]"
+              ? "bg-black text-white"
+              : "bg-surface text-brand-gray hover:text-[#333333] hover:bg-surface-2"
           }`}
         >
           {tab.label}
