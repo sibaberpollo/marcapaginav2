@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const previewUrl = `${siteUrl}/previews/${slug}`;
+  const previewUrl = `${siteUrl}/previews/${slug}/`;
   const plainSynopsis = preview.synopsis.replace(/<[^>]*>/g, '').substring(0, 160);
 
   return {

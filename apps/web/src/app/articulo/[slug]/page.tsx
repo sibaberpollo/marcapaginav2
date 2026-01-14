@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: PageProps) {
     };
   }
 
-  const articleUrl = `${siteUrl}/articulo/${slug}`;
+  const articleUrl = `${siteUrl}/articulo/${slug}/`;
 
   return {
     title: article.title,
@@ -244,7 +244,7 @@ export default async function ArticlePage({ params }: PageProps) {
               </button>
               <ShareButton
                 title={article.title}
-                url={`${siteUrl}/articulo/${article.slug}`}
+                url={`${siteUrl}/articulo/${article.slug}/`}
               />
             </div>
           </div>

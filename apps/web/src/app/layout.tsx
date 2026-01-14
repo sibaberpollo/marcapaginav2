@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   },
   manifest: '/site.webmanifest',
   alternates: {
-    canonical: siteUrl,
+    canonical: `${siteUrl}/`,
   },
   verification: {
     // Añadir cuando tengas los códigos de verificación:
