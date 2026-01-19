@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Fragment } from 'react';
 import type { ArticleSummary } from '@/lib/types/article';
 import MemeCard from './MemeCard';
+import HorizontalAdBanner from '../ads/HorizontalAdBanner';
 
 interface ArticlesFeedProps {
   articles: ArticleSummary[];
@@ -34,12 +35,15 @@ export default function ArticlesFeed({ articles }: ArticlesFeedProps) {
         return (
           <Fragment key={article.slug}>
             {index === insertIndex && (
-              <MemeCard
-                title="Los chapulines salvajes"
-                imageUrl="https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png"
-                alt="Los chapulines salvajes - Parodia de Los detectives salvajes"
-                slug="los-chapulines-salvajes"
-              />
+              <>
+                <HorizontalAdBanner className="my-4" />
+                <MemeCard
+                  title="Los chapulines salvajes"
+                  imageUrl="https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png"
+                  alt="Los chapulines salvajes - Parodia de Los detectives salvajes"
+                  slug="los-chapulines-salvajes"
+                />
+              </>
             )}
             <article
               className="bg-bg-primary rounded-lg border border-surface-2 hover:border-brand-gray/30 transition-colors p-4"

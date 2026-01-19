@@ -20,6 +20,7 @@ export { default as MemeCard } from './feed/MemeCard';
 export { default as CategoryFeed } from './feed/CategoryFeed';
 
 // Ads
+export { default as HorizontalAdBanner } from './ads/HorizontalAdBanner';
 
 // UI
 export { default as ThemeToggle } from './ui/ThemeToggle';

@@ -9,6 +9,7 @@ import FeaturedRecipePost from "./FeaturedRecipePost";
 import PostCard from "./PostCard";
 import ListCard from "./ListCard";
 import MemeCard from "./MemeCard";
+import HorizontalAdBanner from "../ads/HorizontalAdBanner";
 
 interface FeedProps {
   latestNarrativaPost: React.ReactNode;
@@ -67,6 +68,9 @@ export default function Feed({ latestNarrativaPost }: FeedProps) {
           excerpt="Capricornio en su forma más oscura y disciplinada: Poe construyó catedrales de terror con la precisión de un arquitecto obsesivo."
         />
       )}
+
+      {/* Banner publicitario horizontal */}
+      <HorizontalAdBanner className="my-4" />
 
       {/* Featured Recipe - El viejo y el ron */}
       {showViajes && (
