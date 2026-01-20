@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-interface HorizontalAdBannerProps {
+interface BoxAdBannerProps {
   className?: string;
 }
 
@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-export default function HorizontalAdBanner({ className = "" }: HorizontalAdBannerProps) {
+export default function BoxAdBanner({ className = "" }: BoxAdBannerProps) {
   useEffect(() => {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -22,12 +22,12 @@ export default function HorizontalAdBanner({ className = "" }: HorizontalAdBanne
   }, []);
 
   return (
-    <div className={`w-full px-4 ${className}`}>
+    <div className={`w-full max-w-[336px] mx-auto ${className}`}>
       <ins
         className="adsbygoogle"
         style={{ display: "block" }}
         data-ad-client="ca-pub-1422077668654301"
-        data-ad-slot="8071858219"
+        data-ad-slot="9677897006"
         data-ad-format="auto"
         data-full-width-responsive="true"
       />

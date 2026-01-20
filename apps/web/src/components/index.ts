@@ -21,6 +21,7 @@ export { default as CategoryFeed } from './feed/CategoryFeed';
 
 // Ads
 export { default as HorizontalAdBanner } from './ads/HorizontalAdBanner';
+export { default as BoxAdBanner } from './ads/BoxAdBanner';
 
 // UI
 export { default as ThemeToggle } from './ui/ThemeToggle';

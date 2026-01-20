@@ -6,6 +6,7 @@ import ArticleSchema from '@/components/seo/ArticleSchema';
 import { getArticleBySlug, getRelatedArticles, getAllArticles } from '@/lib/articles';
 import { isTravelGuide, TravelGuide, isRecipe, Recipe } from '@/lib/types/article';
 import { ArticlePageLayout, Avatar, ShareButton } from '@/components';
+import BoxAdBanner from '@/components/ads/BoxAdBanner';
 import { getAuthorByName } from '@/lib/sanity';
 
 interface PageProps {
@@ -148,6 +149,11 @@ export default async function ArticlePage({ params }: PageProps) {
             className="article-content prose prose-lg max-w-none"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
+
+          {/* In-content Ad */}
+          <div className="my-8 py-6 border-y border-surface-2">
+            <BoxAdBanner />
+          </div>
 
           {article.slug === 'manual-de-usuario-para-comenzar-a-leer' && (
             <footer className="pt-8 border-t border-surface-2">
