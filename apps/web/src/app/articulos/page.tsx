@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArticlesFeed, FeaturedPreviewPost, LeftSidebar, RightSidebar } from '@/components';
+import { ArticlesFeed, FeaturedPreviewPost, LeftSidebar, RightSidebar, HorizontalAdBanner } from '@/components';
 import { getAllArticles } from '@/lib/articles';
 
 export const metadata: Metadata = {
@@ -36,6 +36,9 @@ export default async function ArticulosPage() {
             </header>
 
             <ArticlesFeed articles={articles} />
+
+            {/* Banner publicitario horizontal */}
+            <HorizontalAdBanner className="my-4" />
 
             {/* Featured Preview CTA */}
             <FeaturedPreviewPost

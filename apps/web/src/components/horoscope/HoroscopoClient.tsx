@@ -8,6 +8,7 @@ import {
   signDisplayNames,
 } from "@/lib/horoscope-data";
 import type { ImplementedSignSlug } from "@/lib/types/horoscope";
+import HorizontalAdBanner from "../ads/HorizontalAdBanner";
 
 // Colores para las efemérides (estáticos para que Tailwind los genere)
 const EFEMERIDE_COLORS = [
@@ -167,6 +168,9 @@ export default function HoroscopoClient({
               })}
             </div>
           </div>
+
+          {/* Banner publicitario horizontal */}
+          <HorizontalAdBanner className="my-6" />
 
           {/* Grilla de signos literarios */}
           <div className="space-y-8 pt-8">

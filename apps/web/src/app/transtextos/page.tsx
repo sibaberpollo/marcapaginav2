@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { fetchSanity } from '@/lib/sanity';
 import RelatoHeader from '@/components/layout/RelatoHeader';
+import HorizontalAdBanner from '@/components/ads/HorizontalAdBanner';
 
 const PAGE_SIZE = 10;
 
@@ -121,13 +122,7 @@ export default async function TranstextosPage({
 
                   {/* In-feed Ad - appears after 5th item */}
                   {showAd && (
-                    <div className="bg-surface-2 rounded-lg p-4 flex items-center justify-center border border-dashed border-brand-gray/30 mt-4">
-                      <div className="bg-surface rounded-lg w-full max-w-[336px] h-[280px] flex items-center justify-center">
-                        <span className="text-xs text-brand-gray uppercase tracking-wider">
-                          Publicidad · 336x280
-                        </span>
-                      </div>
-                    </div>
+                    <HorizontalAdBanner className="mt-4" />
                   )}
                 </div>
               );
