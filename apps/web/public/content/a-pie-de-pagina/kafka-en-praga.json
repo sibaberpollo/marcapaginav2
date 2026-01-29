@@ -1,0 +1,166 @@
+{
+    "slug": "kafka-en-praga",
+    "title": "Un recorrido por Kafka en Praga",
+    "excerpt": "Una guía literaria por la ciudad que vio nacer a uno de los creadores más singulares y universales de la historia. Praga fue para Franz Kafka su cárcel, su musa y su laberinto.",
+    "type": "travel-guide",
+    "content": "<p class=\"text-lg leading-relaxed mb-6\">¿Cuántas veces se ha dicho que la ciudad de Praga debe ser una de las más hermosas de toda Europa? Actualmente, una de las 20 ciudades más visitadas del mundo, la capital de la República Checa, con un extraordinario poder hipnótico, sobra en razones para ser vista de cerca. Su centro histórico, su fortaleza medieval (la más grande de Europa), el eterno Puente Carlos, su pasado alquimista y su vibrante cultura, son apenas 5 razones cotidianas que invitan a emprender el vuelo.</p><p class=\"text-lg leading-relaxed mb-6\">Es una ciudad permanentemente contada en los libros, literaria, que vio nacer a grandes de las letras, como Rainer María Rilke y Milan Kundera. Y también acompañó cuando todavía era el Reino de Bohemia, el nacimiento de Franz Kafka, uno de los creadores más singulares y universales de la historia.</p>",
+    "author": {
+        "name": "Redacción Marcapágina",
+        "handle": "@marcapagina",
+        "avatar": "bg-blue-200",
+        "bio": "El equipo editorial de Marcapágina, dedicado a explorar los rincones literarios del mundo."
+    },
+    "category": "A pie de página",
+    "categorySlug": "a-pie-de-pagina",
+    "tags": [
+        "viajes",
+        "kafka",
+        "praga",
+        "literatura",
+        "guía"
+    ],
+    "featured": true,
+    "publishedAt": "2026-01-29T12:00:00.000Z",
+    "readTime": "10 min",
+    "likes": 0,
+    "comments": 0,
+    "mapCenter": [
+        50.0875,
+        14.4200
+    ],
+    "mapZoom": 14,
+    "locations": [
+        {
+            "id": "nacimiento",
+            "name": "Lugar de Nacimiento de Kafka",
+            "subtitle": "Donde todo comenzó",
+            "description": "<p>El lugar de nacimiento de Kafka está situado entre las esquinas de Maiselova y Kaprova. Para la época en que nació, el vecindario estaba todavía en bastante mal estado, justo al límite del gueto judío de entonces.</p><p class=\"mt-4\">La casa original se quemó por completo y todo lo que ahora queda es la notable entrada. En la placa al costado de la casa está escrito: <strong>FRANZ KAFKA NACIÓ AQUÍ EL 3 de julio de 1883</strong>. En el verano, hay un pequeño Café Kafka en la planta baja.</p>",
+            "coordinates": [
+                50.0897,
+                14.4178
+            ],
+            "address": "Esquina de Maiselova y Kaprova",
+            "icon": "🏠",
+            "order": 1
+        },
+        {
+            "id": "callejon-oro",
+            "name": "Callejón de Oro",
+            "subtitle": "Su primer estudio de escritura",
+            "description": "<p>Cerca del Castillo de Praga, imponente fortaleza medieval que inspiró su obra <em>El Castillo</em>, y que aparece también en <em>El Proceso</em>, en el número 22 del Callejón de Oro —también llamado la Calle de Los Alquimistas porque en tiempos de Rodolfo II, en ese sector los alquimistas hacían sus pócimas e intentaban transformar la materia en oro— se encuentra el lugar donde el escritor vivió con su hermana y tuvo su primer estudio para escribir a sus anchas.</p><p class=\"mt-4\">Esta pequeña, transitada y colorida calle, es a su vez un mercadillo dedicado a Kafka, donde se venden sus libros y algunos otros souvenirs relacionados con él. Luego de ser remodelada, la calle en la actualidad está consagrada enteramente al turismo.</p>",
+            "coordinates": [
+                50.0912,
+                14.4045
+            ],
+            "address": "Zlatá ulička 22, Castillo de Praga",
+            "icon": "✍️",
+            "order": 2
+        },
+        {
+            "id": "museo",
+            "name": "Museo Franz Kafka",
+            "subtitle": "Sumergirse en lo kafkiano",
+            "description": "<p>Uno de los mejores museos dedicados a la vida y obra de autor alguno que se pueda visitar. Es notable que la inspiración del recorrido busca sumergir a sus visitantes a través de fotos, cartas y breviarios de vida, combinado con trucos de iluminación, pasillos angostos y lúgubres, en las profundidades de lo kafkiano.</p><p class=\"mt-4\">Una visita obligada para los fanáticos de Kafka, pero sobre todo, para quienes todavía no lo hayan leído, pues será tanta la impresión de esta visita, que probablemente salgan disparados a la primera librería que encuentren, a comprar algún libro del autor sin importar que esté en checo o en alemán.</p>",
+            "coordinates": [
+                50.0885,
+                14.4103
+            ],
+            "address": "Cihelná 2b, Malá Strana (orilla del río Moldava)",
+            "icon": "🏛️",
+            "order": 3
+        },
+        {
+            "id": "libreria",
+            "name": "Sociedad Franz Kafka",
+            "subtitle": "Librería para coleccionistas",
+            "description": "<p>En pleno barrio judío, la Sociedad Franz Kafka es una librería-biblioteca dedicada a la vida y obra del autor. Este es el lugar perfecto para coleccionistas que busquen las ediciones más raras de sus libros.</p><p class=\"mt-4\">También se consiguen ejemplares en diversas lenguas a las que ha sido traducido el autor. Un refugio literario para quienes buscan profundizar en el universo kafkiano.</p>",
+            "coordinates": [
+                50.0895,
+                14.4190
+            ],
+            "address": "Barrio Judío (Josefov)",
+            "icon": "📚",
+            "order": 4
+        },
+        {
+            "id": "plaza-vieja",
+            "name": "Plaza de la Ciudad Vieja",
+            "subtitle": "El corazón de su vida",
+            "description": "<p>Franz Kafka pasó muchos años aquí y en la calle vecina. En la década de 1890 asistió a la escuela de gramática alemana al otro lado de la plaza en el <strong>Palacio Kinský</strong> de color rosa claro.</p><p class=\"mt-4\">Primero Kafka vivió en la casa No. 2 de la Plaza de la Ciudad Vieja (la casa Renacentista \"U Minuty\") a un costado del Reloj Astronómico. Más adelante en su vida, contrajo tuberculosis y se mudó con su familia a la casa No. 5.</p><p class=\"mt-4\">El monumento favorito de Kafka se encuentra en No. 17, la antigua casa de la dama de alta sociedad Berta Fanta, quien administraba un salón social. Una placa conmemorativa dice: <em>\"Aquí en este salón de la Sra. Berta Fanta, Albert Einstein, profesor de la Universidad de Praga de 1911 al 1912, autor de la Teoría de la Relatividad, ganador del Premio Nobel, tocaba el violín y se encontraba con sus amigos, escritores famosos, Max Brod y Franz Kafka.\"</em></p>",
+            "coordinates": [
+                50.0874,
+                14.4213
+            ],
+            "address": "Staroměstské náměstí (Plaza de la Ciudad Vieja)",
+            "icon": "🏰",
+            "order": 5
+        },
+        {
+            "id": "cafe-louvre",
+            "name": "Café Louvre",
+            "subtitle": "Debates filosóficos",
+            "description": "<p>Aquí Franz Kafka acostumbraba tener debates filosóficos a principios de la década de 1900. Un café histórico que conserva el espíritu de aquella Praga intelectual donde las ideas fluían entre tazas de café y tertulias interminables.</p><p class=\"mt-4\">El café sigue funcionando hoy, ofreciendo una ventana directa a la atmósfera que Kafka y sus contemporáneos respiraban mientras discutían sobre literatura, filosofía y el destino del mundo.</p>",
+            "coordinates": [
+                50.0818,
+                14.4195
+            ],
+            "address": "Národní 22, Barrio Antiguo",
+            "icon": "☕",
+            "order": 6
+        },
+        {
+            "id": "plaza-wenceslas",
+            "name": "Plaza Wenceslao",
+            "subtitle": "El empleado de seguros",
+            "description": "<p>Franz Kafka trabajó aquí como empleado en algunas de las que fueran oficinas de seguros en la esquina de Jindřišská entre 1906 y 1907.</p><p class=\"mt-4\">Esta faceta burocrática de Kafka, tan alejada aparentemente de su genio literario, fue sin embargo fundamental para su obra. La alienación del trabajo de oficina, la maquinaria administrativa impersonal y la sensación de estar atrapado en sistemas incomprensibles permean toda su literatura.</p>",
+            "coordinates": [
+                50.0813,
+                14.4267
+            ],
+            "address": "Václavské náměstí (Plaza Wenceslao), esquina Jindřišská",
+            "icon": "🏢",
+            "order": 7
+        },
+        {
+            "id": "tumba",
+            "name": "Tumba de Franz Kafka",
+            "subtitle": "El final del recorrido",
+            "description": "<p>Quizá demasiado alejado de los puntos principales de este recorrido, se encuentra el último punto: la tumba de Franz Kafka en el Nuevo Cementerio Judío (Cementerio Olšany). La señalización te indicará el camino hacia el sector 21 donde se encuentra la lápida de nuestro personaje principal.</p><p class=\"mt-4\">Kafka está enterrado debajo de una piedra blanca sencilla junto con sus padres, Hermann y Julie Kafka. Una pequeña placa debajo está dedicada a las tres hermanas de Kafka, todas ellas murieron en campos de concentración nazis durante la Segunda Guerra Mundial.</p><p class=\"mt-4\">Cerca de este cementerio tuvo lugar la tristemente célebre \"Conjura de Sión\".</p>",
+            "coordinates": [
+                50.0780,
+                14.4696
+            ],
+            "address": "Nuevo Cementerio Judío, Olšany (Sector 21)",
+            "icon": "🪦",
+            "order": 8
+        }
+    ],
+    "suggestedRoute": [
+        "nacimiento",
+        "plaza-vieja",
+        "libreria",
+        "museo",
+        "callejon-oro",
+        "cafe-louvre",
+        "plaza-wenceslas",
+        "tumba"
+    ],
+    "recommendedReadings": [
+        {
+            "title": "La metamorfosis",
+            "author": "Franz Kafka"
+        },
+        {
+            "title": "El proceso",
+            "author": "Franz Kafka"
+        },
+        {
+            "title": "El castillo",
+            "author": "Franz Kafka"
+        },
+        {
+            "title": "Carta al padre",
+            "author": "Franz Kafka"
+        }
+    ]
+}
