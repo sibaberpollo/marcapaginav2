@@ -28,6 +28,17 @@ export default function Feed({ latestNarrativaPost }: FeedProps) {
     <div className="space-y-4">
       <FeedTabs activeFilter={filter} onFilterChange={setFilter} />
 
+      {/* Featured Travel Guide - Kafka en Praga (DESTACADO) */}
+      <FeaturedMapPost
+        title="Un recorrido por Kafka en Praga"
+        excerpt="Una guía literaria por la ciudad que vio nacer a uno de los creadores más singulares y universales de la historia."
+        author="Redacción Marcapágina"
+        date="29 Ene"
+        readTime="10 min"
+        slug="kafka-en-praga"
+        badge="A pie de página"
+      />
+
       {/* Latest Narrativa/Transtextos Post */}
       {showNarrativa && latestNarrativaPost}
 
@@ -86,7 +97,7 @@ export default function Feed({ latestNarrativaPost }: FeedProps) {
         />
       )}
 
-      {/* Featured Travel Guide */}
+      {/* Featured Travel Guide - Hemingway en París */}
       {showViajes && (
         <FeaturedMapPost
           title="La París de Hemingway"
