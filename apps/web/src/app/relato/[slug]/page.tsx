@@ -5,7 +5,6 @@ import { getArticleBySlug, getAllArticles, getAllTranstextosSlugs } from '@/lib/
 import { isTravelGuide, isRecipe } from '@/lib/types/article';
 import RelatoHeader from '@/components/layout/RelatoHeader';
 import { Avatar, ShareButton } from '@/components';
-import BoxAdBanner from '@/components/ads/BoxAdBanner';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -131,11 +130,6 @@ export default async function RelatoPage({ params }: PageProps) {
           className="article-content prose prose-lg md:prose-xl max-w-none"
           dangerouslySetInnerHTML={{ __html: article.content }}
         />
-
-        {/* In-content Ad */}
-        <div className="my-8 py-6 border-y border-surface-2">
-          <BoxAdBanner />
-        </div>
 
         {/* Botones de interacción */}
         <div className="flex items-center justify-between py-4 border-t border-b border-surface-2">
