@@ -260,9 +260,10 @@ async function getSanityArticleBySlug(slug: string): Promise<Article | null> {
         ? result.content.trim()
         : "";
 
+    const looksLikeHtml = /<(p|br|div|span|h[1-6]|ul|ol|li|blockquote|img|a)\b/i.test(rawContent);
     const safeContent =
       rawContent.length > 0
-        ? rawContent.includes("<")
+        ? looksLikeHtml
           ? rawContent
           : formatPlainTextToHtml(rawContent)
         : `<p>${result.excerpt || ""}</p>`;
